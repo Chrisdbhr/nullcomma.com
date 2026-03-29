@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Puxa a mesma URL do DownloadButton
-const LAUNCHER_INSTALLER_URL = "https://launcher.chrisjogos.com";
+const LAUNCHER_INSTALLER_URL = "https://launcher.nullcomma.com";
 
 function LauncherCTA() {
   return (

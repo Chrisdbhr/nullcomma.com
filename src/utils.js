@@ -1,4 +1,4 @@
-export const baseURL = "https://cms.chrisjogos.com";
+export const baseURL = "https://cms.nullcomma.com";
 
 const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,card_image.id,card_image.type,genres.genres_id,steam_id,trailer_url,web_version_url,screenshots.directus_files_id.id,screenshots.directus_files_id.type,related_posts.post_id.id,related_posts.post_id.title,related_posts.post_id.date_published,related_posts.post_id.cover_image.id,related_posts.post_id.cover_image.type,related_posts.post_id.status";
 

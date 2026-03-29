@@ -10,7 +10,7 @@ function DiscordCTA() {
         working, and talking about life together.
       </p>
       <a 
-        href="https://discord.chrisjogos.com/" 
+        href="https://discord.nullcomma.com/" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="button-secondary discord-button"
