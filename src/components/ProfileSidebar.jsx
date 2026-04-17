@@ -17,17 +17,6 @@ function ProfileSidebar() {
         Senior C# Developer & QA Tests Automation. Unity Specialist over 9 years of experience. Worked on +25 games for PC, Console & Mobile.
       </p>
 
-      <div className="profile-brand-block">
-        <h4>My Brand</h4>
-        <a href="https://nullcomma.com" target="_blank" rel="noopener noreferrer" className="profile-brand-card">
-          <img src="/logo.png" alt="Enigmatic Comma Logo" className="brand-logo" />
-          <div className="brand-card-content">
-            <h5>Enigmatic Comma</h5>
-            <p>Development label for my commercial projects and games.</p>
-          </div>
-        </a>
-      </div>
-
       <div className="social-links">
         <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub">
           <FaGithub />

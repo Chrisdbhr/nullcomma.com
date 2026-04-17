@@ -170,8 +170,6 @@ function HomePage() {
       <title>Christopher Ravailhe - Game Developer Portfolio & Blog</title>
       <meta name="description" content="Portfolio of C# Developer and Unity Specialist Christopher Ravailhe, featuring games with the launcher and download links, projects source code, devlogs, and technical articles." />
 
-      <LauncherCTA />
-
       <div className="home-section">
         <BlogFeed />
       </div>

@@ -22,10 +22,11 @@ function ErrorBoundary() {
   console.error(error);
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2>Oops! Something went wrong.</h2>
+      <h2>Maintenance mode!</h2>
       <p>{error.message}</p>
-      <br/>
-      <p>{"It seems Chris broke everything while testing production code, lol."}</p>
+      <br />
+      <p>{"It looks like you're trying to access my page during maintenance, that's rare!"}</p>
+      <p>{"Go grab a coffee and come back later."}</p>
     </div>
   );
 }
