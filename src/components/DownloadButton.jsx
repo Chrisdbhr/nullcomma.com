@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { LAUNCHER_INSTALLER_URL } from '../constants';
+import { LAUNCHER_INSTALLER_URL } from '../utils';
+
 
 
 function DownloadButton({ project }) {

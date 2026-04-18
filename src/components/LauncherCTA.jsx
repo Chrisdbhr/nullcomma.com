@@ -1,5 +1,6 @@
 import React from 'react'
-import { LAUNCHER_INSTALLER_URL } from '../constants';
+import { LAUNCHER_INSTALLER_URL } from '../utils';
+
 
 // Puxa a mesma URL do DownloadButton
 
