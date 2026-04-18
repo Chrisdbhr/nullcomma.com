@@ -1122,10 +1122,35 @@ img {
   background: var(--color-light);
   color: var(--color-darkest);
   font-weight: 700;
+  min-width: 180px;
 }
 .launcher-cta-action .button-primary:hover {
   background: var(--color-green);
   transform: scale(1.05);
+}
+
+.cta-action-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.launcher-cta-fallback {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.launcher-cta-fallback a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.launcher-cta-fallback p {
+  margin: 0;
 }
 
 /* Responsividade do Launcher CTA */
@@ -1134,12 +1159,13 @@ img {
     grid-template-columns: 1fr; /* Coluna única */
     text-align: center;
     gap: 20px;
-    display: none;
+    padding: 30px 20px;
   }
   .launcher-cta-icon {
     margin: 0 auto;
   }
 }
+
 
 /* --- Destaque Discord CTA (Sidebar) --- */
 

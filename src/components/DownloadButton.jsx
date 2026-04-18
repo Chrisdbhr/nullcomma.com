@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { LAUNCHER_INSTALLER_URL } from '../constants';
 
-const LAUNCHER_INSTALLER_URL = "https://launcher.nullcomma.com";
 
 function DownloadButton({ project }) {
   const [showInstallerLink, setShowInstallerLink] = useState(false);

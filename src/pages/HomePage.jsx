@@ -174,6 +174,9 @@ function HomePage() {
         <BlogFeed />
       </div>
 
+      <LauncherCTA />
+
+
       <ProjectTypeFilter
         types={uniqueProjectTypes}
         excludedTypes={excludedTypes}

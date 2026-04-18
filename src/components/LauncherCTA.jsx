@@ -1,7 +1,8 @@
 import React from 'react'
+import { LAUNCHER_INSTALLER_URL } from '../constants';
 
 // Puxa a mesma URL do DownloadButton
-const LAUNCHER_INSTALLER_URL = "https://launcher.nullcomma.com";
+
 
 function LauncherCTA() {
   return (
@@ -27,3 +28,4 @@ function LauncherCTA() {
 }
 
 export default LauncherCTA
+
