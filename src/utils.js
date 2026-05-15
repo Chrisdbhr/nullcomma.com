@@ -13,7 +13,8 @@ export const fieldsQuery = `${baseQuery}&${filter}`;
 const DEFAULT_IMAGE_WIDTH = 800;
 
 /**
- * Returns an optimized asset URL from Directus, applying WEBP format and width limit by default.
+ * Returns an optimized asset URL from Directus, applying width limit by default.
+ * The server returns the image in its native format (AVIF, WebP, PNG, JPG, etc.).
  * @param {string} id Asset ID.
  * @param {number} [width=800] Maximum width.
  * @param {string} [options=''] Additional parameters (e.g., 'height=120&fit=cover').
@@ -28,7 +29,7 @@ export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeT
     return `${baseURL}/assets/${id}`;
   }
 
-  let params = `?format=webp&width=${width}`;
+  let params = `?width=${width}`;
   if (options) {
     params += `&${options}`;
   }

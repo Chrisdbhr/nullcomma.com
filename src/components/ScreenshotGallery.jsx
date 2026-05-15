@@ -6,8 +6,8 @@ const THUMBNAIL_WIDTH = 200;
 const THUMBNAIL_HEIGHT = 120;
 const MAIN_IMAGE_WIDTH = 1200;
 
-// O getAssetUrl agora aplica a otimização de formato e largura por padrão.
-// A função local getOptimizedAssetUrl foi removida.
+// O getAssetUrl aplica redimensionamento por padrão.
+// O servidor retorna a imagem no formato original (AVIF, WebP, PNG, JPG, etc.).
 
 function ScreenshotGallery({ screenshots }) {
   // Normalize screenshots structure to make life easier:
