@@ -10,11 +10,11 @@ import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
  * GIFs are converted to animated WebP by the server for better compression.
  * When both primary and fallback sources fail (e.g., 403, 500), shows a placeholder.
  */
-function SafeImage({ id, width, options, mimeType, alt, className, quality, ...imgProps }) {
+function SafeImage({ id, src, width, options, mimeType, alt, className, quality, useOriginal, ...imgProps }) {
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
 
-  if (!id) {
+  if (!id && !src) {
     return null
   }
 
@@ -35,16 +35,36 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
     )
   }
 
-  const primarySrc = getAssetUrl(id, width, options, mimeType, quality)
-  const fallbackSrc = getFallbackUrl(id, width, options)
-  const originalSrc = `${baseURL}/assets/${id}`
-
   const commonImgProps = {
     alt,
     className: `${className || ''} ${loading ? 'image-loading' : ''}`.trim(),
     onLoad: handleLoad,
     onError: handleError,
     ...imgProps,
+  }
+
+  // When src is provided, render external URL directly (e.g. Steam CDN)
+  if (src) {
+    return (
+      <img
+        src={src}
+        {...commonImgProps}
+      />
+    )
+  }
+
+  const originalSrc = `${baseURL}/assets/${id}`
+  const primarySrc = getAssetUrl(id, width, options, mimeType, quality)
+  const fallbackSrc = getFallbackUrl(id, width, options)
+
+  // When useOriginal is true, serve the full-resolution image directly
+  if (useOriginal) {
+    return (
+      <img
+        src={originalSrc}
+        {...commonImgProps}
+      />
+    )
   }
 
   // For modern formats (AVIF, WebP, GIF→WebP), use <picture> with type hints

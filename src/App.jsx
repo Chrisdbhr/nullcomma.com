@@ -6,8 +6,8 @@ function App() {
     <div className="app-container">
       <header className="main-header">
         <Link to="/" className="site-title-link">
-          <h1>ChrisJogos</h1>
-          <span>Projects Portfolio & Blog</span>
+          <h1>Null Comma</h1>
+          <span>Null Comma — Projects Portfolio & Blog</span>
         </Link>
       </header>
 
@@ -20,7 +20,7 @@ function App() {
       </div>
 
       <footer className="main-footer">
-        <p>© 2025 Enigmatic Comma. All rights reserved.</p>
+        <p>© 2025 Null Comma. All rights reserved.</p>
       </footer>
     </div>
   );

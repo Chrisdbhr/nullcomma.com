@@ -117,6 +117,11 @@ function GameDetailPage() {
   // Filter only published related posts
   const relatedPosts = project.related_posts?.filter(post => post.post_id.status === 'published') || [];
 
+  // Use Steam screenshots when available, fall back to Directus uploads
+  const galleryScreenshots = project.steam_screenshots?.length > 0
+    ? project.steam_screenshots
+    : project.screenshots;
+
   return (
     <div className="page-content game-detail-page fade-in">
       {/* SEO META TAGS */}
@@ -154,11 +159,11 @@ function GameDetailPage() {
               </iframe>
             </div>
           ) : (
-            <ScreenshotGallery screenshots={project.screenshots} />
+            <ScreenshotGallery screenshots={galleryScreenshots} />
           )}
 
-          {trailerEmbedUrl && project.screenshots.length > 0 && (
-            <ScreenshotGallery screenshots={project.screenshots} />
+          {trailerEmbedUrl && galleryScreenshots.length > 0 && (
+            <ScreenshotGallery screenshots={galleryScreenshots} />
           )}
 
           {project.steam_id && (

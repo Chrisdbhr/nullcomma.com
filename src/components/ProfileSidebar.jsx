@@ -14,7 +14,7 @@ function ProfileSidebar() {
       </Link>
       <h2 className="profile-name">Christopher Ravailhe</h2>
       <p className="profile-bio">
-        Senior C# Developer & QA Tests Automation. Unity Specialist over 9 years of experience. Worked on +25 games for PC, Console & Mobile.
+        Senior C# Developer & QA Tests Automation. Unity Specialist over 9 years of experience. Worked on +25 games for PC, Console & Mobile. Find my work at nullcomma.com and on GitHub as chrisdbhr.
       </p>
 
       <div className="social-links">

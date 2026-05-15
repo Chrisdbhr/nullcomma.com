@@ -54,7 +54,7 @@ function BlogPostPage() {
         .map(field => `related_projects.projects_id.${field}`)
         .join(',');
       
-      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,tags,${RELATED_PROJECT_FIELDS}`
+      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,tags.tags_id,${RELATED_PROJECT_FIELDS}`
       
       try {
         setLoading(true);
@@ -159,7 +159,7 @@ function BlogPostPage() {
           {(post.tags && post.tags.length > 0) && (
             <div className="blog-post-tags">
               {post.tags.map(tag => {
-                const tagId = tag;
+                const tagId = tag.tags_id || tag;
                 const color = getHashedColor(tagId);
                 return (
                   <span
@@ -178,14 +178,14 @@ function BlogPostPage() {
           )}
 
           {post.cover_image && (
-                          <SafeImage
-                            id={coverImageId}
-                            width={400}
-                            quality={60}
-                            options="height=225&fit=cover"
-                            mimeType={coverImageType}
-                            alt={`Cover image of ${post.post_id.title}`}
-                          />
+            <SafeImage
+              id={post.cover_image.id}
+              width={400}
+              quality={60}
+              options="height=225&fit=cover"
+              mimeType={post.cover_image.type}
+              alt={`Cover image of ${post.title}`}
+            />
           )}
         </header>
         

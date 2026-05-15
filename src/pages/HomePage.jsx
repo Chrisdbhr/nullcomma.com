@@ -167,8 +167,8 @@ function HomePage() {
     <div className="page-content fade-in">
 
       {/* SEO META TAGS for Home Page */}
-      <title>Christopher Ravailhe - Game Developer Portfolio & Blog</title>
-      <meta name="description" content="Portfolio of C# Developer and Unity Specialist Christopher Ravailhe, featuring games with the launcher and download links, projects source code, devlogs, and technical articles." />
+      <title>Null Comma — Game Developer Portfolio & Blog</title>
+      <meta name="description" content="Null Comma — Portfolio of C# Developer and Unity Specialist Christopher Ravailhe. Games, launcher downloads, source code, devlogs, and technical articles." />
 
       <div className="home-section">
         <BlogFeed />

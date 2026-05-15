@@ -2,31 +2,49 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import SafeImage from './SafeImage'
 import { baseURL } from '../utils'
 
-// Definições de tamanho para otimização do Directus
 const THUMBNAIL_WIDTH = 100;
 const THUMBNAIL_HEIGHT = 60;
 const MAIN_IMAGE_WIDTH = 1200;
 
-// Quality settings
 const THUMBNAIL_QUALITY = 40;
 const MAIN_IMAGE_QUALITY = 70;
 const LIGHTBOX_QUALITY = 85;
 
-// Auto-play interval in milliseconds
 const AUTO_PLAY_INTERVAL = 4000;
 
+/**
+ * Normalize screenshots from either Directus or Steam format.
+ * Directus: { directus_files_id: { id, type } }
+ * Steam: "https://cdn.steamstatic.com/..."
+ */
+function normalizeScreenshots(screenshots) {
+  if (!screenshots || !Array.isArray(screenshots)) return [];
+
+  return screenshots.map(ss => {
+    if (typeof ss === 'string') {
+      return { url: ss, type: 'image/jpeg', isExternal: true };
+    }
+    if (ss.directus_files_id) {
+      return {
+        id: ss.directus_files_id.id,
+        type: ss.directus_files_id.type,
+        isExternal: false,
+      };
+    }
+    return ss;
+  });
+}
+
 function ScreenshotGallery({ screenshots }) {
-  // Normalize screenshots structure
-  const normalizedScreenshots = screenshots.map(ss => ({
-    id: ss.directus_files_id.id,
-    type: ss.directus_files_id.type,
-  }));
+  const normalizedScreenshots = normalizeScreenshots(screenshots);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxDimensions, setLightboxDimensions] = useState({ width: 1200, height: 800 });
   const [progress, setProgress] = useState(0);
+  const [progressDirection, setProgressDirection] = useState('empty'); // 'empty' or 'fill'
+  const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const autoPlayRef = useRef(null);
   const progressRef = useRef(null);
@@ -38,10 +56,10 @@ function ScreenshotGallery({ screenshots }) {
   const resetTimer = useCallback(() => {
     if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
     if (progressRef.current) clearInterval(progressRef.current);
-    setProgress(0);
+    setProgress(progressDirection === 'empty' ? 100 : 0);
     startTimeRef.current = Date.now();
     setResetKey(k => k + 1);
-  }, []);
+  }, [progressDirection]);
 
   const advanceIndex = useCallback((setCurrentIndex) => {
     setCurrentIndex(prev => {
@@ -54,13 +72,17 @@ function ScreenshotGallery({ screenshots }) {
   const openLightbox = useCallback((index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
-    resetTimer();
+    setAutoPlayEnabled(false);
+    if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
+    setProgress(0);
     document.body.style.overflow = 'hidden';
-  }, [resetTimer]);
+  }, []);
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     setProgress(0);
+    setProgressDirection('empty');
     if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
     if (progressRef.current) clearInterval(progressRef.current);
     document.body.style.overflow = '';
@@ -113,21 +135,27 @@ function ScreenshotGallery({ screenshots }) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, [lightboxOpen]);
 
-  // Auto-play carousel - restarts on every resetKey change (user interaction)
+  // Auto-play carousel - stops when user clicks an image
   useEffect(() => {
-    if (normalizedScreenshots.length <= 1) return;
+    if (!autoPlayEnabled || normalizedScreenshots.length <= 1) return;
 
     startTimeRef.current = Date.now();
 
-    // Progress bar update every 50ms - empties from left to right (100% → 0%)
+    // Progress bar update every 50ms - alternates direction each cycle
     progressRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current;
-      const pct = Math.max(100 - (elapsed / AUTO_PLAY_INTERVAL) * 100, 0);
-      setProgress(pct);
+      const pct = (elapsed / AUTO_PLAY_INTERVAL) * 100;
+      if (progressDirection === 'empty') {
+        setProgress(Math.max(100 - pct, 0));
+      } else {
+        setProgress(Math.min(pct, 100));
+      }
     }, 50);
 
     // Advance to next image after interval
     autoPlayRef.current = setTimeout(() => {
+      // Toggle direction for next cycle
+      setProgressDirection(d => d === 'empty' ? 'fill' : 'empty');
       if (lightboxOpen) {
         setLightboxIndex(prev => (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length);
       } else {
@@ -141,7 +169,7 @@ function ScreenshotGallery({ screenshots }) {
       if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
-  }, [lightboxOpen, resetKey, normalizedScreenshots.length, resetTimer]);
+  }, [lightboxOpen, resetKey, normalizedScreenshots.length, resetTimer, autoPlayEnabled]);
 
   if (normalizedScreenshots.length === 0) {
     return <div className="screenshot-gallery-placeholder">No screenshots available.</div>
@@ -149,7 +177,10 @@ function ScreenshotGallery({ screenshots }) {
 
   const handleThumbnailClick = (index) => {
     setSelectedIndex(index);
-    resetTimer();
+    setAutoPlayEnabled(false);
+    if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
+    setProgress(0);
   };
 
   // Dot indicators component
@@ -165,6 +196,8 @@ function ScreenshotGallery({ screenshots }) {
       ))}
     </div>
   );
+
+  const hasMultipleImages = normalizedScreenshots.length > 1;
 
   return (
     <>
@@ -185,18 +218,18 @@ function ScreenshotGallery({ screenshots }) {
           {/* Progress bar for gallery */}
           <div className="gallery-progress-bar">
             <div
-              className="gallery-progress-fill"
+              className={`gallery-progress-fill${progressDirection === 'fill' ? ' fill' : ''}`}
               style={{ width: `${progress}%` }}
             />
           </div>
 
           {selectedScreenshot && (
             <SafeImage
-              id={selectedScreenshot.id}
-              width={MAIN_IMAGE_WIDTH}
-              quality={MAIN_IMAGE_QUALITY}
-              mimeType={selectedScreenshot.type}
               alt="Screenshot principal"
+              {...(selectedScreenshot.isExternal
+                ? { src: selectedScreenshot.url }
+                : { id: selectedScreenshot.id, width: MAIN_IMAGE_WIDTH, quality: MAIN_IMAGE_QUALITY, mimeType: selectedScreenshot.type }
+              )}
             />
           )}
           <div className="gallery-expand-icon">
@@ -207,31 +240,30 @@ function ScreenshotGallery({ screenshots }) {
         </div>
 
         {/* Dot indicators below main image */}
-        {normalizedScreenshots.length > 1 && (
+        {hasMultipleImages && (
           <DotIndicators
             currentIndex={selectedIndex}
             total={normalizedScreenshots.length}
-            onDotClick={(i) => { setSelectedIndex(i); resetTimer(); }}
+            onDotClick={(i) => { setSelectedIndex(i); setAutoPlayEnabled(false); if (autoPlayRef.current) clearTimeout(autoPlayRef.current); if (progressRef.current) clearInterval(progressRef.current); setProgress(0); }}
           />
         )}
 
-        {normalizedScreenshots.length > 1 && (
+        {hasMultipleImages && (
           <div className="gallery-thumbnails">
             {normalizedScreenshots.map((ss, index) => {
               const isSelected = index === selectedIndex;
 
               return (
                 <SafeImage
-                  key={ss.id}
-                  id={ss.id}
-                  width={THUMBNAIL_WIDTH}
-                  options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
-                  quality={THUMBNAIL_QUALITY}
-                  mimeType={ss.type}
+                  key={ss.url || ss.id}
                   alt={`Thumbnail ${index + 1}`}
                   className={isSelected ? 'active' : ''}
                   onClick={() => handleThumbnailClick(index)}
                   loading="lazy"
+                  {...(ss.isExternal
+                    ? { src: ss.url }
+                    : { id: ss.id, width: THUMBNAIL_WIDTH, options: `height=${THUMBNAIL_HEIGHT}&fit=cover`, quality: THUMBNAIL_QUALITY, mimeType: ss.type }
+                  )}
                 />
               );
             })}
@@ -241,14 +273,16 @@ function ScreenshotGallery({ screenshots }) {
 
       {/* Lightbox Overlay */}
       {lightboxOpen && (
-        <div className="gallery-lightbox" onClick={closeLightbox}>
+        <div className="gallery-lightbox" onClick={hasMultipleImages ? undefined : closeLightbox}>
           {/* Progress bar */}
-          <div className="lightbox-progress-bar">
-            <div
-              className="lightbox-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          {hasMultipleImages && (
+            <div className="lightbox-progress-bar">
+              <div
+                className={`lightbox-progress-fill${progressDirection === 'fill' ? ' fill' : ''}`}
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          )}
 
           {/* Close button */}
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
@@ -262,47 +296,54 @@ function ScreenshotGallery({ screenshots }) {
             {lightboxIndex + 1} / {normalizedScreenshots.length}
           </div>
 
-          {/* Previous button */}
-          <button
-            className="lightbox-nav lightbox-prev"
-            onClick={(e) => { e.stopPropagation(); advanceIndex(setLightboxIndex); }}
-            aria-label="Previous image"
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
+          {/* Left click zone - previous (only if multiple images) */}
+          {hasMultipleImages && (
+            <div
+              className="lightbox-click-zone lightbox-click-prev"
+              onClick={() => advanceIndex(setLightboxIndex)}
+              role="button"
+              aria-label="Previous image"
+            >
+              <div className="lightbox-nav lightbox-nav-left">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </div>
+            </div>
+          )}
 
-          {/* Next button */}
-          <button
-            className="lightbox-nav lightbox-next"
-            onClick={(e) => { e.stopPropagation(); advanceIndex(setLightboxIndex); }}
-            aria-label="Next image"
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
+          {/* Right click zone - next (only if multiple images) */}
+          {hasMultipleImages && (
+            <div
+              className="lightbox-click-zone lightbox-click-next"
+              onClick={() => advanceIndex(setLightboxIndex)}
+              role="button"
+              aria-label="Next image"
+            >
+              <div className="lightbox-nav lightbox-nav-right">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </div>
+            </div>
+          )}
 
-          {/* Main image - clicking closes lightbox */}
-          <div
-            className="lightbox-image-container"
-            onClick={closeLightbox}
-          >
+          {/* Main image - full resolution, click closes lightbox */}
+          <div className="lightbox-image-container" onClick={closeLightbox}>
             {lightboxImage && (
               <SafeImage
-                id={lightboxImage.id}
-                width={lightboxDimensions.width}
-                quality={LIGHTBOX_QUALITY}
-                mimeType={lightboxImage.type}
                 alt={`Screenshot ${lightboxIndex + 1}`}
+                {...(lightboxImage.isExternal
+                  ? { src: lightboxImage.url }
+                  : { id: lightboxImage.id, useOriginal: true, mimeType: lightboxImage.type }
+                )}
               />
             )}
           </div>
 
           {/* Dot indicators in lightbox */}
-          {normalizedScreenshots.length > 1 && (
-            <div className="lightbox-dots-wrapper" onClick={(e) => e.stopPropagation()}>
+          {hasMultipleImages && (
+            <div className="lightbox-dots-wrapper">
               <DotIndicators
                 currentIndex={lightboxIndex}
                 total={normalizedScreenshots.length}
@@ -312,21 +353,20 @@ function ScreenshotGallery({ screenshots }) {
           )}
 
           {/* Thumbnails */}
-          {normalizedScreenshots.length > 1 && (
-            <div className="lightbox-thumbnails" onClick={(e) => e.stopPropagation()}>
+          {hasMultipleImages && (
+            <div className="lightbox-thumbnails">
               {normalizedScreenshots.map((ss, index) => (
                 <div
-                  key={ss.id}
+                  key={ss.url || ss.id}
                   className={`lightbox-thumb ${index === lightboxIndex ? 'active' : ''}`}
-                  onClick={() => { setLightboxIndex(index); resetTimer(); }}
+                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(index); resetTimer(); }}
                 >
                   <SafeImage
-                    id={ss.id}
-                    width={THUMBNAIL_WIDTH}
-                    options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
-                    quality={THUMBNAIL_QUALITY}
-                    mimeType={ss.type}
                     alt={`Thumbnail ${index + 1}`}
+                    {...(ss.isExternal
+                      ? { src: ss.url }
+                      : { id: ss.id, width: THUMBNAIL_WIDTH, options: `height=${THUMBNAIL_HEIGHT}&fit=cover`, quality: THUMBNAIL_QUALITY, mimeType: ss.type }
+                    )}
                   />
                 </div>
               ))}

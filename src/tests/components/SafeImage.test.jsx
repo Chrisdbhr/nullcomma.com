@@ -195,4 +195,26 @@ describe('SafeImage Component', () => {
     // Should show placeholder
     expect(container.textContent).toContain('Image unavailable');
   });
+
+  it('should render an img with external URL when src prop is provided', () => {
+    render(
+      <SafeImage
+        src="https://cdn.steamstatic.com/steam/apps/12345/ss_abc123.jpg"
+        alt="Steam screenshot"
+      />
+    );
+
+    const img = document.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img.getAttribute('src')).toBe('https://cdn.steamstatic.com/steam/apps/12345/ss_abc123.jpg');
+    expect(img.getAttribute('class')).toContain('image-loading');
+
+    const picture = document.querySelector('picture');
+    expect(picture).toBeNull();
+  });
+
+  it('should return null when neither id nor src is provided', () => {
+    const { container } = render(<SafeImage alt="no source" />);
+    expect(container.firstChild).toBeNull();
+  });
 });

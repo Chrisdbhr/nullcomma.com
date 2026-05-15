@@ -412,12 +412,18 @@ img {
   top: 0;
 }
 
+.gallery-progress-fill.fill,
+.lightbox-progress-fill.fill {
+  right: auto;
+  left: 0;
+}
+
 /* Close button */
 .lightbox-close {
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 10;
+  z-index: 20;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -436,33 +442,8 @@ img {
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Auto-play toggle */
-.lightbox-autoplay {
-  position: absolute;
-  top: 16px;
-  right: 68px;
-  z-index: 10;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-}
-
-.lightbox-autoplay:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.lightbox-autoplay.active {
-  color: var(--color-purple);
-  border-color: var(--color-purple);
+.lightbox-close:active {
+  transform: scale(0.9);
 }
 
 /* Image counter */
@@ -474,15 +455,40 @@ img {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.875rem;
   font-family: 'Inter', sans-serif;
-  z-index: 10;
+  z-index: 20;
 }
 
-/* Navigation buttons */
-.lightbox-nav {
+/* Click zones - left and right halves of the screen */
+.lightbox-click-zone {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 15;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s ease;
+}
+
+.lightbox-click-zone:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.lightbox-click-prev {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 24px;
+}
+
+.lightbox-click-next {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 24px;
+}
+
+/* Navigation arrow buttons inside click zones */
+.lightbox-nav {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -492,21 +498,45 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
+  pointer-events: none;
+  transition: all 0.15s ease;
 }
 
-.lightbox-nav:hover {
-  background: rgba(255, 255, 255, 0.1);
+/* Flash animation on click */
+.lightbox-click-zone:active .lightbox-nav {
+  background: rgba(138, 43, 226, 0.4);
+  border-color: var(--color-purple);
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+/* Fade in nav arrows on hover */
+.lightbox-click-prev .lightbox-nav {
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lightbox-click-next .lightbox-nav {
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lightbox-click-zone:hover .lightbox-nav {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.7);
   border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-50%) scale(1.1);
 }
 
-.lightbox-prev {
-  left: 24px;
+/* Click flash animation */
+@keyframes navFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
-.lightbox-next {
+.lightbox-click-zone.clicked .lightbox-nav {
+  animation: navFlash 0.2s ease;
+}
   right: 24px;
 }
 
@@ -592,12 +622,12 @@ img {
     height: 40px;
   }
 
-  .lightbox-prev {
-    left: 12px;
+  .lightbox-click-prev {
+    padding-left: 12px;
   }
 
-  .lightbox-next {
-    right: 12px;
+  .lightbox-click-next {
+    padding-right: 12px;
   }
 
   .lightbox-thumbnails {
