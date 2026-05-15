@@ -26,17 +26,17 @@ function ScreenshotGallery({ screenshots }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxDimensions, setLightboxDimensions] = useState({ width: 1200, height: 800 });
-  const [autoPlay, setAutoPlay] = useState(true);
   const [progress, setProgress] = useState(0);
   const autoPlayRef = useRef(null);
   const progressRef = useRef(null);
   const startTimeRef = useRef(null);
 
   const selectedScreenshot = normalizedScreenshots[selectedIndex] || null;
+  const lightboxImage = normalizedScreenshots[lightboxIndex];
 
-  const navigate = useCallback((direction) => {
-    setSelectedIndex(prev => {
-      const next = (prev + direction + normalizedScreenshots.length) % normalizedScreenshots.length;
+  const advanceIndex = useCallback((setCurrentIndex) => {
+    setCurrentIndex(prev => {
+      const next = (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length;
       return next;
     });
     setProgress(0);
@@ -46,25 +46,16 @@ function ScreenshotGallery({ screenshots }) {
   const openLightbox = useCallback((index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
-    setAutoPlay(false);
     setProgress(0);
+    startTimeRef.current = Date.now();
     document.body.style.overflow = 'hidden';
   }, []);
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
-    setAutoPlay(false);
+    setProgress(0);
     document.body.style.overflow = '';
   }, []);
-
-  const navigateLightbox = useCallback((direction) => {
-    setLightboxIndex(prev => {
-      const next = (prev + direction + normalizedScreenshots.length) % normalizedScreenshots.length;
-      return next;
-    });
-    setProgress(0);
-    startTimeRef.current = Date.now();
-  }, [normalizedScreenshots.length]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -74,36 +65,31 @@ function ScreenshotGallery({ screenshots }) {
       switch (e.key) {
         case 'ArrowLeft':
           e.preventDefault();
-          navigateLightbox(-1);
+          advanceIndex(setLightboxIndex);
           break;
         case 'ArrowRight':
           e.preventDefault();
-          navigateLightbox(1);
+          advanceIndex(setLightboxIndex);
           break;
         case 'Escape':
           e.preventDefault();
           closeLightbox();
-          break;
-        case ' ':
-          e.preventDefault();
-          setAutoPlay(prev => !prev);
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, navigateLightbox, closeLightbox]);
+  }, [lightboxOpen, advanceIndex, closeLightbox]);
 
   // Calculate lightbox image dimensions based on viewport
   useEffect(() => {
     if (!lightboxOpen) return;
 
     const updateDimensions = () => {
-      const padding = 120; // space for arrows, thumbnails, margins
+      const padding = 120;
       const maxWidth = window.innerWidth - padding;
       const maxHeight = window.innerHeight - padding;
-      // 16:9 aspect ratio
       let width = maxWidth;
       let height = width * (9 / 16);
       if (height > maxHeight) {
@@ -118,13 +104,9 @@ function ScreenshotGallery({ screenshots }) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, [lightboxOpen]);
 
-  // Auto-play for lightbox
+  // Always-on auto-play carousel
   useEffect(() => {
-    if (!lightboxOpen || !autoPlay) {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-      if (progressRef.current) clearInterval(progressRef.current);
-      return;
-    }
+    if (normalizedScreenshots.length <= 1) return;
 
     startTimeRef.current = Date.now();
 
@@ -135,21 +117,20 @@ function ScreenshotGallery({ screenshots }) {
       setProgress(pct);
     }, 50);
 
-    // Navigate to next image
+    // Advance to next image
     autoPlayRef.current = setInterval(() => {
-      setLightboxIndex(prev => {
-        const next = (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length;
-        return next;
-      });
-      setProgress(0);
-      startTimeRef.current = Date.now();
+      if (lightboxOpen) {
+        advanceIndex(setLightboxIndex);
+      } else {
+        advanceIndex(setSelectedIndex);
+      }
     }, AUTO_PLAY_INTERVAL);
 
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
-  }, [lightboxOpen, autoPlay, normalizedScreenshots.length]);
+  }, [lightboxOpen, advanceIndex, normalizedScreenshots.length]);
 
   if (normalizedScreenshots.length === 0) {
     return <div className="screenshot-gallery-placeholder">No screenshots available.</div>
@@ -157,9 +138,23 @@ function ScreenshotGallery({ screenshots }) {
 
   const handleThumbnailClick = (index) => {
     setSelectedIndex(index);
+    setProgress(0);
+    startTimeRef.current = Date.now();
   };
 
-  const lightboxImage = normalizedScreenshots[lightboxIndex];
+  // Dot indicators component
+  const DotIndicators = ({ currentIndex, total, onDotClick }) => (
+    <div className="gallery-dots">
+      {Array.from({ length: total }).map((_, i) => (
+        <button
+          key={i}
+          className={`gallery-dot ${i === currentIndex ? 'active' : ''}`}
+          onClick={(e) => { e.stopPropagation(); onDotClick(i); }}
+          aria-label={`Go to image ${i + 1}`}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <>
@@ -177,6 +172,14 @@ function ScreenshotGallery({ screenshots }) {
           }}
           title="Click to expand"
         >
+          {/* Progress bar for gallery */}
+          <div className="gallery-progress-bar">
+            <div
+              className="gallery-progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
           {selectedScreenshot && (
             <SafeImage
               id={selectedScreenshot.id}
@@ -192,6 +195,16 @@ function ScreenshotGallery({ screenshots }) {
             </svg>
           </div>
         </div>
+
+        {/* Dot indicators below main image */}
+        {normalizedScreenshots.length > 1 && (
+          <DotIndicators
+            currentIndex={selectedIndex}
+            total={normalizedScreenshots.length}
+            onDotClick={(i) => { setSelectedIndex(i); setProgress(0); startTimeRef.current = Date.now(); }}
+          />
+        )}
+
         {normalizedScreenshots.length > 1 && (
           <div className="gallery-thumbnails">
             {normalizedScreenshots.map((ss, index) => {
@@ -220,38 +233,18 @@ function ScreenshotGallery({ screenshots }) {
       {lightboxOpen && (
         <div className="gallery-lightbox" onClick={closeLightbox}>
           {/* Progress bar */}
-          {autoPlay && (
-            <div className="lightbox-progress-bar">
-              <div
-                className="lightbox-progress-fill"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          )}
+          <div className="lightbox-progress-bar">
+            <div
+              className="lightbox-progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
 
           {/* Close button */}
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
-          </button>
-
-          {/* Auto-play toggle */}
-          <button
-            className={`lightbox-autoplay ${autoPlay ? 'active' : ''}`}
-            onClick={(e) => { e.stopPropagation(); setAutoPlay(prev => !prev); }}
-            aria-label={autoPlay ? 'Pause autoplay' : 'Start autoplay'}
-          >
-            {autoPlay ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="6" y="4" width="4" height="16" />
-                <rect x="14" y="4" width="4" height="16" />
-              </svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            )}
           </button>
 
           {/* Image counter */}
@@ -262,7 +255,7 @@ function ScreenshotGallery({ screenshots }) {
           {/* Previous button */}
           <button
             className="lightbox-nav lightbox-prev"
-            onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
+            onClick={(e) => { e.stopPropagation(); advanceIndex(setLightboxIndex); }}
             aria-label="Previous image"
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -273,7 +266,7 @@ function ScreenshotGallery({ screenshots }) {
           {/* Next button */}
           <button
             className="lightbox-nav lightbox-next"
-            onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
+            onClick={(e) => { e.stopPropagation(); advanceIndex(setLightboxIndex); }}
             aria-label="Next image"
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -281,10 +274,10 @@ function ScreenshotGallery({ screenshots }) {
             </svg>
           </button>
 
-          {/* Main image */}
+          {/* Main image - clicking closes lightbox */}
           <div
             className="lightbox-image-container"
-            onClick={(e) => e.stopPropagation()}
+            onClick={closeLightbox}
           >
             {lightboxImage && (
               <SafeImage
@@ -296,6 +289,17 @@ function ScreenshotGallery({ screenshots }) {
               />
             )}
           </div>
+
+          {/* Dot indicators in lightbox */}
+          {normalizedScreenshots.length > 1 && (
+            <div className="lightbox-dots-wrapper" onClick={(e) => e.stopPropagation()}>
+              <DotIndicators
+                currentIndex={lightboxIndex}
+                total={normalizedScreenshots.length}
+                onDotClick={(i) => { setLightboxIndex(i); setProgress(0); startTimeRef.current = Date.now(); }}
+              />
+            </div>
+          )}
 
           {/* Thumbnails */}
           {normalizedScreenshots.length > 1 && (

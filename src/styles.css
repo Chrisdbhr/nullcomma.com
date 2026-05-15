@@ -389,17 +389,19 @@ img {
   to { opacity: 1; }
 }
 
-/* Progress bar */
+/* Progress bar - 2px thick */
+.gallery-progress-bar,
 .lightbox-progress-bar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
   z-index: 10;
 }
 
+.gallery-progress-fill,
 .lightbox-progress-fill {
   height: 100%;
   background: var(--color-purple);
@@ -608,6 +610,105 @@ img {
     max-width: calc(100vw - 80px);
     max-height: calc(100vh - 140px);
   }
+}
+
+/* --- Dot Indicators --- */
+.gallery-dots,
+.lightbox-dots-wrapper .gallery-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.gallery-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gallery-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.gallery-dot.active {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--color-purple);
+}
+
+/* Lightbox dots wrapper */
+.lightbox-dots-wrapper {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* --- Loading Spinner for ALL Images --- */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.image-loading {
+  position: relative;
+  display: block;
+}
+
+/* Spinner overlay on loading images */
+.image-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--color-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Hide spinner once image loads */
+.image-loading[src]::after {
+  display: none;
+}
+
+/* Skeleton background while loading */
+.image-loading {
+  background: #1a1a1a;
+}
+
+.image-loading[src] {
+  background: transparent;
+}
+
+/* Gallery thumbnails spinner size */
+.gallery-thumbnails .image-loading::after {
+  width: 16px;
+  height: 16px;
+  border-width: 1.5px;
+}
+
+/* Blog post cover image spinner */
+.blog-post-cover-image.image-loading {
+  min-height: 200px;
+  border-radius: 8px;
+}
+
+/* Lightbox image spinner */
+.lightbox-image-container .image-loading::after {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
 }
 
 /* --- Layout Principal (App.jsx) --- */
@@ -1086,7 +1187,6 @@ img {
   width: 100%;
   border-radius: var(--border-radius);
   overflow: hidden; 
-  background-color: #000;
 }
 .steam-widget-container iframe {
   display: block;
@@ -1113,52 +1213,6 @@ img {
   font-size: 0.625rem;
   flex-shrink: 0;
   border-radius: 4px;
-}
-
-/* --- Skeleton Shimmer Loading Animation --- */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.image-loading {
-  background: linear-gradient(
-    90deg,
-    #1a1a1a 25%,
-    #2a2a2a 50%,
-    #1a1a1a 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.image-loading[src] {
-  opacity: 0;
-}
-
-/* Ensure images in picture elements also get the loading state */
-picture .image-loading {
-  display: block;
-}
-
-/* Gallery thumbnails skeleton should match thumbnail dimensions */
-.gallery-thumbnails .image-loading {
-  width: 100px;
-  height: 60px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-/* Blog post cover image skeleton */
-.blog-post-cover-image.image-loading {
-  min-height: 200px;
-  border-radius: 8px;
 }
 
 /* --- Estilização do Scrollbar da Galeria --- */
