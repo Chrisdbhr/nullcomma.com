@@ -1,33 +1,59 @@
-import React, { useState } from 'react'
-import { getAssetUrl, getFallbackUrl } from '../utils'
+import React from 'react'
+import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
 
 /**
- * Image component that automatically falls back to JPG if the native format (AVIF/WebP) fails to load.
- * This ensures compatibility with browsers that don't support modern image formats.
+ * Image component that uses <picture> element to provide format fallback.
+ * The browser picks the first <source> it supports, ensuring compatibility
+ * with AVIF/WebP-native servers while gracefully falling back to JPG.
  */
 function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }) {
-  const [src, setSrc] = useState(() => getAssetUrl(id, width, options, mimeType))
-  const [error, setError] = useState(false)
-
-  if (!id || error) {
+  if (!id) {
     return null
   }
 
-  const handleError = () => {
-    const fallback = getFallbackUrl(id, width, options)
-    if (fallback && fallback !== src) {
-      setSrc(fallback)
-    } else {
-      setError(true)
-    }
+  // GIFs: serve directly without format negotiation
+  if (mimeType && mimeType.toLowerCase() === 'image/gif') {
+    return (
+      <img
+        src={`${baseURL}/assets/${id}`}
+        alt={alt}
+        className={className}
+        {...imgProps}
+      />
+    )
   }
 
+  const primarySrc = getAssetUrl(id, width, options, mimeType)
+  const fallbackSrc = getFallbackUrl(id, width, options)
+
+  // For modern formats (AVIF, WebP), use <picture> with type hints so the browser
+  // can skip formats it doesn't support and fall back to JPG automatically.
+  const isModernFormat = mimeType && (
+    mimeType.toLowerCase().includes('avif') ||
+    mimeType.toLowerCase().includes('webp')
+  )
+
+  if (isModernFormat) {
+    return (
+      <picture>
+        <source srcSet={primarySrc} type={mimeType} />
+        <source srcSet={fallbackSrc} type="image/jpeg" />
+        <img
+          src={fallbackSrc}
+          alt={alt}
+          className={className}
+          {...imgProps}
+        />
+      </picture>
+    )
+  }
+
+  // For PNG, JPG, or unknown formats, use direct <img>
   return (
     <img
-      src={src}
+      src={primarySrc}
       alt={alt}
       className={className}
-      onError={handleError}
       {...imgProps}
     />
   )
