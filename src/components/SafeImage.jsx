@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { getAssetUrl, getFallbackUrl } from '../utils'
 
 /**
@@ -7,10 +7,25 @@ import { getAssetUrl, getFallbackUrl } from '../utils'
  * with AVIF/WebP-native servers while gracefully falling back to JPG.
  *
  * GIFs are converted to animated WebP by the server for better compression.
+ * When both primary and fallback sources fail (e.g., 403), shows a placeholder.
  */
 function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }) {
+  const [failed, setFailed] = useState(false)
+
   if (!id) {
     return null
+  }
+
+  const handleError = () => {
+    setFailed(true)
+  }
+
+  if (failed) {
+    return (
+      <div className="safe-image-fallback" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a', color: '#666', fontSize: '0.875rem', width: '100%', height: '100%', minHeight: '120px' }}>
+        Image unavailable
+      </div>
+    )
   }
 
   const primarySrc = getAssetUrl(id, width, options, mimeType)
@@ -34,6 +49,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }
           src={fallbackSrc}
           alt={alt}
           className={className}
+          onError={handleError}
           {...imgProps}
         />
       </picture>
@@ -46,6 +62,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }
       src={primarySrc}
       alt={alt}
       className={className}
+      onError={handleError}
       {...imgProps}
     />
   )
