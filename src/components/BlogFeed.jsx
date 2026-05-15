@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl, baseURL } from '../utils'
+import SafeImage from './SafeImage'
 
 const getFilter = () => {
   return import.meta.env.DEV
@@ -23,16 +24,12 @@ function BlogFeed() {
         const data = await response.json();
 
         const feedPosts = data.data.map((item) => {
-          let imageUrl = null;
-          if (item.cover_image) {
-            imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover', item.cover_image.type);
-          }
-
           return {
             title: item.title || "No Title",
             link: `/blog/${item.id}`,
             pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
-            imageUrl: imageUrl,
+            coverImageId: item.cover_image?.id || null,
+            coverImageType: item.cover_image?.type || '',
           };
         });
         setPosts(feedPosts);
@@ -59,8 +56,14 @@ function BlogFeed() {
             className="blog-post-card"
           >
             <div className="blog-post-image-container">
-              {post.imageUrl ? (
-                <img src={post.imageUrl} alt={`Cover image of ${post.title}`} />
+              {post.coverImageId ? (
+                <SafeImage
+                  id={post.coverImageId}
+                  width={400}
+                  options="height=225&fit=cover"
+                  mimeType={post.coverImageType}
+                  alt={`Cover image of ${post.title}`}
+                />
               ) : (
                 <div className="blog-post-image-placeholder"></div>
               )}

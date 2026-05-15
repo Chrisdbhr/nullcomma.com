@@ -6,6 +6,7 @@ import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import SafeImage from '../components/SafeImage';
 
 // Helper function to find the preferred English translation
 const getPreferredTranslation = (translations) => {
@@ -96,7 +97,7 @@ function GameDetailPage() {
 
   const description = translation.synopsis
     ? translation.synopsis.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : `${title} by ChrisJogos. Find out more about this game/project.`;
+    : `${title} — Null Comma. Find out more about this game/project.`;
 
   const getEmbedUrl = (url) => {
     if (!url) return null;
@@ -119,7 +120,7 @@ function GameDetailPage() {
   return (
     <div className="page-content game-detail-page fade-in">
       {/* SEO META TAGS */}
-      <title>{`${title} - ChrisJogos`}</title>
+      <title>{`${title} - Null Comma`}</title>
       <meta name="description" content={description} />
 
       {/* Open Graph Tags */}
@@ -176,9 +177,8 @@ function GameDetailPage() {
               <h3>Related Articles</h3>
               <div className="blog-post-grid">
                 {relatedPosts.map((post) => {
-                  const postImageUrl = post.post_id.cover_image
-                    ? getAssetUrl(post.post_id.cover_image.id, 400, 'height=225&fit=cover', post.post_id.cover_image.type)
-                    : null;
+                  const coverImageId = post.post_id.cover_image?.id;
+                  const coverImageType = post.post_id.cover_image?.type;
 
                   return (
                     <Link
@@ -187,8 +187,14 @@ function GameDetailPage() {
                       className="blog-post-card"
                     >
                       <div className="blog-post-image-container">
-                        {postImageUrl ? (
-                          <img src={postImageUrl} alt={`Cover image of ${post.post_id.title}`} />
+                        {coverImageId ? (
+                          <SafeImage
+                            id={coverImageId}
+                            width={400}
+                            options="height=225&fit=cover"
+                            mimeType={coverImageType}
+                            alt={`Cover image of ${post.post_id.title}`}
+                          />
                         ) : (
                           <div className="blog-post-image-placeholder"></div>
                         )}

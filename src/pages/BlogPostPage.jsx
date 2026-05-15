@@ -9,6 +9,7 @@ import { getAssetUrl, baseURL, getHashedColor } from '../utils'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ProjectCard from '../components/ProjectCard'
+import SafeImage from '../components/SafeImage'
 
 // Component for rendering code blocks with syntax highlighting
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
@@ -83,7 +84,7 @@ function BlogPostPage() {
   if (loading) {
     return (
       <>
-        <title>Loading Post... - ChrisJogos</title>
+        <title>Loading Post... - Null Comma</title>
         <p>Loading post...</p>
       </>
     );
@@ -92,7 +93,7 @@ function BlogPostPage() {
   if (!post) {
     return (
       <>
-        <title>Post Not Found - ChrisJogos</title>
+        <title>Post Not Found - Null Comma</title>
         <p>Post not found.</p>
       </>
     );
@@ -106,7 +107,7 @@ function BlogPostPage() {
 
   const description = post.content
     ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : "Read this post on ChrisJogos blog.";
+    : "Read this post on Null Comma.";
 
   // Extract and filter related projects based on environment status requirements
   const relatedProjects = (post.related_projects || [])
@@ -126,7 +127,7 @@ function BlogPostPage() {
   return (
     <div className="blog-post-layout">
       
-      <title>{`${post.title} - ChrisJogos`}</title>
+      <title>{`${post.title} - Null Comma`}</title>
       <meta name="description" content={description} />
       
       {/* Open Graph (para Discord, Facebook, etc.) */}
@@ -176,10 +177,12 @@ function BlogPostPage() {
             </div>
           )}
 
-          {imageUrl && (
-            <img 
-              src={imageUrl} 
-              alt={`Cover image of ${post.title}`} 
+          {post.cover_image && (
+            <SafeImage
+              id={post.cover_image.id}
+              width={1000}
+              mimeType={post.cover_image.type}
+              alt={`Cover image of ${post.title}`}
               className="blog-post-cover-image"
             />
           )}

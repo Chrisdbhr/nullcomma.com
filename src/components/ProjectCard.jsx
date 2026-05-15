@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl, getHashedColor } from '../utils'
 import { normalizeEngineName } from '../utils/textUtils';
+import SafeImage from './SafeImage';
 
 // Helper function to find the preferred English translation
 const getPreferredTranslation = (translations) => {
@@ -20,9 +21,7 @@ function ProjectCard({ project }) {
   const title = translation.title || 'Title Not Available'; 
   
   const cardImageId = project.card_image?.id;
-  const cardImageType = project.card_image?.type;
-  
-  const imageUrl = getAssetUrl(cardImageId, undefined, '', cardImageType) 
+  const cardImageType = project.card_image?.type; 
 
   let firstLineSynopsis = '';
   if (translation.synopsis) {
@@ -43,9 +42,10 @@ function ProjectCard({ project }) {
   return (
     <Link to={`/project/${project.id}`} className="game-card">
       <div className="game-card-image-container">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
+        {cardImageId ? (
+          <SafeImage
+            id={cardImageId}
+            mimeType={cardImageType}
             alt={`Cover image of ${title}`}
             className="game-card-image"
           />

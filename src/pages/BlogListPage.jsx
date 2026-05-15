@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
 import { getAssetUrl, baseURL } from '../utils'
+import SafeImage from '../components/SafeImage'
 
 // 2. Exporte o loader
 export async function loader() {
@@ -17,17 +18,12 @@ export async function loader() {
     const data = await response.json();
 
     const allPosts = data.data.map((item) => {
-      let imageUrl = null;
-      if (item.cover_image) {
-        // Usando getAssetUrl para otimizar cards do blog (400px de largura, 16:9)
-        imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover', item.cover_image.type);
-      }
-
       return {
         title: item.title || "No Title",
         link: `/blog/${item.id}`,
         pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
-        imageUrl: imageUrl,
+        coverImageId: item.cover_image?.id || null,
+        coverImageType: item.cover_image?.type || '',
       };
     });
     return allPosts;
@@ -42,10 +38,10 @@ function BlogListPage() {
 
   return (
     <>
-      <title>Blog - ChrisJogos</title>
-      <meta name="description" content="Articles and devlogs about my game projects." />
-      <meta property="og:title" content="Blog - ChrisJogos" />
-      <meta property="og:description" content="Articles and devlogs about my game projects." />
+      <title>Blog - Null Comma</title>
+      <meta name="description" content="Articles and devlogs by Christopher Ravailhe on Null Comma. Game development, Unity, C#, and more." />
+      <meta property="og:title" content="Blog - Null Comma" />
+      <meta property="og:description" content="Articles and devlogs by Christopher Ravailhe on Null Comma. Game development, Unity, C#, and more." />
 
       <div className="blog-list-page">
         <h2>Blog</h2>
@@ -59,8 +55,14 @@ function BlogListPage() {
               className="blog-post-card"
             >
               <div className="blog-post-image-container">
-                {post.imageUrl ? (
-                  <img src={post.imageUrl} alt={`Cover image of ${post.title}`} />
+                {post.coverImageId ? (
+                  <SafeImage
+                    id={post.coverImageId}
+                    width={400}
+                    options="height=225&fit=cover"
+                    mimeType={post.coverImageType}
+                    alt={`Cover image of ${post.title}`}
+                  />
                 ) : (
                   <div className="blog-post-image-placeholder"></div>
                 )}

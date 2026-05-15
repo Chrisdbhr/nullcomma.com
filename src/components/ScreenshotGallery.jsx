@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { getAssetUrl } from '../utils'
+import SafeImage from './SafeImage'
 
 // Definições de tamanho para otimização do Directus
 const THUMBNAIL_WIDTH = 200;
 const THUMBNAIL_HEIGHT = 120;
 const MAIN_IMAGE_WIDTH = 1200;
-
-// O getAssetUrl aplica redimensionamento por padrão.
-// O servidor retorna a imagem no formato original (AVIF, WebP, PNG, JPG, etc.).
 
 function ScreenshotGallery({ screenshots }) {
   // Normalize screenshots structure to make life easier:
@@ -16,53 +13,48 @@ function ScreenshotGallery({ screenshots }) {
     type: ss.directus_files_id.type,
   }));
 
-  // Inicializa a imagem principal com a URL otimizada de alta resolução
-  const [selectedImage, setSelectedImage] = useState(
+  // Track selected screenshot by ID and type instead of URL
+  const [selectedScreenshot, setSelectedScreenshot] = useState(
     normalizedScreenshots.length > 0 
-      ? getAssetUrl(normalizedScreenshots[0].id, MAIN_IMAGE_WIDTH, '', normalizedScreenshots[0].type) 
+      ? { id: normalizedScreenshots[0].id, type: normalizedScreenshots[0].type }
       : null
   );
 
   if (normalizedScreenshots.length === 0) {
     return <div className="screenshot-gallery-placeholder">No screenshots available.</div>
   }
-  
-  // O arquivo ID do screenshot atualmente selecionado
-  const selectedFileId = selectedImage 
-    ? normalizedScreenshots.find(ss => selectedImage.includes(ss.id))?.id
-    : null;
 
-  const handleThumbnailClick = (fileId, fileType) => {
-    // Ao clicar, define a URL otimizada para visualização principal
-    setSelectedImage(getAssetUrl(fileId, MAIN_IMAGE_WIDTH, '', fileType));
+  const handleThumbnailClick = (ss) => {
+    setSelectedScreenshot({ id: ss.id, type: ss.type });
   };
 
   return (
     <div className="screenshot-gallery">
       <div className="gallery-main-image">
-        {selectedImage && <img src={selectedImage} alt="Screenshot principal" />}
+        {selectedScreenshot && (
+          <SafeImage
+            id={selectedScreenshot.id}
+            width={MAIN_IMAGE_WIDTH}
+            mimeType={selectedScreenshot.type}
+            alt="Screenshot principal"
+          />
+        )}
       </div>
       <div className="gallery-thumbnails">
         {normalizedScreenshots.map((ss) => {
-          // Geração da URL da thumbnail otimizada, usando parâmetros de opção para fit/height
-          const thumbnailUrl = getAssetUrl(
-            ss.id, 
-            THUMBNAIL_WIDTH, 
-            `height=${THUMBNAIL_HEIGHT}&fit=cover`,
-            ss.type // Passa o tipo aqui
-          );
-          
-          // Comparamos o ID do arquivo para saber qual thumbnail está ativa
-          const isSelected = ss.id === selectedFileId;
-          
+          const isSelected = ss.id === selectedScreenshot?.id;
+
           return (
-            <img
+            <SafeImage
               key={ss.id}
-              src={thumbnailUrl}
+              id={ss.id}
+              width={THUMBNAIL_WIDTH}
+              options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
+              mimeType={ss.type}
               alt="Thumbnail"
               className={isSelected ? 'active' : ''}
-              onClick={() => handleThumbnailClick(ss.id, ss.type)} // Passa ID e Type
-              loading="lazy" // Otimização de carregamento
+              onClick={() => handleThumbnailClick(ss)}
+              loading="lazy"
             />
           );
         })}

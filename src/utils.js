@@ -38,6 +38,24 @@ export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeT
 };
 
 /**
+ * Returns a fallback URL (JPG) for browsers that can't render AVIF/WebP.
+ * @param {string} id Asset ID.
+ * @param {number} [width=800] Maximum width.
+ * @param {string} [options=''] Additional parameters.
+ * @returns {string | null} Fallback JPG URL.
+ */
+export const getFallbackUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '') => {
+  if (!id) return null;
+
+  let params = `?format=jpg&width=${width}`;
+  if (options) {
+    params += `&${options}`;
+  }
+
+  return `${baseURL}/assets/${id}${params}`;
+};
+
+/**
  * Formats a date string to a readable format.
  * @param {string} dateString Date string to format.
  * @returns {string} Formatted date.
