@@ -34,7 +34,8 @@ describe('SafeImage Component', () => {
     const img = document.querySelector('img');
     expect(img).not.toBeNull();
     expect(img.getAttribute('alt')).toBe('Test image');
-    expect(img.getAttribute('class')).toBe('test-class');
+    expect(img.getAttribute('class')).toContain('test-class');
+    expect(img.getAttribute('class')).toContain('image-loading');
     // img src points to original URL as last-resort fallback
     expect(img.getAttribute('src')).toContain('test-avif-id');
     expect(img.getAttribute('src')).not.toContain('width=');

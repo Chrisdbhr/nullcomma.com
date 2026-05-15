@@ -846,6 +846,52 @@ img {
   border-radius: 4px;
 }
 
+/* --- Skeleton Shimmer Loading Animation --- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.image-loading {
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 25%,
+    #2a2a2a 50%,
+    #1a1a1a 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.image-loading[src] {
+  opacity: 0;
+}
+
+/* Ensure images in picture elements also get the loading state */
+picture .image-loading {
+  display: block;
+}
+
+/* Gallery thumbnails skeleton should match thumbnail dimensions */
+.gallery-thumbnails .image-loading {
+  width: 100px;
+  height: 60px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Blog post cover image skeleton */
+.blog-post-cover-image.image-loading {
+  min-height: 200px;
+  border-radius: 8px;
+}
+
 /* --- Estilização do Scrollbar da Galeria --- */
 .gallery-thumbnails::-webkit-scrollbar {
   height: 8px;

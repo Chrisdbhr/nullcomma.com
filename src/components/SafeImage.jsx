@@ -3,6 +3,7 @@ import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
 
 /**
  * Image component that uses <picture> element to provide format fallback.
+ * Shows a skeleton shimmer placeholder while loading.
  * The browser picks the first <source> it supports, ensuring compatibility
  * with AVIF/WebP-native servers while gracefully falling back to JPG.
  *
@@ -10,13 +11,19 @@ import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
  * When both primary and fallback sources fail (e.g., 403, 500), shows a placeholder.
  */
 function SafeImage({ id, width, options, mimeType, alt, className, quality, ...imgProps }) {
+  const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
 
   if (!id) {
     return null
   }
 
+  const handleLoad = () => {
+    setLoading(false)
+  }
+
   const handleError = () => {
+    setLoading(false)
     setFailed(true)
   }
 
@@ -31,6 +38,14 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
   const primarySrc = getAssetUrl(id, width, options, mimeType, quality)
   const fallbackSrc = getFallbackUrl(id, width, options)
   const originalSrc = `${baseURL}/assets/${id}`
+
+  const commonImgProps = {
+    alt,
+    className: `${className || ''} ${loading ? 'image-loading' : ''}`.trim(),
+    onLoad: handleLoad,
+    onError: handleError,
+    ...imgProps,
+  }
 
   // For modern formats (AVIF, WebP, GIF→WebP), use <picture> with type hints
   // so the browser can skip formats it doesn't support and fall back to JPG.
@@ -49,10 +64,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
         <source srcSet={originalSrc} type={sourceType} />
         <img
           src={originalSrc}
-          alt={alt}
-          className={className}
-          onError={handleError}
-          {...imgProps}
+          {...commonImgProps}
         />
       </picture>
     )
@@ -62,10 +74,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
   return (
     <img
       src={primarySrc}
-      alt={alt}
-      className={className}
-      onError={handleError}
-      {...imgProps}
+      {...commonImgProps}
     />
   )
 }
