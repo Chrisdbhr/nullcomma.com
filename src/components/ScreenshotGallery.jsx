@@ -45,26 +45,28 @@ function ScreenshotGallery({ screenshots }) {
           />
         )}
       </div>
-      <div className="gallery-thumbnails">
-        {normalizedScreenshots.map((ss) => {
-          const isSelected = ss.id === selectedScreenshot?.id;
+      {normalizedScreenshots.length > 1 && (
+        <div className="gallery-thumbnails">
+          {normalizedScreenshots.map((ss) => {
+            const isSelected = ss.id === selectedScreenshot?.id;
 
-          return (
-            <SafeImage
-              key={ss.id}
-              id={ss.id}
-              width={THUMBNAIL_WIDTH}
-              options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
-              quality={THUMBNAIL_QUALITY}
-              mimeType={ss.type}
-              alt="Thumbnail"
-              className={isSelected ? 'active' : ''}
-              onClick={() => handleThumbnailClick(ss)}
-              loading="lazy"
-            />
-          );
-        })}
-      </div>
+            return (
+              <SafeImage
+                key={ss.id}
+                id={ss.id}
+                width={THUMBNAIL_WIDTH}
+                options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
+                quality={THUMBNAIL_QUALITY}
+                mimeType={ss.type}
+                alt="Thumbnail"
+                className={isSelected ? 'active' : ''}
+                onClick={() => handleThumbnailClick(ss)}
+                loading="lazy"
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   )
 }

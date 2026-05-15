@@ -161,6 +161,18 @@ function GameDetailPage() {
             <ScreenshotGallery screenshots={project.screenshots} />
           )}
 
+          {project.steam_id && (
+            <div className="steam-widget-container">
+              <iframe
+                src={`https://store.steampowered.com/widget/${project.steam_id}/`}
+                frameBorder="0"
+                width="100%"
+                height="190"
+                title="Steam Widget"
+              ></iframe>
+            </div>
+          )}
+
           <div className="game-synopsis">
             <ReactMarkdown
               components={{
@@ -214,22 +226,11 @@ function GameDetailPage() {
 
         <aside className="game-detail-sidebar">
 
-          {project.steam_id ? (
-            // 1. Se tem Steam ID, mostra o widget
-            <div className="steam-widget-container">
-              <iframe
-                src={`https://store.steampowered.com/widget/${project.steam_id}/`}
-                frameBorder="0"
-                width="100%"
-                height="190"
-                title="Steam Widget"
-              ></iframe>
-            </div>
-          ) : project.executable_path ? (
-            // 2. Senão, se tem executável, mostra o botão de download
+          {project.executable_path ? (
+            // 1. Se tem executável, mostra o botão de download
             <DownloadButton project={project} />
           ) : (
-            // 3. Senão, checamos as outras opções:
+            // 2. Senão, checamos as outras opções:
             //    Se NÃO tem web, NEM Google, NEM Apple, E NEM GITHUB...
             (!project.web_version_url && !project.google_play_url && !project.app_store_url && !project.github_url) ? (
               // ...então o jogo está realmente "Em breve"
