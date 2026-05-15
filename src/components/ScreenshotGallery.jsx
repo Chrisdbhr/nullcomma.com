@@ -6,6 +6,10 @@ const THUMBNAIL_WIDTH = 200;
 const THUMBNAIL_HEIGHT = 120;
 const MAIN_IMAGE_WIDTH = 1200;
 
+// Quality settings: lower for thumbnails (smaller files), higher for main image (better quality)
+const THUMBNAIL_QUALITY = 50;
+const MAIN_IMAGE_QUALITY = 70;
+
 function ScreenshotGallery({ screenshots }) {
   // Normalize screenshots structure to make life easier:
   const normalizedScreenshots = screenshots.map(ss => ({
@@ -35,6 +39,7 @@ function ScreenshotGallery({ screenshots }) {
           <SafeImage
             id={selectedScreenshot.id}
             width={MAIN_IMAGE_WIDTH}
+            quality={MAIN_IMAGE_QUALITY}
             mimeType={selectedScreenshot.type}
             alt="Screenshot principal"
           />
@@ -50,6 +55,7 @@ function ScreenshotGallery({ screenshots }) {
               id={ss.id}
               width={THUMBNAIL_WIDTH}
               options={`height=${THUMBNAIL_HEIGHT}&fit=cover`}
+              quality={THUMBNAIL_QUALITY}
               mimeType={ss.type}
               alt="Thumbnail"
               className={isSelected ? 'active' : ''}

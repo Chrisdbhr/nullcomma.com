@@ -9,7 +9,7 @@ import { getAssetUrl, getFallbackUrl } from '../utils'
  * GIFs are converted to animated WebP by the server for better compression.
  * When both primary and fallback sources fail (e.g., 403), shows a placeholder.
  */
-function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }) {
+function SafeImage({ id, width, options, mimeType, alt, className, quality, ...imgProps }) {
   const [failed, setFailed] = useState(false)
 
   if (!id) {
@@ -28,7 +28,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, ...imgProps }
     )
   }
 
-  const primarySrc = getAssetUrl(id, width, options, mimeType)
+  const primarySrc = getAssetUrl(id, width, options, mimeType, quality)
   const fallbackSrc = getFallbackUrl(id, width, options)
 
   // For modern formats (AVIF, WebP, GIF→WebP), use <picture> with type hints

@@ -13,21 +13,25 @@ export const fieldsQuery = `${baseQuery}&${filter}`;
 const DEFAULT_IMAGE_WIDTH = 800;
 
 /**
- * Returns an optimized asset URL from Directus, applying width limit by default.
+ * Returns an optimized asset URL from Directus, applying width and quality limits.
  * The server returns the image in its native format (AVIF, WebP, PNG, JPG, etc.).
  * GIFs are converted to animated WebP for better compression.
  * @param {string} id Asset ID.
  * @param {number} [width=800] Maximum width.
  * @param {string} [options=''] Additional parameters (e.g., 'height=120&fit=cover').
  * @param {string} [mimeType=''] The file MIME type (e.g., 'image/gif').
+ * @param {number} [quality] Compression quality (1-100). Lower = smaller file.
  * @returns {string | null} Optimized URL.
  */
-export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeType = '') => {
+export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeType = '', quality = undefined) => {
   if (!id) return null;
 
   // If it's a GIF, convert to animated Webp for better compression
   if (mimeType.toLowerCase() === 'image/gif') {
     let params = `?format=webp&width=${width}`;
+    if (quality !== undefined) {
+      params += `&quality=${quality}`;
+    }
     if (options) {
       params += `&${options}`;
     }
@@ -35,6 +39,9 @@ export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeT
   }
 
   let params = `?width=${width}`;
+  if (quality !== undefined) {
+    params += `&quality=${quality}`;
+  }
   if (options) {
     params += `&${options}`;
   }

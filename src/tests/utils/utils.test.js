@@ -58,6 +58,28 @@ describe('Utility Functions', () => {
       const url = getAssetUrl(assetId, 1000, '', mimeType);
       expect(url).toBe(`${baseURL}/assets/${assetId}?width=1000`);
     });
+
+    it('should include quality parameter when provided', () => {
+      const url = getAssetUrl(assetId, 800, '', '', 70);
+      expect(url).toBe(`${baseURL}/assets/${assetId}?width=800&quality=70`);
+    });
+
+    it('should include quality with other options', () => {
+      const url = getAssetUrl(assetId, 200, 'height=120&fit=cover', '', 50);
+      expect(url).toBe(`${baseURL}/assets/${assetId}?width=200&quality=50&height=120&fit=cover`);
+    });
+
+    it('should not include quality parameter when undefined', () => {
+      const url = getAssetUrl(assetId, 800, '', '', undefined);
+      expect(url).not.toContain('quality=');
+      expect(url).toBe(`${baseURL}/assets/${assetId}?width=800`);
+    });
+
+    it('should include quality for GIF to WebP conversion', () => {
+      const mimeType = 'image/gif';
+      const url = getAssetUrl(assetId, 400, '', mimeType, 60);
+      expect(url).toBe(`${baseURL}/assets/${assetId}?format=webp&width=400&quality=60`);
+    });
   });
 
   describe('getFallbackUrl', () => {

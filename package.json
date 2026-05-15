@@ -8,7 +8,8 @@
     "build": "vite build && cp dist/index.html dist/404.html",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:perf": "playwright test src/tests/performance"
   },
   "dependencies": {
     "@formspree/react": "^3.0.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@playwright/test": "^1.60.0",
     "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.36.0",
