@@ -15,6 +15,7 @@ const DEFAULT_IMAGE_WIDTH = 800;
 /**
  * Returns an optimized asset URL from Directus, applying width limit by default.
  * The server returns the image in its native format (AVIF, WebP, PNG, JPG, etc.).
+ * GIFs are converted to animated WebP for better compression.
  * @param {string} id Asset ID.
  * @param {number} [width=800] Maximum width.
  * @param {string} [options=''] Additional parameters (e.g., 'height=120&fit=cover').
@@ -24,9 +25,13 @@ const DEFAULT_IMAGE_WIDTH = 800;
 export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeType = '') => {
   if (!id) return null;
 
-  // If it's a GIF, return the original URL without optimization
+  // If it's a GIF, convert to animated Webp for better compression
   if (mimeType.toLowerCase() === 'image/gif') {
-    return `${baseURL}/assets/${id}`;
+    let params = `?format=webp&width=${width}`;
+    if (options) {
+      params += `&${options}`;
+    }
+    return `${baseURL}/assets/${id}${params}`;
   }
 
   let params = `?width=${width}`;

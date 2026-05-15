@@ -27,16 +27,17 @@ describe('Utility Functions', () => {
       expect(getAssetUrl(assetId, defaultWidth, options)).toBe(expectedUrl);
     });
 
-    it('should return original URL if mimeType is image/gif', () => {
+    it('should convert GIF to animated WebP with width parameter', () => {
       const mimeType = 'image/gif';
-      const expectedUrl = `${baseURL}/assets/${assetId}`;
-      expect(getAssetUrl(assetId, 1200, '', mimeType)).toBe(expectedUrl);
+      const expectedUrl = `${baseURL}/assets/${assetId}?format=webp&width=${defaultWidth}`;
+      expect(getAssetUrl(assetId, defaultWidth, '', mimeType)).toBe(expectedUrl);
     });
 
-    it('should return original URL for GIF even with options', () => {
+    it('should convert GIF to animated WebP even with options', () => {
       const mimeType = 'image/gif';
-      const expectedUrl = `${baseURL}/assets/${assetId}`;
-      expect(getAssetUrl(assetId, 400, 'height=225&fit=cover', mimeType)).toBe(expectedUrl);
+      const options = 'height=225&fit=cover';
+      const expectedUrl = `${baseURL}/assets/${assetId}?format=webp&width=${defaultWidth}&${options}`;
+      expect(getAssetUrl(assetId, defaultWidth, options, mimeType)).toBe(expectedUrl);
     });
 
     it('should not add format parameter for non-GIF images', () => {
