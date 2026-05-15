@@ -27,6 +27,7 @@ function ScreenshotGallery({ screenshots }) {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxDimensions, setLightboxDimensions] = useState({ width: 1200, height: 800 });
   const [progress, setProgress] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
   const autoPlayRef = useRef(null);
   const progressRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -34,26 +35,34 @@ function ScreenshotGallery({ screenshots }) {
   const selectedScreenshot = normalizedScreenshots[selectedIndex] || null;
   const lightboxImage = normalizedScreenshots[lightboxIndex];
 
+  const resetTimer = useCallback(() => {
+    if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
+    setProgress(0);
+    startTimeRef.current = Date.now();
+    setResetKey(k => k + 1);
+  }, []);
+
   const advanceIndex = useCallback((setCurrentIndex) => {
     setCurrentIndex(prev => {
       const next = (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length;
       return next;
     });
-    setProgress(0);
-    startTimeRef.current = Date.now();
-  }, [normalizedScreenshots.length]);
+    resetTimer();
+  }, [normalizedScreenshots.length, resetTimer]);
 
   const openLightbox = useCallback((index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
-    setProgress(0);
-    startTimeRef.current = Date.now();
+    resetTimer();
     document.body.style.overflow = 'hidden';
-  }, []);
+  }, [resetTimer]);
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     setProgress(0);
+    if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
     document.body.style.overflow = '';
   }, []);
 
@@ -104,7 +113,7 @@ function ScreenshotGallery({ screenshots }) {
     return () => window.removeEventListener('resize', updateDimensions);
   }, [lightboxOpen]);
 
-  // Always-on auto-play carousel
+  // Auto-play carousel - restarts on every resetKey change (user interaction)
   useEffect(() => {
     if (normalizedScreenshots.length <= 1) return;
 
@@ -117,20 +126,22 @@ function ScreenshotGallery({ screenshots }) {
       setProgress(pct);
     }, 50);
 
-    // Advance to next image
-    autoPlayRef.current = setInterval(() => {
+    // Advance to next image after interval
+    autoPlayRef.current = setTimeout(() => {
       if (lightboxOpen) {
-        advanceIndex(setLightboxIndex);
+        setLightboxIndex(prev => (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length);
       } else {
-        advanceIndex(setSelectedIndex);
+        setSelectedIndex(prev => (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length);
       }
+      // Restart timer for next cycle
+      resetTimer();
     }, AUTO_PLAY_INTERVAL);
 
     return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+      if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
-  }, [lightboxOpen, advanceIndex, normalizedScreenshots.length]);
+  }, [lightboxOpen, resetKey, normalizedScreenshots.length, resetTimer]);
 
   if (normalizedScreenshots.length === 0) {
     return <div className="screenshot-gallery-placeholder">No screenshots available.</div>
@@ -138,8 +149,7 @@ function ScreenshotGallery({ screenshots }) {
 
   const handleThumbnailClick = (index) => {
     setSelectedIndex(index);
-    setProgress(0);
-    startTimeRef.current = Date.now();
+    resetTimer();
   };
 
   // Dot indicators component
@@ -201,7 +211,7 @@ function ScreenshotGallery({ screenshots }) {
           <DotIndicators
             currentIndex={selectedIndex}
             total={normalizedScreenshots.length}
-            onDotClick={(i) => { setSelectedIndex(i); setProgress(0); startTimeRef.current = Date.now(); }}
+            onDotClick={(i) => { setSelectedIndex(i); resetTimer(); }}
           />
         )}
 
@@ -296,7 +306,7 @@ function ScreenshotGallery({ screenshots }) {
               <DotIndicators
                 currentIndex={lightboxIndex}
                 total={normalizedScreenshots.length}
-                onDotClick={(i) => { setLightboxIndex(i); setProgress(0); startTimeRef.current = Date.now(); }}
+                onDotClick={(i) => { setLightboxIndex(i); resetTimer(); }}
               />
             </div>
           )}
@@ -308,7 +318,7 @@ function ScreenshotGallery({ screenshots }) {
                 <div
                   key={ss.id}
                   className={`lightbox-thumb ${index === lightboxIndex ? 'active' : ''}`}
-                  onClick={() => { setLightboxIndex(index); setProgress(0); startTimeRef.current = Date.now(); }}
+                  onClick={() => { setLightboxIndex(index); resetTimer(); }}
                 >
                   <SafeImage
                     id={ss.id}
