@@ -59,6 +59,7 @@ function BlogListPage() {
                   <SafeImage
                     id={post.coverImageId}
                     width={400}
+                    quality={60}
                     options="height=225&fit=cover"
                     mimeType={post.coverImageType}
                     alt={`Cover image of ${post.title}`}

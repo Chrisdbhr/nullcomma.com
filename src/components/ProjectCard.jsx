@@ -45,6 +45,8 @@ function ProjectCard({ project }) {
         {cardImageId ? (
           <SafeImage
             id={cardImageId}
+            width={400}
+            quality={60}
             mimeType={cardImageType}
             alt={`Cover image of ${title}`}
             className="game-card-image"

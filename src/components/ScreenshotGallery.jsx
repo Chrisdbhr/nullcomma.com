@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import SafeImage from './SafeImage'
 
 // Definições de tamanho para otimização do Directus
-const THUMBNAIL_WIDTH = 200;
-const THUMBNAIL_HEIGHT = 120;
+const THUMBNAIL_WIDTH = 100;
+const THUMBNAIL_HEIGHT = 60;
 const MAIN_IMAGE_WIDTH = 1200;
 
 // Quality settings: lower for thumbnails (smaller files), higher for main image (better quality)
-const THUMBNAIL_QUALITY = 50;
+const THUMBNAIL_QUALITY = 40;
 const MAIN_IMAGE_QUALITY = 70;
 
 function ScreenshotGallery({ screenshots }) {

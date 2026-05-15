@@ -91,7 +91,7 @@ function GameDetailPage() {
   // SEO Meta Calculation
   const cardImageId = project.card_image?.id;
   const cardImageType = project.card_image?.type;
-  const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType);
+  const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType, 70);
 
   const title = translation.title || 'Title Not Available'; // Define title for meta tags
 

@@ -178,13 +178,14 @@ function BlogPostPage() {
           )}
 
           {post.cover_image && (
-            <SafeImage
-              id={post.cover_image.id}
-              width={1000}
-              mimeType={post.cover_image.type}
-              alt={`Cover image of ${post.title}`}
-              className="blog-post-cover-image"
-            />
+                          <SafeImage
+                            id={coverImageId}
+                            width={400}
+                            quality={60}
+                            options="height=225&fit=cover"
+                            mimeType={coverImageType}
+                            alt={`Cover image of ${post.post_id.title}`}
+                          />
           )}
         </header>
         
