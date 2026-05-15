@@ -119,10 +119,10 @@ function ScreenshotGallery({ screenshots }) {
 
     startTimeRef.current = Date.now();
 
-    // Progress bar update every 50ms
+    // Progress bar update every 50ms - empties from left to right (100% → 0%)
     progressRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current;
-      const pct = Math.min((elapsed / AUTO_PLAY_INTERVAL) * 100, 100);
+      const pct = Math.max(100 - (elapsed / AUTO_PLAY_INTERVAL) * 100, 0);
       setProgress(pct);
     }, 50);
 

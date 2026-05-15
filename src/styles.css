@@ -399,6 +399,7 @@ img {
   height: 2px;
   background: rgba(255, 255, 255, 0.08);
   z-index: 10;
+  overflow: hidden;
 }
 
 .gallery-progress-fill,
@@ -406,6 +407,9 @@ img {
   height: 100%;
   background: var(--color-purple);
   transition: width 0.05s linear;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 /* Close button */
