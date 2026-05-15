@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getAssetUrl, getFallbackUrl } from '../utils'
+import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
 
 /**
  * Image component that uses <picture> element to provide format fallback.
@@ -7,7 +7,7 @@ import { getAssetUrl, getFallbackUrl } from '../utils'
  * with AVIF/WebP-native servers while gracefully falling back to JPG.
  *
  * GIFs are converted to animated WebP by the server for better compression.
- * When both primary and fallback sources fail (e.g., 403), shows a placeholder.
+ * When both primary and fallback sources fail (e.g., 403, 500), shows a placeholder.
  */
 function SafeImage({ id, width, options, mimeType, alt, className, quality, ...imgProps }) {
   const [failed, setFailed] = useState(false)
@@ -22,7 +22,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
 
   if (failed) {
     return (
-      <div className="safe-image-fallback" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a', color: '#666', fontSize: '0.875rem', width: '100%', height: '100%', minHeight: '120px' }}>
+      <div className="safe-image-fallback">
         Image unavailable
       </div>
     )
@@ -30,6 +30,7 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
 
   const primarySrc = getAssetUrl(id, width, options, mimeType, quality)
   const fallbackSrc = getFallbackUrl(id, width, options)
+  const originalSrc = `${baseURL}/assets/${id}`
 
   // For modern formats (AVIF, WebP, GIF→WebP), use <picture> with type hints
   // so the browser can skip formats it doesn't support and fall back to JPG.
@@ -45,8 +46,9 @@ function SafeImage({ id, width, options, mimeType, alt, className, quality, ...i
       <picture>
         <source srcSet={primarySrc} type={sourceType} />
         <source srcSet={fallbackSrc} type="image/jpeg" />
+        <source srcSet={originalSrc} type={sourceType} />
         <img
-          src={fallbackSrc}
+          src={originalSrc}
           alt={alt}
           className={className}
           onError={handleError}

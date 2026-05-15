@@ -23,17 +23,21 @@ describe('SafeImage Component', () => {
     expect(picture).not.toBeNull();
 
     const sources = document.querySelectorAll('source');
-    expect(sources).toHaveLength(2);
+    expect(sources).toHaveLength(3);
     expect(sources[0].getAttribute('srcSet')).toContain('test-avif-id');
     expect(sources[0].getAttribute('type')).toBe('image/avif');
     expect(sources[1].getAttribute('srcSet')).toContain('format=jpg');
     expect(sources[1].getAttribute('type')).toBe('image/jpeg');
+    expect(sources[2].getAttribute('srcSet')).toContain('test-avif-id');
+    expect(sources[2].getAttribute('srcSet')).not.toContain('width=');
 
     const img = document.querySelector('img');
     expect(img).not.toBeNull();
     expect(img.getAttribute('alt')).toBe('Test image');
     expect(img.getAttribute('class')).toBe('test-class');
-    expect(img.getAttribute('src')).toContain('format=jpg');
+    // img src points to original URL as last-resort fallback
+    expect(img.getAttribute('src')).toContain('test-avif-id');
+    expect(img.getAttribute('src')).not.toContain('width=');
   });
 
   it('should render a picture element with WebP source for GIF images', () => {
@@ -50,10 +54,11 @@ describe('SafeImage Component', () => {
     expect(picture).not.toBeNull();
 
     const sources = document.querySelectorAll('source');
-    expect(sources).toHaveLength(2);
+    expect(sources).toHaveLength(3);
     expect(sources[0].getAttribute('srcSet')).toContain('format=webp');
     expect(sources[0].getAttribute('type')).toBe('image/webp');
     expect(sources[1].getAttribute('srcSet')).toContain('format=jpg');
+    expect(sources[2].getAttribute('srcSet')).not.toContain('width=');
   });
 
   it('should render a direct img for PNG images (no picture wrapper)', () => {
@@ -127,6 +132,7 @@ describe('SafeImage Component', () => {
     expect(picture).not.toBeNull();
 
     const sources = document.querySelectorAll('source');
+    expect(sources).toHaveLength(3);
     expect(sources[0].getAttribute('srcSet')).toContain('format=webp');
     expect(sources[0].getAttribute('type')).toBe('image/webp');
   });

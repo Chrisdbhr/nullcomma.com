@@ -1,4 +1,4 @@
-/* --- PALETA: Enigmatic Comma (Preto, Roxo, Verde) --- */
+/* --- PALETA: Null Comma (Preto, Roxo, Verde) --- */
 :root {
   --color-darkest: #141414; /* Preto (Fundo) */
   --color-dark: #1F1F1F;    /* Cinza (Cards e Sidebar) */
@@ -740,7 +740,7 @@ img {
   transform: scale(1.15);
 }
 
-/* --- Logo Enigmatic Comma --- */
+/* --- Logo Null Comma --- */
 .profile-brand-block {
   border-top: 1px solid #333; /* Corrigido de .profile-brand */
   padding: 20px 0;
@@ -821,6 +821,29 @@ img {
 }
 .steam-widget-container iframe {
   display: block;
+}
+
+/* --- SafeImage Fallback --- */
+.safe-image-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  color: #666;
+  font-size: 0.875rem;
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+}
+
+/* Fallback inside thumbnails should match thumbnail size */
+.gallery-thumbnails .safe-image-fallback {
+  width: 100px;
+  height: 60px;
+  min-height: unset;
+  font-size: 0.625rem;
+  flex-shrink: 0;
+  border-radius: 4px;
 }
 
 /* --- Estilização do Scrollbar da Galeria --- */
