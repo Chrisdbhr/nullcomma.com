@@ -282,7 +282,7 @@ function ScreenshotGallery({ screenshots }) {
 
           {selectedScreenshot && (
             selectedScreenshot.isVideo ? (
-              <div className="trailer-preview">
+              <div className="trailer-preview" onClick={() => openLightbox(selectedIndex)}>
                 <iframe
                   src={`${selectedScreenshot.url}?autoplay=1&mute=1&controls=0&loop=1&playlist=${selectedScreenshot.url.split('/').pop()}`}
                   frameBorder="0"
@@ -290,9 +290,9 @@ function ScreenshotGallery({ screenshots }) {
                   allowFullScreen
                   title="Trailer preview"
                 />
-                <div className="gallery-expand-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                <div className="trailer-preview-overlay">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
@@ -422,14 +422,14 @@ function ScreenshotGallery({ screenshots }) {
           )}
 
           {/* Main content - video or image */}
-          <div className="lightbox-image-container">
+          <div className={`lightbox-image-container${lightboxImage?.isVideo ? ' has-video' : ''}`}>
             {lightboxImage && (
               lightboxImage.isVideo ? (
                 <iframe
                   className="lightbox-video-iframe"
-                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=1`}
+                  src={`${lightboxImage.url}?autoplay=1&mute=1&controls=1&rel=0`}
                   frameBorder="0"
-                  allow="autoplay; encrypted-media; fullscreen"
+                  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                   allowFullScreen
                   title={lightboxImage.title || 'Trailer'}
                 />

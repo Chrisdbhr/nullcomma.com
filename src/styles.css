@@ -371,6 +371,16 @@ img {
   border-color: var(--color-purple);
 }
 
+.gallery-thumbnails .trailer-thumb {
+  width: 100px;
+  height: 60px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--transition-speed) ease;
+  margin: 0;
+}
+
 /* --- Lightbox --- */
 .gallery-lightbox {
   position: fixed;
@@ -537,6 +547,13 @@ img {
   aspect-ratio: 16 / 9;
   border-radius: 4px;
   pointer-events: auto;
+  z-index: 30;
+  position: relative;
+}
+
+.lightbox-image-container.has-video {
+  pointer-events: auto;
+  z-index: 30;
 }
 
 /* Trailer preview in gallery main area */
@@ -547,12 +564,28 @@ img {
   background: #000;
   border-radius: 4px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .trailer-preview iframe {
   width: 100%;
   height: 100%;
   border: none;
+  pointer-events: none;
+}
+
+.trailer-preview-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  transition: background 0.2s ease;
+}
+
+.trailer-preview:hover .trailer-preview-overlay {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 /* Trailer thumbnail */
