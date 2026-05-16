@@ -263,6 +263,10 @@ function GameDetailPage() {
                 <i className="fab fa-github"></i> Source Code
               </a>
             )}
+
+            <Link to={`/presskit/${project.id}`} className="button-secondary button-presskit">
+              <i className="fas fa-newspaper"></i> Press Kit
+            </Link>
           </div>
 
           {/* Links das Lojas de Aplicativo */}

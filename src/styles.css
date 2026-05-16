@@ -2318,3 +2318,177 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   font-size: 0.9rem;
   line-height: 1.4;
 }
+
+/* --- Press Kit Page --- */
+.presskit-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.presskit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.presskit-title {
+  border: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 2rem;
+}
+
+.presskit-download-btn {
+  white-space: nowrap;
+}
+
+.presskit-hero {
+  margin-bottom: 30px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.presskit-hero-image {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+.presskit-body {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.presskit-section h3 {
+  color: var(--color-light);
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--color-dark);
+  padding-bottom: 8px;
+  font-weight: 600;
+}
+
+.presskit-synopsis {
+  font-size: 1.1rem;
+  color: var(--color-light);
+  line-height: 1.7;
+}
+
+.presskit-synopsis p {
+  margin-bottom: 12px;
+}
+
+.presskit-facts {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px 15px;
+}
+
+.presskit-facts dt {
+  color: var(--color-grey);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.presskit-facts dd {
+  color: var(--color-light);
+  font-size: 1rem;
+}
+
+.presskit-rating {
+  font-style: italic;
+  border-left: 3px solid var(--color-purple);
+  padding-left: 10px;
+}
+
+.presskit-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.presskit-trailer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.presskit-trailer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.presskit-screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.presskit-screenshot {
+  width: 100%;
+  border-radius: 4px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.presskit-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.presskit-about-dev {
+  background: var(--color-dark);
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.presskit-about-dev p {
+  margin-bottom: 10px;
+}
+
+.button-secondary.button-presskit {
+  width: 100%;
+  margin-top: 10px;
+  background-color: var(--color-purple);
+  color: var(--color-light);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.button-secondary.button-presskit:hover {
+  background-color: var(--color-light);
+  color: var(--color-darkest);
+}
+
+@media (max-width: 600px) {
+  .presskit-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .presskit-download-btn {
+    width: 100%;
+  }
+
+  .presskit-facts {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .presskit-facts dt {
+    margin-bottom: 0;
+  }
+
+  .presskit-screenshots {
+    grid-template-columns: 1fr;
+  }
+}

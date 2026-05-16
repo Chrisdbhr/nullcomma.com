@@ -19,6 +19,7 @@ const BlogListPage = lazy(() => import('./pages/BlogListPage.jsx').then(m => ({
   loader: m.loader,
 })));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage.jsx'));
+const PressKitPage = lazy(() => import('./pages/PressKitPage.jsx'));
 
 function SuspenseFallback() {
   return (
@@ -88,6 +89,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<SuspenseFallback />}>
             <BlogPostPage />
+          </Suspense>
+        )
+      },
+      {
+        path: "presskit/:projectId",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <PressKitPage />
           </Suspense>
         )
       },
