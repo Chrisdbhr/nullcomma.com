@@ -435,7 +435,7 @@ img {
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 20;
+  z-index: 40;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -467,7 +467,7 @@ img {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.875rem;
   font-family: 'Inter', sans-serif;
-  z-index: 20;
+  z-index: 40;
 }
 
 /* Click zones - left and right halves of the screen */
@@ -476,7 +476,7 @@ img {
   top: 0;
   bottom: 0;
   width: 50%;
-  z-index: 15;
+  z-index: 35;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -662,7 +662,7 @@ img {
   border-radius: 8px;
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
-  z-index: 25;
+  z-index: 45;
 }
 
 .lightbox-thumbnails::-webkit-scrollbar {
@@ -775,7 +775,7 @@ img {
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 20;
+  z-index: 45;
 }
 
 /* --- Loading Spinner for ALL Images --- */
