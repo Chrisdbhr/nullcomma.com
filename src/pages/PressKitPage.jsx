@@ -90,22 +90,27 @@ function PressKitPage() {
       }
     }
 
-    const screenshots = project.steam_screenshots?.length > 0
-      ? project.steam_screenshots
-      : project.screenshots;
+    const zipScreenshots = [];
 
-    if (screenshots?.length > 0) {
+    if (project.steam_screenshots?.length > 0) {
+      project.steam_screenshots.forEach((ss) => {
+        if (ss.path) zipScreenshots.push({ type: 'steam', url: ss.path });
+      });
+    }
+
+    if (project.screenshots?.length > 0) {
+      project.screenshots.forEach((ss) => {
+        const fileId = ss.directus_files_id?.id;
+        if (fileId) zipScreenshots.push({ type: 'directus', url: `${baseURL}/assets/${fileId}` });
+      });
+    }
+
+    if (zipScreenshots.length > 0) {
       const ssFolder = folder.folder('screenshots');
-      const screenshotItems = screenshots.map((ss, i) => {
-        const fileId = ss.path ? ss.path.split('/').pop() : (ss.directus_files_id?.id || ss.id);
-        const url = fileId ? `${baseURL}/assets/${fileId}` : null;
-        return { url, index: i };
-      }).filter(s => s.url);
-
       const results = await Promise.all(
-        screenshotItems.map(async (s) => {
-          const blob = await fetchBlob(s.url);
-          return { blob, index: s.index };
+        zipScreenshots.map(async (ss, i) => {
+          const blob = await fetchBlob(ss.url);
+          return { blob, index: i };
         })
       );
 
@@ -156,9 +161,20 @@ function PressKitPage() {
     }
   })();
 
-  const screenshots = project.steam_screenshots?.length > 0
-    ? project.steam_screenshots
-    : project.screenshots;
+  const allScreenshots = [];
+
+  if (project.steam_screenshots?.length > 0) {
+    project.steam_screenshots.forEach((ss) => {
+      if (ss.path) allScreenshots.push({ type: 'steam', url: ss.path });
+    });
+  }
+
+  if (project.screenshots?.length > 0) {
+    project.screenshots.forEach((ss) => {
+      const fileId = ss.directus_files_id?.id;
+      if (fileId) allScreenshots.push({ type: 'directus', id: fileId });
+    });
+  }
 
   return (
     <div className="page-content fade-in presskit-page">
@@ -237,10 +253,8 @@ function PressKitPage() {
             {project.tags?.length > 0 && (
               <>
                 <dt>Tags</dt>
-                <dd className="presskit-tags">
-                  {project.tags.map(tag => (
-                    <span key={tag.tags_id} className="game-tag">{tag.tags_id}</span>
-                  ))}
+                <dd className="presskit-tags-text">
+                  {project.tags.map(tag => tag.tags_id).join(', ')}
                 </dd>
               </>
             )}
@@ -262,17 +276,25 @@ function PressKitPage() {
           </section>
         )}
 
-        {screenshots?.length > 0 && (
+        {allScreenshots.length > 0 && (
           <section className="presskit-section">
             <h3>Screenshots</h3>
             <div className="presskit-screenshots">
-              {screenshots.map((ss, i) => {
-                const fileId = ss.path ? ss.path.split('/').pop() : (ss.directus_files_id?.id || ss.id);
-                if (!fileId) return null;
+              {allScreenshots.map((ss, i) => {
+                if (ss.type === 'steam') {
+                  return (
+                    <img
+                      key={i}
+                      src={ss.url}
+                      alt={`${title} screenshot ${i + 1}`}
+                      className="presskit-screenshot"
+                    />
+                  );
+                }
                 return (
                   <SafeImage
                     key={i}
-                    id={fileId}
+                    id={ss.id}
                     width={600}
                     quality={75}
                     alt={`${title} screenshot ${i + 1}`}

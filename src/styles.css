@@ -2404,10 +2404,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   padding-left: 10px;
 }
 
-.presskit-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+.presskit-tags-text {
+  color: var(--color-light);
+  font-size: 1rem;
 }
 
 .presskit-trailer {
