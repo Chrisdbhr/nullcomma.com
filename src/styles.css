@@ -528,6 +528,92 @@ img {
   pointer-events: none;
 }
 
+/* Video iframe in lightbox */
+.lightbox-video-iframe {
+  width: 100%;
+  height: 100%;
+  max-width: calc(100vw - 80px);
+  max-height: calc(100vh - 200px);
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  pointer-events: auto;
+}
+
+/* Trailer preview in gallery main area */
+.trailer-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trailer-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Trailer thumbnail */
+.trailer-thumb {
+  position: relative;
+  width: 100px;
+  height: 60px;
+  background: #1a1a1a;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.trailer-thumb.active {
+  border-color: var(--color-purple);
+}
+
+.trailer-thumb:hover {
+  border-color: rgba(138, 43, 226, 0.5);
+}
+
+.trailer-play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.trailer-thumb-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+}
+
+/* Lightbox thumbnail video overlay */
+.lightbox-thumb .trailer-play-icon {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.lightbox-thumb .trailer-thumb-label {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 3;
+}
+
 /* Lightbox thumbnails */
 .lightbox-thumbnails {
   position: absolute;

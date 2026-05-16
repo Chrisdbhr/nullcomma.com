@@ -203,4 +203,82 @@ describe('ScreenshotGallery', () => {
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
     });
   });
+
+  describe('trailer video slide', () => {
+    const trailerUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+    const screenshotsWithTrailer = [
+      { type: 'video', url: trailerUrl, title: 'Trailer' },
+      { directus_files_id: { id: 'ss-1', type: 'image/jpeg' } },
+      { directus_files_id: { id: 'ss-2', type: 'image/jpeg' } },
+    ];
+
+    it('should render trailer as first slide in gallery', () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      const iframe = container.querySelector('iframe');
+      expect(iframe).not.toBeNull();
+      expect(iframe.getAttribute('src')).toContain('youtube.com');
+    });
+
+    it('should show play icon overlay on trailer thumbnail', () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      // Video thumbnail has .lightbox-thumb class, images are <img> elements
+      const videoThumb = container.querySelector('.gallery-thumbnails .lightbox-thumb');
+      expect(videoThumb).not.toBeNull();
+      expect(videoThumb.querySelector('.trailer-play-icon')).not.toBeNull();
+
+      // Total thumbnails = 3 (1 video + 2 images)
+      const allThumbs = container.querySelectorAll('.gallery-thumbnails .lightbox-thumb, .gallery-thumbnails img');
+      expect(allThumbs.length).toBe(3);
+    });
+
+    it('should render iframe in lightbox when viewing trailer slide', async () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      openLightbox(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+
+      // Should show iframe for trailer
+      const iframe = container.querySelector('.lightbox-image-container iframe');
+      expect(iframe).not.toBeNull();
+      expect(iframe.getAttribute('src')).toContain(trailerUrl);
+    });
+
+    it('should destroy iframe when navigating away from trailer slide', async () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      openLightbox(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+      expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
+
+      // Navigate to next slide (image)
+      clickRightZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
+
+      // iframe should be gone, img should be present
+      expect(container.querySelector('.lightbox-image-container iframe')).toBeNull();
+      expect(container.querySelector('.lightbox-image-container img')).not.toBeNull();
+    });
+
+    it('should navigate from last image back to trailer via right', async () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      openLightbox(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+
+      // Go to last slide
+      clickRightZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
+      clickRightZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('3 / 3'));
+
+      // Right again → back to trailer (slide 1)
+      clickRightZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+
+      // Should have iframe again
+      expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
+    });
+  });
 });

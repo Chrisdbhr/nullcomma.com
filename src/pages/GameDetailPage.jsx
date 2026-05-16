@@ -122,6 +122,11 @@ function GameDetailPage() {
     ? project.steam_screenshots
     : project.screenshots;
 
+  // Prepend trailer as first gallery slide when available
+  const galleryItems = trailerEmbedUrl
+    ? [{ type: 'video', url: trailerEmbedUrl, title: 'Trailer' }, ...galleryScreenshots]
+    : galleryScreenshots;
+
   return (
     <div className="page-content game-detail-page fade-in">
       {/* SEO META TAGS */}
@@ -148,23 +153,7 @@ function GameDetailPage() {
       <div className="game-detail-layout">
         <div className="game-detail-main">
 
-          {trailerEmbedUrl ? (
-            <div className="trailer-container">
-              <iframe
-                src={trailerEmbedUrl}
-                title="Trailer"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen>
-              </iframe>
-            </div>
-          ) : (
-            <ScreenshotGallery screenshots={galleryScreenshots} />
-          )}
-
-          {trailerEmbedUrl && galleryScreenshots.length > 0 && (
-            <ScreenshotGallery screenshots={galleryScreenshots} />
-          )}
+          <ScreenshotGallery screenshots={galleryItems} />
 
           {project.steam_id && (
             <div className="steam-widget-container">

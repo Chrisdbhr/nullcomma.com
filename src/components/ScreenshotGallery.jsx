@@ -14,9 +14,10 @@ const AUTO_PLAY_INTERVAL = 4000;
 const SWIPE_THRESHOLD = 50;
 
 /**
- * Normalize screenshots from either Directus or Steam format.
+ * Normalize screenshots from either Directus, Steam, or video format.
  * Directus: { directus_files_id: { id, type } }
  * Steam: "https://cdn.steamstatic.com/..."
+ * Video: { type: 'video', url: 'https://...', title: '...' }
  */
 function normalizeScreenshots(screenshots) {
   if (!screenshots || !Array.isArray(screenshots)) return [];
@@ -24,6 +25,9 @@ function normalizeScreenshots(screenshots) {
   return screenshots.map(ss => {
     if (typeof ss === 'string') {
       return { url: ss, type: 'image/jpeg', isExternal: true };
+    }
+    if (ss.type === 'video') {
+      return { ...ss, isVideo: true };
     }
     if (ss.directus_files_id) {
       return {
@@ -277,19 +281,38 @@ function ScreenshotGallery({ screenshots }) {
           </div>
 
           {selectedScreenshot && (
-            <SafeImage
-              alt="Screenshot principal"
-              {...(selectedScreenshot.isExternal
-                ? { src: selectedScreenshot.url }
-                : { id: selectedScreenshot.id, width: MAIN_IMAGE_WIDTH, quality: MAIN_IMAGE_QUALITY, mimeType: selectedScreenshot.type }
-              )}
-            />
+            selectedScreenshot.isVideo ? (
+              <div className="trailer-preview">
+                <iframe
+                  src={`${selectedScreenshot.url}?autoplay=1&mute=1&controls=0&loop=1&playlist=${selectedScreenshot.url.split('/').pop()}`}
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="Trailer preview"
+                />
+                <div className="gallery-expand-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <>
+                <SafeImage
+                  alt="Screenshot principal"
+                  {...(selectedScreenshot.isExternal
+                    ? { src: selectedScreenshot.url }
+                    : { id: selectedScreenshot.id, width: MAIN_IMAGE_WIDTH, quality: MAIN_IMAGE_QUALITY, mimeType: selectedScreenshot.type }
+                  )}
+                />
+                <div className="gallery-expand-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                  </svg>
+                </div>
+              </>
+            )
           )}
-          <div className="gallery-expand-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-            </svg>
-          </div>
         </div>
 
         {/* Dot indicators below main image */}
@@ -305,6 +328,23 @@ function ScreenshotGallery({ screenshots }) {
           <div className="gallery-thumbnails">
             {normalizedScreenshots.map((ss, index) => {
               const isSelected = index === selectedIndex;
+
+              if (ss.isVideo) {
+                return (
+                  <div
+                    key={`video-${index}`}
+                    className={`lightbox-thumb trailer-thumb ${isSelected ? 'active' : ''}`}
+                    onClick={() => handleThumbnailClick(index)}
+                  >
+                    <div className="trailer-play-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                    <span className="trailer-thumb-label">Trailer</span>
+                  </div>
+                );
+              }
 
               return (
                 <SafeImage
@@ -381,16 +421,27 @@ function ScreenshotGallery({ screenshots }) {
             </div>
           )}
 
-          {/* Main image */}
+          {/* Main content - video or image */}
           <div className="lightbox-image-container">
             {lightboxImage && (
-              <SafeImage
-                alt={`Screenshot ${lightboxIndex + 1}`}
-                {...(lightboxImage.isExternal
-                  ? { src: lightboxImage.url }
-                  : { id: lightboxImage.id, useOriginal: true, mimeType: lightboxImage.type }
-                )}
-              />
+              lightboxImage.isVideo ? (
+                <iframe
+                  className="lightbox-video-iframe"
+                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=1`}
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media; fullscreen"
+                  allowFullScreen
+                  title={lightboxImage.title || 'Trailer'}
+                />
+              ) : (
+                <SafeImage
+                  alt={`Screenshot ${lightboxIndex + 1}`}
+                  {...(lightboxImage.isExternal
+                    ? { src: lightboxImage.url }
+                    : { id: lightboxImage.id, useOriginal: true, mimeType: lightboxImage.type }
+                  )}
+                />
+              )
             )}
           </div>
 
@@ -410,17 +461,28 @@ function ScreenshotGallery({ screenshots }) {
             <div className="lightbox-thumbnails">
               {normalizedScreenshots.map((ss, index) => (
                 <div
-                  key={ss.url || ss.id}
+                  key={ss.url || ss.id || `video-${index}`}
                   className={`lightbox-thumb ${index === lightboxIndex ? 'active' : ''}`}
                   onClick={(e) => { e.stopPropagation(); setLightboxIndex(index); resetTimer(); }}
                 >
-                  <SafeImage
-                    alt={`Thumbnail ${index + 1}`}
-                    {...(ss.isExternal
-                      ? { src: ss.url }
-                      : { id: ss.id, width: THUMBNAIL_WIDTH, options: `height=${THUMBNAIL_HEIGHT}&fit=cover`, quality: THUMBNAIL_QUALITY, mimeType: ss.type }
-                    )}
-                  />
+                  {ss.isVideo ? (
+                    <>
+                      <div className="trailer-play-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                      <span className="trailer-thumb-label">Trailer</span>
+                    </>
+                  ) : (
+                    <SafeImage
+                      alt={`Thumbnail ${index + 1}`}
+                      {...(ss.isExternal
+                        ? { src: ss.url }
+                        : { id: ss.id, width: THUMBNAIL_WIDTH, options: `height=${THUMBNAIL_HEIGHT}&fit=cover`, quality: THUMBNAIL_QUALITY, mimeType: ss.type }
+                      )}
+                    />
+                  )}
                 </div>
               ))}
             </div>
