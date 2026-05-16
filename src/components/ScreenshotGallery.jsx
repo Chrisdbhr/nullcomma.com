@@ -192,6 +192,27 @@ function ScreenshotGallery({ screenshots }) {
     return () => document.removeEventListener('keydown', handleTabKey);
   }, [lightboxOpen]);
 
+  // YouTube video end detection - auto-advance when video finishes
+  useEffect(() => {
+    if (!lightboxOpen || !lightboxImage?.isVideo) return;
+
+    const handleYouTubeMessage = (event) => {
+      if (typeof event.data !== 'string') return;
+      try {
+        const data = JSON.parse(event.data);
+        // YouTube state 0 = ended
+        if (data.event === 'onStateChange' && data.info === 0) {
+          advanceIndex(setLightboxIndex, 1);
+        }
+      } catch {
+        // Not a YouTube message, ignore
+      }
+    };
+
+    window.addEventListener('message', handleYouTubeMessage);
+    return () => window.removeEventListener('message', handleYouTubeMessage);
+  }, [lightboxOpen, lightboxIndex, lightboxImage, advanceIndex]);
+
   // Auto-play carousel - stops when user clicks an image
   useEffect(() => {
     if (!autoPlayEnabled || normalizedScreenshots.length <= 1) return;
@@ -428,7 +449,7 @@ function ScreenshotGallery({ screenshots }) {
                 <iframe
                   key={`video-${lightboxIndex}`}
                   className="lightbox-video-iframe"
-                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1`}
+                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3`}
                   frameBorder="0"
                   allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                   allowFullScreen

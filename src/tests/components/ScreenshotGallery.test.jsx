@@ -298,5 +298,19 @@ describe('ScreenshotGallery', () => {
       // Should have iframe again
       expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
     });
+
+    it('should auto-advance to next slide when YouTube video ends', async () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      openLightbox(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+
+      // Simulate YouTube video end message
+      window.dispatchEvent(new MessageEvent('message', {
+        data: JSON.stringify({ event: 'onStateChange', info: 0 }),
+      }));
+
+      await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
+    });
   });
 });
