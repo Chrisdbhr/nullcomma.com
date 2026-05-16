@@ -636,6 +636,7 @@ img {
   align-items: center;
   justify-content: center;
   z-index: 2;
+  pointer-events: none;
 }
 
 .lightbox-thumb .trailer-thumb-label {
@@ -645,6 +646,7 @@ img {
   right: 0;
   text-align: center;
   z-index: 3;
+  pointer-events: none;
 }
 
 /* Lightbox thumbnails */
@@ -679,6 +681,7 @@ img {
 }
 
 .lightbox-thumb {
+  position: relative;
   width: 72px;
   height: 42px;
   border-radius: 4px;
