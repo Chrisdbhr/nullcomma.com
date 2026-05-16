@@ -511,18 +511,21 @@ img {
 
 /* Image container */
 .lightbox-image-container {
-  max-width: calc(100vw - 120px);
-  max-height: calc(100vh - 180px);
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 60px 40px;
+  pointer-events: none;
 }
 
 .lightbox-image-container img,
 .lightbox-image-container picture {
-  max-width: 100%;
-  max-height: calc(100vh - 180px);
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  pointer-events: none;
 }
 
 /* Lightbox thumbnails */
@@ -540,6 +543,7 @@ img {
   border-radius: 8px;
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
+  z-index: 25;
 }
 
 .lightbox-thumbnails::-webkit-scrollbar {
@@ -652,7 +656,7 @@ img {
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
+  z-index: 20;
 }
 
 /* --- Loading Spinner for ALL Images --- */

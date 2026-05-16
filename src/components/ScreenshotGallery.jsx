@@ -41,7 +41,6 @@ function ScreenshotGallery({ screenshots }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxDimensions, setLightboxDimensions] = useState({ width: 1200, height: 800 });
   const [progress, setProgress] = useState(0);
   const [progressDirection, setProgressDirection] = useState('empty'); // 'empty' or 'fill'
   const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
@@ -61,10 +60,10 @@ function ScreenshotGallery({ screenshots }) {
     setResetKey(k => k + 1);
   }, [progressDirection]);
 
-  const advanceIndex = useCallback((setCurrentIndex) => {
+  const advanceIndex = useCallback((setCurrentIndex, direction = 1) => {
     setCurrentIndex(prev => {
-      const next = (prev + 1 + normalizedScreenshots.length) % normalizedScreenshots.length;
-      return next;
+      const total = normalizedScreenshots.length;
+      return ((prev + direction) % total + total) % total;
     });
     resetTimer();
   }, [normalizedScreenshots.length, resetTimer]);
@@ -96,11 +95,11 @@ function ScreenshotGallery({ screenshots }) {
       switch (e.key) {
         case 'ArrowLeft':
           e.preventDefault();
-          advanceIndex(setLightboxIndex);
+          advanceIndex(setLightboxIndex, -1);
           break;
         case 'ArrowRight':
           e.preventDefault();
-          advanceIndex(setLightboxIndex);
+          advanceIndex(setLightboxIndex, 1);
           break;
         case 'Escape':
           e.preventDefault();
@@ -112,28 +111,6 @@ function ScreenshotGallery({ screenshots }) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, advanceIndex, closeLightbox]);
-
-  // Calculate lightbox image dimensions based on viewport
-  useEffect(() => {
-    if (!lightboxOpen) return;
-
-    const updateDimensions = () => {
-      const padding = 120;
-      const maxWidth = window.innerWidth - padding;
-      const maxHeight = window.innerHeight - padding;
-      let width = maxWidth;
-      let height = width * (9 / 16);
-      if (height > maxHeight) {
-        height = maxHeight;
-        width = height * (16 / 9);
-      }
-      setLightboxDimensions({ width: Math.round(width), height: Math.round(height) });
-    };
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, [lightboxOpen]);
 
   // Auto-play carousel - stops when user clicks an image
   useEffect(() => {
@@ -300,7 +277,7 @@ function ScreenshotGallery({ screenshots }) {
           {hasMultipleImages && (
             <div
               className="lightbox-click-zone lightbox-click-prev"
-              onClick={() => advanceIndex(setLightboxIndex)}
+              onClick={() => advanceIndex(setLightboxIndex, -1)}
               role="button"
               aria-label="Previous image"
             >
@@ -316,7 +293,7 @@ function ScreenshotGallery({ screenshots }) {
           {hasMultipleImages && (
             <div
               className="lightbox-click-zone lightbox-click-next"
-              onClick={() => advanceIndex(setLightboxIndex)}
+              onClick={() => advanceIndex(setLightboxIndex, 1)}
               role="button"
               aria-label="Next image"
             >
@@ -328,8 +305,8 @@ function ScreenshotGallery({ screenshots }) {
             </div>
           )}
 
-          {/* Main image - full resolution, click closes lightbox */}
-          <div className="lightbox-image-container" onClick={closeLightbox}>
+          {/* Main image */}
+          <div className="lightbox-image-container">
             {lightboxImage && (
               <SafeImage
                 alt={`Screenshot ${lightboxIndex + 1}`}
