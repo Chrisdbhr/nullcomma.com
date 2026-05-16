@@ -167,8 +167,8 @@ function HomePage() {
     <div className="page-content fade-in">
 
       {/* SEO META TAGS for Home Page */}
-      <title>Null Comma — Game Developer Portfolio & Blog</title>
-      <meta name="description" content="Null Comma — Portfolio of C# Developer and Unity Specialist Christopher Ravailhe. Games, launcher downloads, source code, devlogs, and technical articles." />
+      <title>Null Comma — Indie Games & Dev Insights</title>
+      <meta name="description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
 
       <div className="home-section">
         <BlogFeed />
@@ -342,6 +342,34 @@ function HomePage() {
         </div>
         <div className="home-section discord-home-widget">
           <DiscordCTA />
+        </div>
+      </div>
+
+      <div className="home-section about-me-card">
+        <div className="about-me-content">
+          <div className="about-me-text">
+            <h3>About Me</h3>
+            <p>
+              I'm <strong>Christopher Ravailhe</strong>, a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. I've worked on 25+ games across PC, console, and mobile platforms.
+            </p>
+            <p>
+              This portfolio showcases my games, prototypes, and technical experiments. You can also find devlogs, tutorials, and insights on game development in the blog section.
+            </p>
+          </div>
+          <div className="about-me-stats">
+            <div className="stat-item">
+              <span className="stat-number">9+</span>
+              <span className="stat-label">Years in Unity</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">25+</span>
+              <span className="stat-label">Games Shipped</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">PC</span>
+              <span className="stat-label">Console &amp; Mobile</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,9 @@
 import { Link, Outlet } from 'react-router-dom';
 import ProfileSidebar from './components/ProfileSidebar';
+import {
+  FaGithub, FaSteam, FaEnvelope,
+  FaLinkedin, FaInstagram, FaYoutube, FaTiktok
+} from 'react-icons/fa'
 
 function App() {
   return (
@@ -7,7 +11,7 @@ function App() {
       <header className="main-header">
         <Link to="/" className="site-title-link">
           <h1>Null Comma</h1>
-          <span>Null Comma — Projects Portfolio & Blog</span>
+          <span>Games, prototypes & dev insights</span>
         </Link>
       </header>
 
@@ -20,6 +24,29 @@ function App() {
       </div>
 
       <footer className="main-footer">
+        <div className="footer-social-links">
+          <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub">
+            <FaGithub />
+          </a>
+          <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+            <FaLinkedin />
+          </a>
+          <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam">
+            <FaSteam />
+          </a>
+          <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok">
+            <FaTiktok />
+          </a>
+          <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram">
+            <FaInstagram />
+          </a>
+          <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube">
+            <FaYoutube />
+          </a>
+          <a href="mailto:contato@nullcomma.com" title="Email">
+            <FaEnvelope />
+          </a>
+        </div>
         <p>
           © 2025 Null Comma. All rights reserved.
           <span className="footer-sep">·</span>
