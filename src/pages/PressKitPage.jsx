@@ -94,7 +94,8 @@ function PressKitPage() {
 
     if (project.steam_screenshots?.length > 0) {
       project.steam_screenshots.forEach((ss) => {
-        if (ss.path) zipScreenshots.push({ type: 'steam', url: ss.path });
+        const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
+        if (url) zipScreenshots.push({ type: 'steam', url });
       });
     }
 
@@ -165,7 +166,8 @@ function PressKitPage() {
 
   if (project.steam_screenshots?.length > 0) {
     project.steam_screenshots.forEach((ss) => {
-      if (ss.path) allScreenshots.push({ type: 'steam', url: ss.path });
+      const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
+      if (url) allScreenshots.push({ type: 'steam', url });
     });
   }
 
