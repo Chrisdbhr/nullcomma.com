@@ -242,7 +242,7 @@ describe('ScreenshotGallery', () => {
       const iframe = container.querySelector('.lightbox-image-container iframe');
       expect(iframe).not.toBeNull();
       expect(iframe.getAttribute('src')).toContain(trailerUrl);
-      expect(iframe.getAttribute('src')).toContain('mute=0');
+      expect(iframe.getAttribute('src')).toContain('playsinline=1');
       expect(iframe.getAttribute('src')).toContain('controls=0');
     });
 

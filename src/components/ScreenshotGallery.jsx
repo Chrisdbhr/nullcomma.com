@@ -308,7 +308,6 @@ function ScreenshotGallery({ screenshots }) {
                   src={`${selectedScreenshot.url}?autoplay=1&mute=1&controls=0&loop=1&playlist=${selectedScreenshot.url.split('/').pop()}`}
                   frameBorder="0"
                   allow="autoplay; encrypted-media"
-                  allowFullScreen
                   title="Trailer preview"
                 />
                 <div className="gallery-expand-icon">
@@ -449,10 +448,9 @@ function ScreenshotGallery({ screenshots }) {
                 <iframe
                   key={`video-${lightboxIndex}`}
                   className="lightbox-video-iframe"
-                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3`}
+                  src={`${lightboxImage.url}?autoplay=1&controls=0&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3&playsinline=1`}
                   frameBorder="0"
-                  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-                  allowFullScreen
+                  allow="autoplay; encrypted-media"
                   title={lightboxImage.title || 'Trailer'}
                 />
               ) : (

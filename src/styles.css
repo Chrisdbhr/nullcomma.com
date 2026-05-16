@@ -546,7 +546,7 @@ img {
   max-height: calc(100vh - 200px);
   aspect-ratio: 16 / 9;
   border-radius: 4px;
-  pointer-events: auto;
+  pointer-events: none;
   z-index: 30;
   position: relative;
 }
@@ -1620,12 +1620,16 @@ img {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 20px;
-  background: linear-gradient(135deg, var(--color-purple) 0%, #a76eff 100%);
+  background:
+    linear-gradient(135deg, rgba(118, 79, 162, 0.88) 0%, rgba(167, 110, 255, 0.88) 100%),
+    url('https://cms.nullcomma.com/assets/2a591f93-636e-40fb-81ba-1f8dc8ccee7a?width=1200&quality=50') center/cover no-repeat;
   color: var(--color-light);
   padding: 20px 30px;
   border-radius: var(--border-radius);
   margin-bottom: var(--main-margin-bottom);
   box-shadow: 0 5px 20px rgba(145, 70, 255, 0.3);
+  overflow: hidden;
+  position: relative;
 }
 
 .launcher-cta-icon {

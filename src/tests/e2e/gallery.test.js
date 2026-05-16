@@ -12,7 +12,7 @@ test.describe('ScreenshotGallery E2E', () => {
     await expect(firstThumb.locator('.trailer-play-icon')).toBeVisible();
   });
 
-  test('lightbox opens with video unmuted and no controls', async ({ page }) => {
+  test('lightbox opens with video, no controls, no fullscreen', async ({ page }) => {
     await page.goto(`${BASE_URL}/project/Resultarias`);
     await expect(page.locator('.gallery-main-image')).toBeVisible();
 
@@ -24,9 +24,13 @@ test.describe('ScreenshotGallery E2E', () => {
 
     const src = await iframe.getAttribute('src');
     expect(src).toContain('controls=0');
-    expect(src).toContain('mute=0');
+    expect(src).toContain('playsinline=1');
     expect(src).toContain('enablejsapi=1');
     expect(src).toContain('iv_load_policy=3');
+
+    // Should NOT have allowFullScreen
+    const allowFull = await iframe.getAttribute('allowfullscreen');
+    expect(allowFull).toBeNull();
   });
 
   test('clicking right zone advances from video to next slide', async ({ page }) => {
@@ -97,6 +101,21 @@ test.describe('ScreenshotGallery E2E', () => {
     await expect(page.locator('.lightbox-image-container iframe')).toBeVisible();
   });
 
+  test('auto-advances to next slide when YouTube video ends', async ({ page }) => {
+    await page.goto(`${BASE_URL}/project/Resultarias`);
+    await page.locator('.gallery-main-image').click();
+    await expect(page.locator('.gallery-lightbox')).toBeVisible();
+    await expect(page.locator('.lightbox-counter')).toHaveText(/1 \//);
+
+    await page.evaluate(() => {
+      window.postMessage(JSON.stringify({ event: 'onStateChange', info: 0 }), '*');
+    });
+
+    await expect(page.locator('.lightbox-counter')).toHaveText(/2 \//);
+    await expect(page.locator('.lightbox-image-container iframe')).toBeHidden();
+    await expect(page.locator('.lightbox-image-container img, .lightbox-image-container picture')).toBeVisible();
+  });
+
   test('clicking non-trailer thumbnails during video slide should navigate', async ({ page }) => {
     await page.goto(`${BASE_URL}/project/Resultarias`);
     await page.locator('.gallery-main-image').click();
@@ -105,7 +124,6 @@ test.describe('ScreenshotGallery E2E', () => {
     await expect(page.locator('.lightbox-counter')).toHaveText(/1 \//);
     await expect(page.locator('.lightbox-image-container iframe')).toBeVisible();
 
-    // Click second thumbnail (first screenshot) via mouse click at center
     const secondThumb = page.locator('.lightbox-thumbnails .lightbox-thumb').nth(1);
     const bb = await secondThumb.boundingBox();
     await page.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2);
