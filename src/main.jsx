@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
@@ -9,13 +9,29 @@ import {
 
 // Componentes
 import App from './App.jsx';
-import './styles.css'; 
+import HomePage, { loader as homePageLoader } from './pages/HomePage.jsx';
+import './styles.css';
 
-// Páginas
-import HomePage, { loader as homePageLoader } from './pages/HomePage.jsx'; 
-import GameDetailPage from './pages/GameDetailPage.jsx';
-import BlogListPage, { loader as blogListPageLoader } from './pages/BlogListPage.jsx';
-import BlogPostPage from './pages/BlogPostPage.jsx';
+// Páginas carregadas sob demanda (code splitting)
+const GameDetailPage = lazy(() => import('./pages/GameDetailPage.jsx'));
+const BlogListPage = lazy(() => import('./pages/BlogListPage.jsx').then(m => ({
+  default: m.default,
+  loader: m.loader,
+})));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage.jsx'));
+
+function SuspenseFallback() {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '300px',
+    }}>
+      <div className="spinner" />
+    </div>
+  );
+}
 
 function ErrorBoundary() {
   let error = useRouteError();
@@ -42,21 +58,39 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorBoundary />,
     children: [
-      { 
-        index: true, 
-        element: <HomePage />, 
-        loader: homePageLoader 
-      }, 
-      { 
-        path: "project/:projectId", 
-        element: <GameDetailPage /> 
+      {
+        index: true,
+        element: <HomePage />,
+        loader: homePageLoader
       },
-      { 
-        path: "blog", 
-        element: <BlogListPage />, 
-        loader: blogListPageLoader 
+      {
+        path: "project/:projectId",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <GameDetailPage />
+          </Suspense>
+        )
       },
-      { path: "blog/:slug", element: <BlogPostPage /> },
+      {
+        path: "blog",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <BlogListPage />
+          </Suspense>
+        ),
+        loader: async (...args) => {
+          const { loader } = await import('./pages/BlogListPage.jsx');
+          return loader(...args);
+        }
+      },
+      {
+        path: "blog/:slug",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <BlogPostPage />
+          </Suspense>
+        )
+      },
     ]
   },
 ]);
@@ -64,14 +98,14 @@ const router = createBrowserRouter([
 const InitialFallback = () => {
   return (
     <div style={{
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      height: '100vh', 
-      fontFamily: 'sans-serif', 
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      fontFamily: 'sans-serif',
       fontSize: '1.5rem',
-      backgroundColor: '#141414', 
-      color: '#FFFFFF'           
+      backgroundColor: '#141414',
+      color: '#FFFFFF'
     }}>
       Loading Portfolio...
     </div>
@@ -80,8 +114,8 @@ const InitialFallback = () => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider 
-      router={router} 
+    <RouterProvider
+      router={router}
       fallbackElement={<InitialFallback />}
     />
   </React.StrictMode>,

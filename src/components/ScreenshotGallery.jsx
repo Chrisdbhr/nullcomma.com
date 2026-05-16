@@ -11,6 +11,7 @@ const MAIN_IMAGE_QUALITY = 70;
 const LIGHTBOX_QUALITY = 85;
 
 const AUTO_PLAY_INTERVAL = 4000;
+const SWIPE_THRESHOLD = 50;
 
 /**
  * Normalize screenshots from either Directus or Steam format.
@@ -48,6 +49,9 @@ function ScreenshotGallery({ screenshots }) {
   const autoPlayRef = useRef(null);
   const progressRef = useRef(null);
   const startTimeRef = useRef(null);
+  const openerRef = useRef(null);
+  const touchStartRef = useRef({ x: 0, y: 0 });
+  const lightboxRef = useRef(null);
 
   const selectedScreenshot = normalizedScreenshots[selectedIndex] || null;
   const lightboxImage = normalizedScreenshots[lightboxIndex];
@@ -69,6 +73,7 @@ function ScreenshotGallery({ screenshots }) {
   }, [normalizedScreenshots.length, resetTimer]);
 
   const openLightbox = useCallback((index) => {
+    openerRef.current = document.activeElement;
     setLightboxIndex(index);
     setLightboxOpen(true);
     setAutoPlayEnabled(false);
@@ -85,6 +90,9 @@ function ScreenshotGallery({ screenshots }) {
     if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
     if (progressRef.current) clearInterval(progressRef.current);
     document.body.style.overflow = '';
+    if (openerRef.current && openerRef.current.focus) {
+      openerRef.current.focus();
+    }
   }, []);
 
   // Keyboard navigation
@@ -111,6 +119,74 @@ function ScreenshotGallery({ screenshots }) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, advanceIndex, closeLightbox]);
+
+  // Touch/swipe navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleTouchStart = (e) => {
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    };
+
+    const handleTouchEnd = (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
+      const dy = e.changedTouches[0].clientY - touchStartRef.current.y;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+        if (dx > 0) {
+          advanceIndex(setLightboxIndex, -1);
+        } else {
+          advanceIndex(setLightboxIndex, 1);
+        }
+      }
+    };
+
+    const el = lightboxRef.current;
+    if (el) {
+      el.addEventListener('touchstart', handleTouchStart, { passive: true });
+      el.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+    return () => {
+      if (el) {
+        el.removeEventListener('touchstart', handleTouchStart);
+        el.removeEventListener('touchend', handleTouchEnd);
+      }
+    };
+  }, [lightboxOpen, advanceIndex]);
+
+  // Focus trap inside lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const lightbox = lightboxRef.current;
+    if (!lightbox) return;
+
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableElements = lightbox.querySelectorAll(focusableSelectors);
+    if (focusableElements.length === 0) return;
+
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+    firstFocusable.focus();
+
+    const handleTabKey = (e) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+    return () => document.removeEventListener('keydown', handleTabKey);
+  }, [lightboxOpen]);
 
   // Auto-play carousel - stops when user clicks an image
   useEffect(() => {
@@ -250,7 +326,7 @@ function ScreenshotGallery({ screenshots }) {
 
       {/* Lightbox Overlay */}
       {lightboxOpen && (
-        <div className="gallery-lightbox" onClick={hasMultipleImages ? undefined : closeLightbox}>
+        <div className="gallery-lightbox" ref={lightboxRef} onClick={hasMultipleImages ? undefined : closeLightbox}>
           {/* Progress bar */}
           {hasMultipleImages && (
             <div className="lightbox-progress-bar">
