@@ -290,9 +290,9 @@ function ScreenshotGallery({ screenshots }) {
                   allowFullScreen
                   title="Trailer preview"
                 />
-                <div className="trailer-preview-overlay">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
-                    <path d="M8 5v14l11-7z" />
+                <div className="gallery-expand-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
                   </svg>
                 </div>
               </div>
@@ -426,8 +426,9 @@ function ScreenshotGallery({ screenshots }) {
             {lightboxImage && (
               lightboxImage.isVideo ? (
                 <iframe
+                  key={`video-${lightboxIndex}`}
                   className="lightbox-video-iframe"
-                  src={`${lightboxImage.url}?autoplay=1&mute=1&controls=1&rel=0`}
+                  src={`${lightboxImage.url}?autoplay=1&mute=0&controls=0&rel=0&modestbranding=1`}
                   frameBorder="0"
                   allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                   allowFullScreen

@@ -239,10 +239,11 @@ describe('ScreenshotGallery', () => {
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
-      // Should show iframe for trailer
       const iframe = container.querySelector('.lightbox-image-container iframe');
       expect(iframe).not.toBeNull();
       expect(iframe.getAttribute('src')).toContain(trailerUrl);
+      expect(iframe.getAttribute('src')).toContain('mute=0');
+      expect(iframe.getAttribute('src')).toContain('controls=0');
     });
 
     it('should destroy iframe when navigating away from trailer slide', async () => {
@@ -252,13 +253,30 @@ describe('ScreenshotGallery', () => {
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
       expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
 
-      // Navigate to next slide (image)
       clickRightZone(container);
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
-      // iframe should be gone, img should be present
       expect(container.querySelector('.lightbox-image-container iframe')).toBeNull();
       expect(container.querySelector('.lightbox-image-container img')).not.toBeNull();
+    });
+
+    it('should restart video when navigating back to trailer slide', async () => {
+      const { container } = render(<ScreenshotGallery screenshots={screenshotsWithTrailer} />);
+
+      openLightbox(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+      const firstIframe = container.querySelector('.lightbox-image-container iframe');
+      expect(firstIframe).not.toBeNull();
+
+      clickRightZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
+
+      clickLeftZone(container);
+      await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
+
+      const newIframe = container.querySelector('.lightbox-image-container iframe');
+      expect(newIframe).not.toBeNull();
+      expect(newIframe).not.toBe(firstIframe);
     });
 
     it('should navigate from last image back to trailer via right', async () => {
