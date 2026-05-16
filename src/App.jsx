@@ -21,6 +21,11 @@ function App() {
 
       <footer className="main-footer">
         <p>© 2025 Null Comma. All rights reserved.</p>
+        <p className="footer-links">
+          <a href="/privacy">Privacy</a>
+          <span className="footer-sep">·</span>
+          <a href="/terms">Terms</a>
+        </p>
       </footer>
     </div>
   );

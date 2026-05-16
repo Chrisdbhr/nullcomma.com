@@ -80,6 +80,25 @@ img {
   font-size: 0.9rem;
 }
 
+.main-footer .footer-links {
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.main-footer .footer-links a {
+  color: var(--color-grey);
+  text-decoration: none;
+}
+
+.main-footer .footer-links a:hover {
+  color: var(--color-light);
+}
+
+.main-footer .footer-sep {
+  margin: 0 10px;
+  color: #555;
+}
+
 .page-content {
   width: 100%;
   max-width: 100%;
