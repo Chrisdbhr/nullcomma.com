@@ -29,9 +29,9 @@ function ContactForm() {
   if (state.succeeded && !hasError) {
     return (
       <div className="contact-form-container">
-        <h3>Contact Me</h3>
+        <h3>Contact the Developer</h3>
         <p className="comment-message success">
-          Message sent successfully! I will reply as soon as possible.
+          Message sent successfully! The developer will reply as soon as possible.
         </p>
       </div>
     );
@@ -39,8 +39,8 @@ function ContactForm() {
 
   return (
     <div className="contact-form-container">
-      <h3>Contact Me</h3>
-      <p>Send your message directly to me. I will reply to the provided email as soon as possible.</p>
+        <h3>Contact the Developer</h3>
+        <p>Send your message directly to the developer. A reply will be sent to the provided email as soon as possible.</p>
 
       <form onSubmit={handleSubmit} className="contact-form">
         

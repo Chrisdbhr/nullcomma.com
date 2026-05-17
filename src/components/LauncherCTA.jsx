@@ -8,7 +8,6 @@ import { LAUNCHER_INSTALLER_URL } from '../utils';
 function LauncherCTA() {
   return (
     <div className="launcher-cta-container">
-      <div className="launcher-cta-icon">🚀</div>
       <div className="launcher-cta-content">
         <h3>Check out the Official Launcher</h3>
         <p>
