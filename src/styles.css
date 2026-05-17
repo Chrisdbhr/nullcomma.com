@@ -52,15 +52,19 @@ body {
   background-repeat: no-repeat;
   will-change: opacity, transform;
   opacity: 0;
-  transition: opacity 1.5s ease-out;
 }
 
 .bg-slide.show {
-  opacity: 0;
+  animation: bgFadeIn 1.5s ease-out forwards;
 }
 
 .bg-slide.visible {
   opacity: 1;
+}
+
+@keyframes bgFadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .bg-slideshow-overlay {
