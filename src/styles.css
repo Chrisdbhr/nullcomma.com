@@ -122,13 +122,19 @@ img {
 }
 
 .main-footer {
-  padding: 20px 0;
+  padding: 40px 20px 20px;
   margin-top: 50px;
-  border-top: 1px solid var(--color-dark);
+  background: linear-gradient(to top, #141414 0%, rgba(20, 20, 20, 0.4) 40%, transparent 100%);
   color: var(--color-grey);
   font-size: 0.9rem;
   text-align: center;
-  background: linear-gradient(to top, #141414 0%, transparent 100%);
+}
+
+.main-footer-inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding-top: 15px;
+  border-top: 1px solid var(--color-dark);
 }
 
 .main-footer a {
@@ -1022,7 +1028,7 @@ img {
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   color: var(--color-grey);
-  background: var(--color-darkest);
+  background: var(--color-dark);
   padding: 5px 10px;
   border-radius: 4px;
 }
@@ -1078,7 +1084,7 @@ img {
 /* --- Botão Secundário --- */
 .button-secondary {
   display: inline-block;
-  background-color: #333;
+  background-color: var(--color-dark);
   color: var(--color-light);
   padding: 10px 15px;
   border-radius: var(--border-radius);
@@ -1200,7 +1206,7 @@ img {
 .contact-form textarea {
   width: 100%;
   padding: 12px;
-  background-color: var(--color-darkest);
+  background-color: var(--color-dark);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   color: #fff;
@@ -1585,7 +1591,7 @@ img {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-grey);
-  background: var(--color-darkest);
+  background: var(--color-dark);
   padding: 2px 8px;
   border-radius: 4px;
 }
@@ -1603,7 +1609,7 @@ img {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-grey);
-  background: var(--color-darkest);
+  background: var(--color-dark);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -1711,7 +1717,7 @@ img {
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--color-grey);
-  background-color: var(--color-darkest);
+  background-color: var(--color-dark);
   padding: 3px 8px;
   border-radius: 4px;
 }
@@ -2228,8 +2234,8 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   padding: 0.75rem 1rem;
   border: 1px solid #333; /* Fallback */
   border-radius: var(--border-radius);
-  background-color: var(--color-darkest); /* Variável correta */
-  color: var(--color-light); /* Variável correta */
+  background-color: var(--color-dark);
+  color: var(--color-light);
   font-size: 1rem;
   font-family: 'Crimson Pro', serif;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
