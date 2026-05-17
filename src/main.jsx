@@ -20,6 +20,8 @@ const BlogListPage = lazy(() => import('./pages/BlogListPage.jsx').then(m => ({
 })));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage.jsx'));
 const PressKitPage = lazy(() => import('./pages/PressKitPage.jsx'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage.jsx'));
+const TermsPage = lazy(() => import('./pages/TermsPage.jsx'));
 import NotFoundPage from './pages/NotFoundPage.jsx';
 
 function SuspenseFallback() {
@@ -114,6 +116,22 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<SuspenseFallback />}>
             <PressKitPage />
+          </Suspense>
+        )
+      },
+      {
+        path: "privacy",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <PrivacyPage />
+          </Suspense>
+        )
+      },
+      {
+        path: "terms",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <TermsPage />
           </Suspense>
         )
       },

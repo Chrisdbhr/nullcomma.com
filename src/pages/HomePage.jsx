@@ -373,8 +373,8 @@ function HomePage() {
                 <h4>Follow Null Comma</h4>
                 <div className="social-links-grid">
                   <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
-                  <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
-                  <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
+                  <a href="https://www.linkedin.com/company/105116562" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
+                  <a href="https://store.steampowered.com/curator/46087468" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
                   <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok"><FaTiktok /></a>
                   <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram"><FaInstagram /></a>
                   <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube"><FaYoutube /></a>
