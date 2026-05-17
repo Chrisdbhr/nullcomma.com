@@ -9,7 +9,7 @@ import {
 
 // Componentes
 import App from './App.jsx';
-import HomePage, { loader as homePageLoader } from './pages/HomePage.jsx';
+import HomePage from './pages/HomePage.jsx';
 import './styles.css';
 
 // Páginas carregadas sob demanda (code splitting)
@@ -20,6 +20,7 @@ const BlogListPage = lazy(() => import('./pages/BlogListPage.jsx').then(m => ({
 })));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage.jsx'));
 const PressKitPage = lazy(() => import('./pages/PressKitPage.jsx'));
+const AboutPage = lazy(() => import('./pages/AboutPage.jsx'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage.jsx'));
 const TermsPage = lazy(() => import('./pages/TermsPage.jsx'));
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -81,7 +82,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-        loader: homePageLoader
       },
       {
         path: "project/:projectId",
@@ -116,6 +116,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<SuspenseFallback />}>
             <PressKitPage />
+          </Suspense>
+        )
+      },
+      {
+        path: "about",
+        element: (
+          <Suspense fallback={<SuspenseFallback />}>
+            <AboutPage />
           </Suspense>
         )
       },

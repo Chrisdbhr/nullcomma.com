@@ -25,6 +25,8 @@ function App() {
         <p>
           © {new Date().getFullYear()} Null Comma. All rights reserved.
           <span className="footer-sep">·</span>
+          <Link to="/about">About</Link>
+          <span className="footer-sep">·</span>
           <Link to="/privacy">Privacy</Link>
           <span className="footer-sep">·</span>
           <Link to="/terms">Terms</Link>
