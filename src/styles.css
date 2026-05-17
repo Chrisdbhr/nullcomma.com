@@ -69,10 +69,10 @@ body {
   z-index: 3;
   background: linear-gradient(
     to right,
-    rgba(20, 20, 20, 0) 0%,
-    rgba(20, 20, 20, 1) 30%,
-    rgba(20, 20, 20, 1) 70%,
-    rgba(20, 20, 20, 0) 100%
+    rgba(20, 20, 20, 0.35) 0%,
+    rgba(20, 20, 20, 1) 15%,
+    rgba(20, 20, 20, 1) 85%,
+    rgba(20, 20, 20, 0.35) 100%
   );
   pointer-events: none;
 }
