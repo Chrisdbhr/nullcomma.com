@@ -177,7 +177,7 @@ function HomePage() {
         <BlogFeed />
       </div>
 
-      <div className="home-hero-grid">
+      <div className="filter-launcher-grid">
         <ProjectTypeFilter
           types={uniqueProjectTypes}
           excludedTypes={excludedTypes}

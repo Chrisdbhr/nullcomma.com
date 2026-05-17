@@ -949,33 +949,33 @@ img {
   overflow-wrap: break-word;
 }
 
-/* --- Home Hero Grid (Filter + Launcher) --- */
-.home-hero-grid {
+/* --- Filter + Launcher Grid --- */
+.filter-launcher-grid {
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 1fr 35%;
   gap: var(--main-margin-bottom);
   margin-bottom: var(--main-margin-bottom);
 }
 
-.launcher-cta-compact {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.filter-launcher-grid .project-filter-container {
+  margin-bottom: 0;
 }
 
-.launcher-download-btn {
-  font-size: 2.5rem;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  padding: 0;
+.mini-stat {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--color-grey);
+  background: var(--color-darkest);
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.mini-stat strong {
+  color: var(--color-purple);
 }
 
 @media (max-width: 768px) {
-  .home-hero-grid {
+  .filter-launcher-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1651,91 +1651,45 @@ img {
   font-size: 1.1rem; /* Um pouco menor para caber bem */
 }
 
-/* --- Destaque Launcher (HomePage) --- */
-.launcher-cta-container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+/* --- Launcher CTA (Mini) --- */
+.launcher-cta-mini {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 15px;
   background:
     linear-gradient(135deg, rgba(118, 79, 162, 0.88) 0%, rgba(167, 110, 255, 0.88) 100%),
     url('https://cms.nullcomma.com/assets/2a591f93-636e-40fb-81ba-1f8dc8ccee7a?width=1200&quality=50') center/cover no-repeat;
-  color: var(--color-light);
-  padding: 20px 30px;
   border-radius: var(--border-radius);
-  margin-bottom: var(--main-margin-bottom);
+  padding: 20px;
   box-shadow: 0 5px 20px rgba(145, 70, 255, 0.3);
   overflow: hidden;
   position: relative;
 }
 
-.launcher-cta-icon {
-  font-size: 3rem;
-  line-height: 1;
-}
-
-.launcher-cta-content h3 {
-  font-size: 1.6rem;
+.launcher-cta-mini h3 {
+  font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
-  margin: 0 0 5px 0;
+  margin: 0;
   padding: 0;
   border: none;
+  text-align: center;
 }
 
-.launcher-cta-content p {
-  font-size: 1.1rem;
-  font-weight: 300;
-  margin: 0;
-  opacity: 0.9;
-}
-
-.launcher-cta-action .button-primary {
+.launcher-cta-mini .button-primary {
   background: var(--color-light);
   color: var(--color-darkest);
   font-weight: 700;
-  min-width: 180px;
+  font-size: 1.3rem;
+  min-width: 100%;
+  padding: 10px 0;
 }
-.launcher-cta-action .button-primary:hover {
+
+.launcher-cta-mini .button-primary:hover {
   background: var(--color-green);
   transform: scale(1.05);
-}
-
-.cta-action-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.launcher-cta-fallback {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  line-height: 1.4;
-}
-
-.launcher-cta-fallback a {
-  color: #fff;
-  text-decoration: underline;
-  font-weight: 600;
-}
-
-.launcher-cta-fallback p {
-  margin: 0;
-}
-
-/* Responsividade do Launcher CTA */
-@media (max-width: 768px) {
-  .launcher-cta-container {
-    grid-template-columns: 1fr; /* Coluna única */
-    text-align: center;
-    gap: 20px;
-    padding: 30px 20px;
-  }
-  .launcher-cta-icon {
-    margin: 0 auto;
-  }
 }
 
 
