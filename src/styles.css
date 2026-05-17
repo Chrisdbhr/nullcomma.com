@@ -31,7 +31,6 @@ body {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  animation: bgZoom 12s ease-out forwards;
 }
 
 .bg-slide {
@@ -40,22 +39,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: opacity;
-}
-
-.bg-slide-next {
-  z-index: 2;
-  animation: bgCrossFade 1.5s ease-out forwards;
-}
-
-@keyframes bgCrossFade {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes bgZoom {
-  0%   { transform: scale(1); }
-  100% { transform: scale(1.08); }
+  will-change: opacity, transform;
 }
 
 .bg-slideshow-overlay {
@@ -64,10 +48,10 @@ body {
   z-index: 3;
   background: linear-gradient(
     to right,
-    rgba(20, 20, 20, 0.7) 0%,
-    rgba(20, 20, 20, 0) 30%,
-    rgba(20, 20, 20, 0) 70%,
-    rgba(20, 20, 20, 0.7) 100%
+    rgba(20, 20, 20, 0) 0%,
+    rgba(20, 20, 20, 1) 30%,
+    rgba(20, 20, 20, 1) 70%,
+    rgba(20, 20, 20, 0) 100%
   );
   pointer-events: none;
 }
