@@ -36,16 +36,32 @@ export async function loader() {
     const totalProjects = data.data;
 
     const now = new Date();
+    const currentYear = now.getFullYear();
 
-    const unreleasedProjects = totalProjects
-      .filter(g => new Date(g.release_date) > now)
-      .sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+    // Latest: current year + unreleased (future dates)
+    const latestProjects = totalProjects
+      .filter(g => {
+        const releaseDate = new Date(g.release_date);
+        return releaseDate.getFullYear() === currentYear || releaseDate > now;
+      })
+      .sort((a, b) => {
+        const aFuture = new Date(a.release_date) > now;
+        const bFuture = new Date(b.release_date) > now;
+        if (aFuture && !bFuture) return -1;
+        if (!aFuture && bFuture) return 1;
+        if (aFuture && bFuture) return new Date(a.release_date) - new Date(b.release_date);
+        return new Date(b.release_date) - new Date(a.release_date);
+      });
 
+    // Past projects excluding current year
     const pastProjects = totalProjects
-      .filter(g => new Date(g.release_date) <= now)
+      .filter(g => {
+        const releaseDate = new Date(g.release_date);
+        return releaseDate <= now && releaseDate.getFullYear() !== currentYear;
+      })
       .sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
 
-    const groupedReleasedProjects = pastProjects.reduce((acc, project) => {
+    const groupedPastProjects = pastProjects.reduce((acc, project) => {
       const year = new Date(project.release_date).getFullYear();
       if (!acc[year]) acc[year] = [];
       acc[year].push(project);
@@ -55,7 +71,6 @@ export async function loader() {
     // Lógica para extrair tipos de projeto únicos
     const allProjectTypes = new Set();
     totalProjects.forEach(p => {
-      // Se project_type for null, padroniza para 'project'
       const type = p.project_type || 'project';
       allProjectTypes.add(type);
     });
@@ -63,24 +78,23 @@ export async function loader() {
 
     const totalProjectsCount = totalProjects.length;
     const totalEngineStats = getEngineStats(totalProjects);
-    const sortedYears = Object.keys(groupedReleasedProjects).sort((a, b) => b - a);
+    const sortedYears = Object.keys(groupedPastProjects).sort((a, b) => b - a);
 
-    // O loader retorna um objeto com tudo que a página precisa
     return {
       totalProjects,
-      unreleasedProjects,
-      groupedReleasedProjects,
+      latestProjects,
+      groupedPastProjects,
       totalProjectsCount,
       totalEngineStats,
       sortedYears,
-      uniqueProjectTypes // Retorna os tipos únicos
+      uniqueProjectTypes
     };
   } catch (error) {
     console.error("Error fetching projects:", error);
     return {
       totalProjects: [],
-      unreleasedProjects: [],
-      groupedReleasedProjects: {},
+      latestProjects: [],
+      groupedPastProjects: {},
       totalProjectsCount: 0,
       totalEngineStats: [],
       sortedYears: [],
@@ -95,8 +109,8 @@ function HomePage() {
   const {
     totalProjectsCount,
     totalEngineStats,
-    unreleasedProjects: initialUnreleased,
-    groupedReleasedProjects: initialGrouped,
+    latestProjects: initialLatest,
+    groupedPastProjects: initialGrouped,
     sortedYears,
     uniqueProjectTypes
   } = useLoaderData();
@@ -134,25 +148,23 @@ function HomePage() {
 
   // 6. Aplicar o filtro nos projetos e calcular quantos foram escondidos
 
-  // Projetos futuros
-  const filteredUnreleasedProjects = filterProjects(initialUnreleased);
+  // Projetos Latest (ano atual + futuros)
+  const filteredLatestProjects = filterProjects(initialLatest);
 
-  // Projetos passados (Agrupados)
-  const filteredGroupedReleasedProjects = {};
-  let totalVisibleProjects = filteredUnreleasedProjects.length;
+  // Projetos passados agrupados (excluindo ano atual)
+  const filteredGroupedPastProjects = {};
+  let totalVisibleProjects = filteredLatestProjects.length;
 
   sortedYears.forEach(year => {
     const filtered = filterProjects(initialGrouped[year]);
     if (filtered.length > 0) {
-      filteredGroupedReleasedProjects[year] = filtered;
+      filteredGroupedPastProjects[year] = filtered;
     }
-    // Sempre contamos os visíveis para o total
     totalVisibleProjects += filtered.length;
   });
 
   // HELPER: Calcula quais tipos excluídos são relevantes para a lista de projetos fornecida
   const getRelevantExcludedTypes = (initialProjects) => {
-      // Cria uma lista de projetos que deveriam estar lá, mas foram excluídos
       const relevantTypes = new Set();
       initialProjects.forEach(p => {
           const type = p.project_type || 'project';
@@ -210,27 +222,42 @@ function HomePage() {
 
         {/* Renderização dos Projetos */}
 
-        {/* Seção Próximos Lançamentos */}
-        {(initialUnreleased.length > 0) && (
+        {/* Seção Latest (ano atual + lançamentos futuros) */}
+        {(initialLatest.length > 0) && (
           <section className="year-group">
-            <h3 className="year-title upcoming-title">Upcoming Releases</h3>
+            <div className="home-section-header">
+              <h3 className="year-title">Latest</h3>
+              {(() => {
+                const latestEngineStats = getEngineStats(filteredLatestProjects);
+                if (latestEngineStats.length === 0) return null;
+                return (
+                  <div className="engine-stats-year">
+                    {latestEngineStats.map(([engine, count]) => (
+                      <span key={engine} className="engine-stat-item-year">
+                        {engine} ({count})
+                      </span>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
 
             {/* Caso A: Todos ocultos */}
-            {filteredUnreleasedProjects.length === 0 && initialUnreleased.length > 0 ? (
+            {filteredLatestProjects.length === 0 && initialLatest.length > 0 ? (
                <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                 All {initialUnreleased.length} upcoming projects have been hidden by filters.
+                 All {initialLatest.length} latest projects have been hidden by filters.
                </p>
             ) : (
             // Caso B/C: Projetos visíveis
             <div className="game-grid">
-              {filteredUnreleasedProjects.map((project) => (
+              {filteredLatestProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
 
-              {/* Card de Projetos Ocultos (Unreleased) */}
-              {initialUnreleased.length > filteredUnreleasedProjects.length && showHiddenCard && (() => {
-                const projectsHiddenInUnreleased = initialUnreleased.length - filteredUnreleasedProjects.length;
-                const relevantExcludedTypes = getRelevantExcludedTypes(initialUnreleased);
+              {/* Card de Projetos Ocultos (Latest) */}
+              {initialLatest.length > filteredLatestProjects.length && showHiddenCard && (() => {
+                const projectsHiddenInLatest = initialLatest.length - filteredLatestProjects.length;
+                const relevantExcludedTypes = getRelevantExcludedTypes(initialLatest);
                 const excludedTypesList = relevantExcludedTypes.join(', ');
 
                 return (
@@ -239,7 +266,7 @@ function HomePage() {
                     onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
                   >
                     <div className="hidden-card-content">
-                      <h4>+{projectsHiddenInUnreleased} Hidden Projects</h4>
+                      <h4>+{projectsHiddenInLatest} Hidden Projects</h4>
                       <p>
                         Hidden by: <strong>{excludedTypesList}</strong>.
                       </p>
@@ -255,16 +282,14 @@ function HomePage() {
           </section>
         )}
 
-        {/* Seção Projetos Lançados (Agrupados por Ano) */}
+        {/* Seção Projetos Lançados por Ano (excluindo ano atual) */}
         {sortedYears.map((year) => {
           const initialYearProjects = initialGrouped[year];
-          // Garante que filteredYearProjects seja um array, mesmo que vazio
-          const filteredYearProjects = filteredGroupedReleasedProjects[year] || [];
+          const filteredYearProjects = filteredGroupedPastProjects[year] || [];
 
           const projectsHiddenInYear = initialYearProjects.length - filteredYearProjects.length;
           const allProjectsHidden = projectsHiddenInYear === initialYearProjects.length;
 
-          // Se a lista inicial tem projetos, mas todos foram filtrados (Req 3, Caso A)
           if (allProjectsHidden && initialYearProjects.length > 0) {
             return (
               <section key={year} className="year-group">
@@ -278,12 +303,10 @@ function HomePage() {
             );
           }
 
-          // Se não houver projetos visíveis, não renderiza a seção
           if (filteredYearProjects.length === 0) return null;
 
           const yearEngineStats = getEngineStats(filteredYearProjects);
 
-          // Cálculo dos tipos relevantes para este grupo
           const relevantExcludedTypes = getRelevantExcludedTypes(initialYearProjects);
           const excludedTypesList = relevantExcludedTypes.join(', ');
 
@@ -305,11 +328,10 @@ function HomePage() {
                   <ProjectCard key={project.id} project={project} />
                 ))}
 
-                {/* Card de Projetos Ocultos (Req 3, Caso B) */}
                 {projectsHiddenInYear > 0 && showHiddenCard && (
                   <div
                     className="game-card hidden-projects-card"
-                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)} // Use specific handler
+                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
                   >
                     <div className="hidden-card-content">
                       <h4>+{projectsHiddenInYear} Hidden Projects</h4>

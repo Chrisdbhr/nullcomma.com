@@ -64,12 +64,16 @@ describe('HomePage Loader', () => {
 
     expect(result.totalProjectsCount).toBe(5);
 
-    expect(result.unreleasedProjects).toHaveLength(1);
-    expect(result.unreleasedProjects[0].id).toBe(3);
+    // Latest: current year (2024) + future (2025)
+    expect(result.latestProjects).toHaveLength(3);
+    // Unreleased first, then current year descending
+    expect(result.latestProjects[0].id).toBe(3); // 2025 (future)
+    expect(result.latestProjects[1].id).toBe(4); // 2024-07-25
+    expect(result.latestProjects[2].id).toBe(2); // 2024-03-15
 
-    expect(result.groupedReleasedProjects['2024']).toHaveLength(2);
-    expect(result.groupedReleasedProjects['2023']).toHaveLength(2);
-    expect(result.sortedYears).toEqual(['2024', '2023']);
+    // Past projects grouped (excluding current year 2024)
+    expect(result.groupedPastProjects['2023']).toHaveLength(2);
+    expect(result.sortedYears).toEqual(['2023']);
 
     expect(result.totalEngineStats).toEqual([
       ['Construct 2', 1],
@@ -91,8 +95,8 @@ describe('HomePage Loader', () => {
     const result = await homePageLoader();
 
     expect(result.totalProjectsCount).toBe(0);
-    expect(result.unreleasedProjects).toHaveLength(0);
-    expect(result.groupedReleasedProjects).toEqual({});
+    expect(result.latestProjects).toHaveLength(0);
+    expect(result.groupedPastProjects).toEqual({});
     expect(result.uniqueProjectTypes).toHaveLength(0);
     expect(result.totalEngineStats).toHaveLength(0);
 
