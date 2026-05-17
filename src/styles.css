@@ -96,10 +96,9 @@ img {
 
 /* --- Community Section (Home Page) --- */
 .community-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .community-info h3 {
@@ -161,10 +160,6 @@ img {
 }
 
 @media (max-width: 768px) {
-  .community-content {
-    grid-template-columns: 1fr;
-  }
-
   .social-links-grid {
     justify-content: center;
   }
