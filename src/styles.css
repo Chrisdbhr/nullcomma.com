@@ -18,11 +18,51 @@
 }
 
 body {
-  font-family: 'Crimson Pro', serif; /* Fonte Principal */
+  font-family: 'Crimson Pro', serif;
   background-color: var(--color-darkest);
   color: var(--color-light);
   line-height: 1.6;
   font-size: 18px;
+}
+
+/* --- Background Slideshow --- */
+.bg-slideshow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: opacity;
+}
+
+.bg-slide-next {
+  z-index: 2;
+}
+
+@keyframes bgCrossFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.bg-slideshow-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(
+    ellipse 60% 50% at center,
+    rgba(20, 20, 20, 0.92) 0%,
+    rgba(20, 20, 20, 0.5) 40%,
+    rgba(20, 20, 20, 0.05) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 a {

@@ -1,8 +1,11 @@
 import { Link, Outlet } from 'react-router-dom';
+import BackgroundSlideshow from './components/BackgroundSlideshow';
 
 function App() {
   return (
     <div className="app-container">
+      <BackgroundSlideshow />
+
       <header className="main-header">
         <Link to="/" className="site-title-link">
           <h1>Null Comma</h1>
