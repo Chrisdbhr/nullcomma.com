@@ -16,6 +16,16 @@
   --border-radius: 6px;
   --transition-speed: 0.2s;
   --main-margin-bottom: 20px;
+  --border-bevel-light: #333;
+  --border-bevel-dark: #111;
+  --border-gradient: conic-gradient(
+    from 135deg,
+    var(--color-grey) 0deg,
+    var(--color-light) 90deg,
+    var(--color-dark) 180deg,
+    #000 270deg,
+    var(--color-grey) 360deg
+  );
 }
 
 * {
@@ -165,11 +175,12 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #5865F2;
+  background: #5865F2 padding-box,
+              var(--border-gradient) border-box;
   color: #fff;
   padding: 10px 20px;
   border-radius: var(--border-radius);
-  border: 1px solid #333;
+  border: 1px solid transparent;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 1rem;
@@ -177,7 +188,8 @@ img {
 }
 
 .community-discord-btn:hover {
-  background: #4a54c9;
+  background: #4a54c9 padding-box,
+              var(--border-gradient) border-box;
   color: #fff;
   transform: scale(1.03);
 }
@@ -239,7 +251,9 @@ img {
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   transition: transform var(--transition-speed) ease,
     box-shadow var(--transition-speed) ease;
 }
@@ -302,7 +316,8 @@ img {
 /* --- Botões (Nova Paleta) --- */
 .button-primary {
   display: inline-block;
-  background: var(--color-green);
+  background: var(--color-green) padding-box,
+              var(--border-gradient) border-box;
   color: #000;
   padding: 12px 20px;
   border-radius: var(--border-radius);
@@ -310,7 +325,7 @@ img {
   font-weight: 700;
   text-align: center;
   transition: all var(--transition-speed) ease;
-  border: 1px solid #333;
+  border: 1px solid transparent;
   cursor: pointer;
   text-transform: uppercase;
 }
@@ -372,17 +387,19 @@ img {
 
 .game-detail-main {
   min-width: 0;
-  background: var(--color-dark);
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #333;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   padding: 20px;
 }
 
 .game-detail-sidebar .sidebar-info-box {
-  background-color: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   padding: 15px;
   margin-top: 20px;
@@ -410,10 +427,11 @@ img {
 
 /* Glass card for text-heavy pages (privacy, terms) */
 .glass-content-card {
-  background: var(--color-dark);
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid #333;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   padding: 20px;
   margin-top: 20px;
@@ -1051,8 +1069,9 @@ img {
 /* --- Seções da HomePage --- */
 .home-section {
   margin-bottom: var(--main-margin-bottom);
-  background-color: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   padding: 20px;
   border-radius: var(--border-radius);
   width: 100%;
@@ -1084,7 +1103,8 @@ img {
 /* --- Botão Secundário --- */
 .button-secondary {
   display: inline-block;
-  background-color: var(--color-dark);
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
   color: var(--color-light);
   padding: 10px 15px;
   border-radius: var(--border-radius);
@@ -1092,7 +1112,7 @@ img {
   font-weight: 500;
   text-align: center;
   transition: background-color var(--transition-speed) ease;
-  border: 1px solid #333;
+  border: 1px solid transparent;
   cursor: pointer;
 }
 
@@ -1132,7 +1152,9 @@ img {
 
 .blog-post-card {
   border-radius: var(--border-radius);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   overflow: hidden;
   text-decoration: none;
   transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
@@ -1206,8 +1228,9 @@ img {
 .contact-form textarea {
   width: 100%;
   padding: 12px;
-  background-color: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   color: #fff;
   font-family: inherit;
@@ -1813,7 +1836,8 @@ img {
 /* O botão do Discord pode ser reutilizado */
 .discord-button {
   width: 100%;
-  background-color: #5865F2;
+  background: #5865F2 padding-box,
+              var(--border-gradient) border-box;
   color: #fff;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -1822,12 +1846,13 @@ img {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #333;
+  border: 1px solid transparent;
   transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
 }
 
 .discord-button:hover {
-  background-color: #4a54c9;
+  background: #4a54c9 padding-box,
+              var(--border-gradient) border-box;
   color: #fff;
   transform: scale(1.03);
 }
@@ -1906,8 +1931,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 
 .blog-list-page > .blog-list-header {
-  background: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   padding: 20px;
   margin-bottom: var(--main-margin-bottom);
@@ -1935,7 +1961,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   text-decoration: none;
   color: var(--color-text);
   transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
 }
 
 .blog-post-card:hover {
@@ -1981,8 +2009,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .blog-post-detail {
   max-width: 800px;
   margin: 0 auto;
-  background: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   padding: 30px;
 }
@@ -2096,8 +2125,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 
 /* --- Sidebar do TOC --- */
 .toc-sidebar {
-  background: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   padding: 1.5rem;
   border-radius: 8px;
   position: sticky;
@@ -2197,9 +2227,10 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .form-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #333; /* Fallback */
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
-  background-color: var(--color-dark);
   color: var(--color-light);
   font-size: 1rem;
   font-family: 'Crimson Pro', serif;
@@ -2299,9 +2330,10 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .project-filter-container {
   margin-bottom: var(--main-margin-bottom);
   padding: 15px 20px;
-  background-color: var(--color-dark);
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
   border-radius: var(--border-radius);
-  border: 1px solid #333;
+  border: 1px solid transparent;
 }
 
 .filter-header {
@@ -2533,8 +2565,9 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 
 .button-copy-desc,
 .button-copy-embed {
-  background: var(--color-dark);
-  border: 1px solid #333;
+  background: var(--color-dark) padding-box,
+              var(--border-gradient) border-box;
+  border: 1px solid transparent;
   color: var(--color-grey);
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
