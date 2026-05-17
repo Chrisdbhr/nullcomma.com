@@ -31,6 +31,7 @@ body {
   inset: 0;
   z-index: -1;
   overflow: hidden;
+  animation: bgZoom 12s ease-out forwards;
 }
 
 .bg-slide {
@@ -39,14 +40,12 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: opacity, transform;
-  animation: bgZoom 12s ease-in-out infinite alternate;
+  will-change: opacity;
 }
 
 .bg-slide-next {
   z-index: 2;
-  animation: bgCrossFade 1.5s ease-out forwards, bgZoom 12s ease-in-out infinite alternate;
-  animation-delay: 0s, 1.5s;
+  animation: bgCrossFade 1.5s ease-out forwards;
 }
 
 @keyframes bgCrossFade {
@@ -65,12 +64,10 @@ body {
   z-index: 3;
   background: linear-gradient(
     to right,
-    rgba(20, 20, 20, 0.95) 0%,
-    rgba(20, 20, 20, 0.85) 15%,
+    rgba(20, 20, 20, 0.7) 0%,
     rgba(20, 20, 20, 0) 30%,
     rgba(20, 20, 20, 0) 70%,
-    rgba(20, 20, 20, 0.85) 85%,
-    rgba(20, 20, 20, 0.95) 100%
+    rgba(20, 20, 20, 0.7) 100%
   );
   pointer-events: none;
 }
