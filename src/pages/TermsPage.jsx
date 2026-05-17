@@ -5,7 +5,7 @@ function TermsPage() {
     <div className="page-content fade-in" style={{ maxWidth: '720px', margin: '0 auto' }}>
       <Link to="/" className="button-back">&larr; Back to nullcomma.com</Link>
 
-      <div className="sidebar-info-box" style={{ marginTop: '20px' }}>
+      <div className="glass-content-card">
         <h1 style={{ color: 'var(--color-light)', fontSize: '2rem', marginBottom: '0.5rem' }}>Terms of Service</h1>
 
         <h2 style={{ color: 'var(--color-purple)', fontSize: '1.3rem', marginTop: '2rem', marginBottom: '0.75rem' }}>1. Content</h2>

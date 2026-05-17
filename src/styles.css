@@ -406,8 +406,17 @@ img {
 
 .sidebar-info-box p strong {
   color: var(--color-light);
-  margin-right: 5px;
-  font-weight: 500;
+}
+
+/* Glass card for text-heavy pages (privacy, terms) */
+.glass-content-card {
+  background: var(--color-dark);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #333;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .rating-quote {
