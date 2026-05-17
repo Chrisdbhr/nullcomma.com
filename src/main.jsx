@@ -9,7 +9,7 @@ import {
 
 // Componentes
 import App from './App.jsx';
-import HomePage from './pages/HomePage.jsx';
+import HomePage, { loader as homePageLoader } from './pages/HomePage.jsx';
 import './styles.css';
 
 // Páginas carregadas sob demanda (code splitting)
@@ -82,6 +82,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+        loader: homePageLoader
       },
       {
         path: "project/:projectId",

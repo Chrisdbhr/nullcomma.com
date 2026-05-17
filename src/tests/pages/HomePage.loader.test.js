@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { loader as homePageLoader } from '../../pages/HomePage';
+import { loader as loadHomePageData } from '../../pages/HomePage';
 
 const mockProjects = [
   {
@@ -60,7 +60,7 @@ describe('HomePage Loader', () => {
       })
     );
 
-    const result = await homePageLoader();
+    const result = await loadHomePageData();
 
     expect(result.totalProjectsCount).toBe(5);
 
@@ -92,7 +92,7 @@ describe('HomePage Loader', () => {
       Promise.reject(new Error('Network error'))
     );
 
-    const result = await homePageLoader();
+    const result = await loadHomePageData();
 
     expect(result.totalProjectsCount).toBe(0);
     expect(result.latestProjects).toHaveLength(0);
