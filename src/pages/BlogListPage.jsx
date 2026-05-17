@@ -44,8 +44,10 @@ function BlogListPage() {
       <meta property="og:description" content="Articles and devlogs by Christopher Ravailhe on Null Comma. Game development, Unity, C#, and more." />
 
       <div className="blog-list-page">
-        <h2>Blog</h2>
-        <p>Articles and devlogs about Null Comma projects.</p>
+        <div className="blog-list-header">
+          <h2>Blog</h2>
+          <p>Articles and devlogs about Null Comma projects.</p>
+        </div>
 
         <div className="blog-post-grid">
           {posts.map((post, index) => (
