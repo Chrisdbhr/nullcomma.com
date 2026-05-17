@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { baseURL } from '../utils';
 
 const SHOW_MS = 6000;
 const FADE_MS = 1500;
 const MAX_IMAGES = 15;
 const LOAD_TIMEOUT = 3000;
-const ZOOM_DURATION = 15000; // 15s from 1.0 to 1.08
+const ZOOM_DURATION = 15000;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -16,20 +16,34 @@ function shuffle(arr) {
   return a;
 }
 
+function directusAssetUrl(id) {
+  return `${baseURL}/assets/${id}?width=1920&quality=80`;
+}
+
 function BackgroundSlideshow() {
   const [current, setCurrent] = useState(null);
   const [entering, setEntering] = useState(null);
   const [fadePct, setFadePct] = useState(0);
+  const [ready, setReady] = useState(false);
   const order = useRef([]);
   const idx = useRef(0);
   const alive = useRef(true);
   const advanceTimer = useRef(null);
   const slideRefs = useRef({});
 
-  // Per-slide zoom via JS rAF (tracks each URL's progress independently)
   useEffect(() => {
-    const progress = {}; // url → current scale
-    const RATE = 0.08 / (ZOOM_DURATION / 16.67); // per-frame increment at 60fps
+    if (document.readyState === 'complete') {
+      setReady(true);
+    } else {
+      const onLoad = () => setReady(true);
+      window.addEventListener('load', onLoad);
+      return () => window.removeEventListener('load', onLoad);
+    }
+  }, []);
+
+  useEffect(() => {
+    const progress = {};
+    const RATE = 0.08 / (ZOOM_DURATION / 16.67);
     let raf;
 
     const tick = () => {
@@ -74,7 +88,7 @@ function BackgroundSlideshow() {
     }, SHOW_MS);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!entering) return;
     const start = Date.now();
     let raf;
@@ -99,6 +113,8 @@ function BackgroundSlideshow() {
   }, [entering, scheduleNext]);
 
   useEffect(() => {
+    if (!ready) return;
+
     fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
       .then(r => r.json())
       .then(data => {
@@ -106,7 +122,7 @@ function BackgroundSlideshow() {
         const gameGroups = [];
         data.data.forEach(p => {
           const group = [];
-          if (p.card_image?.id) group.push(`${baseURL}/assets/${p.card_image.id}`);
+          if (p.card_image?.id) group.push(directusAssetUrl(p.card_image.id));
           if (p.steam_screenshots?.length > 0) {
             p.steam_screenshots.forEach(ss => {
               const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
@@ -116,7 +132,7 @@ function BackgroundSlideshow() {
           if (p.screenshots?.length > 0) {
             p.screenshots.forEach(ss => {
               const id = ss.directus_files_id?.id;
-              if (id) group.push(`${baseURL}/assets/${id}`);
+              if (id) group.push(directusAssetUrl(id));
             });
           }
           if (group.length > 0) gameGroups.push(shuffle(group));
@@ -132,14 +148,23 @@ function BackgroundSlideshow() {
         }
         const limited = interleaved.slice(0, MAX_IMAGES);
         order.current = limited;
-        limited.forEach(u => { const i = new Image(); i.src = u; });
+
         idx.current = 0;
-        setCurrent(order.current[0]);
-        scheduleNext();
+        const firstUrl = order.current[0];
+
+        const img = new Image();
+        img.onload = () => { if (alive.current) { setFadePct(0); setEntering(firstUrl); } };
+        img.onerror = () => { if (alive.current) { setFadePct(0); setEntering(firstUrl); } };
+        img.src = firstUrl;
+
+        for (let i = 1; i < limited.length; i++) {
+          const bg = new Image();
+          bg.src = limited[i];
+        }
       })
       .catch(() => {});
     return () => { alive.current = false; };
-  }, [scheduleNext]);
+  }, [ready, scheduleNext]);
 
   useEffect(() => {
     return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current); };
