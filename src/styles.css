@@ -391,7 +391,9 @@ img {
 
 .game-detail-main {
   min-width: 0;
-  background: rgba(31, 31, 31, 0.85);
+  background: var(--color-dark);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 20px;
