@@ -59,7 +59,7 @@ function ErrorBoundary() {
       <h2>Maintenance mode!</h2>
       <p>{error.message}</p>
       <br />
-      <p>{"It looks like you're trying to access my page during maintenance, that's rare!"}</p>
+      <p>{"It looks like you're trying to access this page during maintenance, that's rare!"}</p>
       <p>{"Go grab a coffee and come back later."}</p>
     </div>
   );

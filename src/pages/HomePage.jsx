@@ -5,7 +5,6 @@ import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../utils'
 import LauncherCTA from '../components/LauncherCTA'
-import DiscordCTA from '../components/DiscordCTA'
 import ProjectTypeFilter from '../components/ProjectTypeFilter'
 import { normalizeEngineName } from '../utils/textUtils';
 
@@ -176,19 +175,6 @@ function HomePage() {
 
       <div className="home-hero-grid">
         <LauncherCTA />
-        <div className="home-section about-me-mini">
-          <div className="about-me-mini-content">
-            <h3>About Me</h3>
-            <p>
-              I'm <strong>Christopher Ravailhe</strong>, a Senior C# Developer and Unity specialist with over 9 years of experience. I've worked on 25+ games across PC, console, and mobile platforms.
-            </p>
-            <div className="about-me-mini-stats">
-              <span className="mini-stat"><strong>9+</strong> Years</span>
-              <span className="mini-stat"><strong>25+</strong> Games</span>
-              <span className="mini-stat">PC · Console · Mobile</span>
-            </div>
-          </div>
-        </div>
       </div>
 
 
@@ -201,7 +187,7 @@ function HomePage() {
       <div className="home-section">
         <div className="home-section-header">
           <h2>
-            My Games and Projects ({totalVisibleProjects}{totalVisibleProjects !== totalProjectsCount ? `/${totalProjectsCount}` : ''})
+            Games and Projects ({totalVisibleProjects}{totalVisibleProjects !== totalProjectsCount ? `/${totalProjectsCount}` : ''})
             {/* Mensagem de projetos ocultos integrada (Req 2) */}
             {projectsHidden > 0 && (
               <span className="hidden-count-message" style={{ marginLeft: '15px' }}>
@@ -352,11 +338,24 @@ function HomePage() {
       </div>
 
       <div className="home-contact-layout">
+        <div className="home-section about-me-card">
+          <div className="about-me-card-content">
+            <h3>The Developer</h3>
+            <p>
+              <strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.
+            </p>
+            <p>
+              Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.
+            </p>
+            <div className="about-me-card-stats">
+              <span className="mini-stat"><strong>9+</strong> Years in Unity</span>
+              <span className="mini-stat"><strong>25+</strong> Games Shipped</span>
+              <span className="mini-stat">PC · Console · Mobile</span>
+            </div>
+          </div>
+        </div>
         <div className="home-section">
           <ContactForm />
-        </div>
-        <div className="home-section discord-home-widget">
-          <DiscordCTA />
         </div>
       </div>
     </div>

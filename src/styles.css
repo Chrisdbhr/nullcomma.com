@@ -1783,23 +1783,42 @@ img {
   transform: scale(1.03);
 }
 
-/* --- Layout Contato + Discord (Home Page) --- */
+/* --- Layout About Me + Contact (Home Page) --- */
 .home-contact-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 colunas */
+  grid-template-columns: 1fr 1fr;
   gap: 25px;
   align-items: flex-start;
-  margin-top: 40px; /* Mantém o espaçamento das seções */
+  margin-top: 40px;
 }
 
-/* O .home-section já dá o fundo e padding,
-   só precisamos estilizar o conteúdo do Discord */
+.about-me-card {
+  background: linear-gradient(135deg, rgba(118, 79, 162, 0.15) 0%, rgba(31, 31, 31, 1) 100%);
+}
 
-.discord-home-widget p {
-  font-size: 1rem;
-  color: var(--color-grey);
+.about-me-card-content h3 {
+  color: var(--color-light);
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--color-darkest);
+  padding-bottom: 8px;
+}
+
+.about-me-card-content p {
+  color: var(--color-light);
+  font-size: 0.95rem;
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.about-me-card-content p:last-child {
+  margin-bottom: 15px;
+}
+
+.about-me-card-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* O botão do Discord pode ser reutilizado */

@@ -45,7 +45,7 @@ function BlogListPage() {
 
       <div className="blog-list-page">
         <h2>Blog</h2>
-        <p>Articles and devlogs about my projects.</p>
+        <p>Articles and devlogs about Null Comma projects.</p>
 
         <div className="blog-post-grid">
           {posts.map((post, index) => (

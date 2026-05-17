@@ -21,13 +21,13 @@ function App() {
       <footer className="main-footer">
         <div className="footer-grid">
           <div className="footer-about">
-            <h4>About Me</h4>
+            <h4>About the Developer</h4>
             <p>
-              I'm <strong>Christopher Ravailhe</strong>, a Senior C# Developer and Unity specialist with 9+ years of experience. I've shipped 25+ games across PC, console, and mobile.
+              <strong>Christopher Ravailhe</strong> is a Senior C# Developer and Unity specialist with 9+ years of experience. He has shipped 25+ games across PC, console, and mobile.
             </p>
           </div>
           <div className="footer-community">
-            <h4>My Community</h4>
+            <h4>Community</h4>
             <p>
               Meet Concord! For over 10 years, we've been playing, working, and talking about life together.
             </p>

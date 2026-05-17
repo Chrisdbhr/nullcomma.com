@@ -4,7 +4,7 @@ import { FaDiscord } from 'react-icons/fa'
 function DiscordCTA() {
   return (
     <>
-      <h3>My Community</h3>
+      <h3>Community</h3>
       <p>
         Meet Concord! For over 10 years, we've been playing, 
         working, and talking about life together.
