@@ -1,8 +1,4 @@
 import { Link, Outlet } from 'react-router-dom';
-import {
-  FaGithub, FaSteam, FaEnvelope,
-  FaLinkedin, FaInstagram, FaYoutube, FaTiktok, FaDiscord
-} from 'react-icons/fa'
 
 function App() {
   return (
@@ -19,38 +15,6 @@ function App() {
       </main>
 
       <footer className="main-footer">
-        <div className="footer-grid">
-          <div className="footer-about">
-            <h4>About the Developer</h4>
-            <p>
-              <strong>Christopher Ravailhe</strong> is a Senior C# Developer and Unity specialist with 9+ years of experience. He has shipped 25+ games across PC, console, and mobile.
-            </p>
-          </div>
-          <div className="footer-community">
-            <h4>Community</h4>
-            <p>
-              Meet Concord! For over 10 years, we've been playing, working, and talking about life together.
-            </p>
-            <a href="https://discord.nullcomma.com/" target="_blank" rel="noopener noreferrer" className="footer-discord-btn">
-              <FaDiscord /> Join Discord
-            </a>
-          </div>
-          <div className="footer-contact">
-            <h4>Contact</h4>
-            <p>Interested in collaboration or just chatting?</p>
-            <a href="mailto:contato@nullcomma.com" className="footer-email">
-              <FaEnvelope /> contato@nullcomma.com
-            </a>
-            <div className="footer-social-links">
-              <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
-              <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
-              <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
-              <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok"><FaTiktok /></a>
-              <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram"><FaInstagram /></a>
-              <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube"><FaYoutube /></a>
-            </div>
-          </div>
-        </div>
         <div className="footer-bottom">
           <p>
             © 2025 Null Comma. All rights reserved.

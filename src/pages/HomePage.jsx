@@ -7,6 +7,10 @@ import { baseURL, fieldsQuery } from '../utils'
 import LauncherCTA from '../components/LauncherCTA'
 import ProjectTypeFilter from '../components/ProjectTypeFilter'
 import { normalizeEngineName } from '../utils/textUtils';
+import {
+  FaGithub, FaSteam, FaLinkedin,
+  FaInstagram, FaYoutube, FaTiktok, FaDiscord
+} from 'react-icons/fa'
 
 /**
  * Calculates engine statistics from a list of games.
@@ -356,6 +360,31 @@ function HomePage() {
         </div>
         <div className="home-section">
           <ContactForm />
+        </div>
+      </div>
+
+      <div className="home-section community-section">
+        <div className="community-content">
+          <div className="community-info">
+            <h3>Community</h3>
+            <p>
+              Meet <strong>Concord</strong>! For over 10 years, the community has been playing, working, and talking about life together.
+            </p>
+            <a href="https://discord.nullcomma.com/" target="_blank" rel="noopener noreferrer" className="community-discord-btn">
+              <FaDiscord /> Join Discord
+            </a>
+          </div>
+          <div className="community-socials">
+            <h4>Follow Null Comma</h4>
+            <div className="social-links-grid">
+              <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
+              <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
+              <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
+              <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok"><FaTiktok /></a>
+              <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram"><FaInstagram /></a>
+              <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube"><FaYoutube /></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

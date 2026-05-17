@@ -20,7 +20,7 @@ function LauncherCTA() {
           href={LAUNCHER_INSTALLER_URL} 
           className="button-primary"
         >
-          Download Launcher
+          <i className="fas fa-download"></i>
         </a>
       </div>
     </div>
