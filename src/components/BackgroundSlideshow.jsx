@@ -6,6 +6,15 @@ const FADE_MS = 1500;
 const MAX_IMAGES = 15;
 const LOAD_TIMEOUT = 3000;
 
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function BackgroundSlideshow() {
   const [current, setCurrent] = useState(null);
   const [entering, setEntering] = useState(null);
@@ -14,14 +23,25 @@ function BackgroundSlideshow() {
   const idx = useRef(0);
   const alive = useRef(true);
   const advanceTimer = useRef(null);
+  const containerRef = useRef(null);
+  const zoomRef = useRef(1);
 
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
+  // Continuous one-direction zoom via JS
+  useEffect(() => {
+    let raf;
+    const ZOOM_RATE = (1.08 - 1.0) / (30 * 60); // reach 1.08 in 30s at 60fps
+
+    const tick = () => {
+      zoomRef.current = Math.min(zoomRef.current + ZOOM_RATE, 1.08);
+      if (containerRef.current) {
+        containerRef.current.style.transform = `scale(${zoomRef.current})`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const scheduleNext = useCallback(() => {
     advanceTimer.current = setTimeout(() => {
@@ -36,6 +56,7 @@ function BackgroundSlideshow() {
       const begin = () => {
         if (done || !alive.current) return;
         done = true;
+        zoomRef.current = 1;
         setFadePct(0);
         setEntering(nextUrl);
       };
@@ -46,7 +67,6 @@ function BackgroundSlideshow() {
     }, SHOW_MS);
   }, []);
 
-  // Animate fade: when entering changes, run rAF from 0 to 1
   useEffect(() => {
     if (!entering) return;
     const start = Date.now();
@@ -71,34 +91,50 @@ function BackgroundSlideshow() {
     };
   }, [entering, scheduleNext]);
 
-  // Initial fetch
   useEffect(() => {
     fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
       .then(r => r.json())
       .then(data => {
         if (!alive.current) return;
-        const allUrls = [];
+
+        const gameGroups = [];
 
         data.data.forEach(p => {
-          if (p.card_image?.id) allUrls.push(`${baseURL}/assets/${p.card_image.id}`);
+          const group = [];
+          if (p.card_image?.id) group.push(`${baseURL}/assets/${p.card_image.id}`);
           if (p.steam_screenshots?.length > 0) {
             p.steam_screenshots.forEach(ss => {
               const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
-              if (url) allUrls.push(url);
+              if (url) group.push(url);
             });
           }
           if (p.screenshots?.length > 0) {
             p.screenshots.forEach(ss => {
               const id = ss.directus_files_id?.id;
-              if (id) allUrls.push(`${baseURL}/assets/${id}`);
+              if (id) group.push(`${baseURL}/assets/${id}`);
             });
+          }
+          if (group.length > 0) {
+            gameGroups.push(shuffle(group));
           }
         });
 
-        if (allUrls.length < 2) return;
-        const limitedUrls = allUrls.slice(0, MAX_IMAGES);
-        order.current = shuffle([...limitedUrls]);
-        limitedUrls.forEach(u => { const i = new Image(); i.src = u; });
+        if (gameGroups.length === 0) return;
+
+        // Interleave: round-robin between games so same-game images never appear consecutively
+        const interleaved = [];
+        const maxLen = Math.max(...gameGroups.map(g => g.length));
+        for (let i = 0; i < maxLen; i++) {
+          for (let g = 0; g < gameGroups.length; g++) {
+            if (i < gameGroups[g].length) {
+              interleaved.push(gameGroups[g][i]);
+            }
+          }
+        }
+
+        const limited = interleaved.slice(0, MAX_IMAGES);
+        order.current = limited;
+        limited.forEach(u => { const i = new Image(); i.src = u; });
         idx.current = 0;
         setCurrent(order.current[0]);
         scheduleNext();
@@ -107,7 +143,6 @@ function BackgroundSlideshow() {
     return () => { alive.current = false; };
   }, [scheduleNext]);
 
-  // Cleanup timer on unmount
   useEffect(() => {
     return () => {
       if (advanceTimer.current) clearTimeout(advanceTimer.current);
@@ -115,7 +150,7 @@ function BackgroundSlideshow() {
   }, []);
 
   return (
-    <div className="bg-slideshow" aria-hidden="true">
+    <div className="bg-slideshow" aria-hidden="true" ref={containerRef}>
       <div className="bg-slideshow-overlay" />
       {current && (
         <div
