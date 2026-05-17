@@ -340,49 +340,51 @@ function HomePage() {
       </div>
 
       <div className="home-contact-layout">
-        <div className="home-section about-me-card">
-          <div className="about-me-card-content">
-            <h3>The Developer</h3>
-            <p>
-              <strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.
-            </p>
-            <p>
-              Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.
-            </p>
-            <div className="about-me-card-stats">
-              <span className="mini-stat"><strong>9+</strong> Years in Unity</span>
-              <span className="mini-stat"><strong>25+</strong> Games Shipped</span>
-              <span className="mini-stat">PC · Console · Mobile</span>
+        <div className="home-contact-left">
+          <div className="home-section about-me-card">
+            <div className="about-me-card-content">
+              <h3>The Developer</h3>
+              <p>
+                <strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.
+              </p>
+              <p>
+                Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.
+              </p>
+              <div className="about-me-card-stats">
+                <span className="mini-stat"><strong>9+</strong> Years in Unity</span>
+                <span className="mini-stat"><strong>25+</strong> Games Shipped</span>
+                <span className="mini-stat">PC · Console · Mobile</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="home-section community-section">
+            <div className="community-content">
+              <div className="community-info">
+                <h3>Community</h3>
+                <p>
+                  Meet <strong>Concord</strong>! For over 10 years, the community has been playing, working, and talking about life together.
+                </p>
+                <a href="https://discord.nullcomma.com/" target="_blank" rel="noopener noreferrer" className="community-discord-btn">
+                  <FaDiscord /> Join Discord
+                </a>
+              </div>
+              <div className="community-socials">
+                <h4>Follow Null Comma</h4>
+                <div className="social-links-grid">
+                  <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
+                  <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
+                  <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
+                  <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok"><FaTiktok /></a>
+                  <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram"><FaInstagram /></a>
+                  <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube"><FaYoutube /></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div className="home-section">
           <ContactForm />
-        </div>
-      </div>
-
-      <div className="home-section community-section">
-        <div className="community-content">
-          <div className="community-info">
-            <h3>Community</h3>
-            <p>
-              Meet <strong>Concord</strong>! For over 10 years, the community has been playing, working, and talking about life together.
-            </p>
-            <a href="https://discord.nullcomma.com/" target="_blank" rel="noopener noreferrer" className="community-discord-btn">
-              <FaDiscord /> Join Discord
-            </a>
-          </div>
-          <div className="community-socials">
-            <h4>Follow Null Comma</h4>
-            <div className="social-links-grid">
-              <a href="https://github.com/Chrisdbhr" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
-              <a href="https://www.linkedin.com/in/chrisdbhr" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
-              <a href="https://store.steampowered.com/curator/44885415" target="_blank" rel="noopener noreferrer" title="Steam"><FaSteam /></a>
-              <a href="https://tiktok.com/@nullcomma" target="_blank" rel="noopener noreferrer" title="TikTok"><FaTiktok /></a>
-              <a href="https://www.instagram.com/nullcomma" target="_blank" rel="noopener noreferrer" title="Instagram"><FaInstagram /></a>
-              <a href="https://www.youtube.com/@chrisjogos" target="_blank" rel="noopener noreferrer" title="YouTube"><FaYoutube /></a>
-            </div>
-          </div>
         </div>
       </div>
     </div>

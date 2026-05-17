@@ -1654,41 +1654,37 @@ img {
 /* --- Launcher CTA (Mini) --- */
 .launcher-cta-mini {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  background:
-    linear-gradient(135deg, rgba(118, 79, 162, 0.88) 0%, rgba(167, 110, 255, 0.88) 100%),
-    url('https://cms.nullcomma.com/assets/2a591f93-636e-40fb-81ba-1f8dc8ccee7a?width=1200&quality=50') center/cover no-repeat;
+  gap: 10px;
+  background: var(--color-dark);
+  border: 1px solid #333;
   border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(145, 70, 255, 0.3);
-  overflow: hidden;
-  position: relative;
+  padding: 10px 15px;
 }
 
 .launcher-cta-mini h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-light);
   margin: 0;
   padding: 0;
   border: none;
-  text-align: center;
+  font-family: 'Inter', sans-serif;
 }
 
 .launcher-cta-mini .button-primary {
-  background: var(--color-light);
-  color: var(--color-darkest);
+  background: var(--color-purple);
+  color: #fff;
   font-weight: 700;
-  font-size: 1.3rem;
-  min-width: 100%;
-  padding: 10px 0;
+  font-size: 1rem;
+  padding: 6px 14px;
+  min-width: unset;
 }
 
 .launcher-cta-mini .button-primary:hover {
-  background: var(--color-green);
+  background: var(--color-light);
+  color: var(--color-darkest);
   transform: scale(1.05);
 }
 
@@ -1708,6 +1704,12 @@ img {
   gap: 25px;
   align-items: flex-start;
   margin-top: 40px;
+}
+
+.home-contact-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-margin-bottom);
 }
 
 .about-me-card {
@@ -2220,12 +2222,20 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   border: 1px solid #333;
 }
 
+.filter-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .project-filter-container h4 {
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-light);
-  margin-bottom: 10px;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .filter-buttons {

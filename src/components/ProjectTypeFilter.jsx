@@ -6,25 +6,27 @@ function ProjectTypeFilter({ types, excludedTypes, onToggle }) {
 
   return (
     <div className="project-filter-container fade-in">
-      <h4>Filter by Project Type:</h4>
-      <div className="filter-buttons">
-        {types.map((type) => {
-          const isExcluded = excludedTypes.includes(type);
-          const color = getHashedColor(type);
+      <div className="filter-header">
+        <h4>Filter by Project Type:</h4>
+        <div className="filter-buttons">
+          {types.map((type) => {
+            const isExcluded = excludedTypes.includes(type);
+            const color = getHashedColor(type);
 
-          return (
-            <button
-              key={type}
-              className={`filter-button ${isExcluded ? 'excluded' : ''}`}
-              onClick={() => onToggle(type)}
-              style={{
-                '--filter-color': color, // Passando a cor via CSS Variable
-              }}
-            >
-              {type}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={type}
+                className={`filter-button ${isExcluded ? 'excluded' : ''}`}
+                onClick={() => onToggle(type)}
+                style={{
+                  '--filter-color': color,
+                }}
+              >
+                {type}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
