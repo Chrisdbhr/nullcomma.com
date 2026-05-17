@@ -5,6 +5,7 @@ const SHOW_MS = 6000;
 const FADE_MS = 1500;
 const MAX_IMAGES = 15;
 const LOAD_TIMEOUT = 3000;
+const ZOOM_DURATION = 15000; // 15s from 1.0 to 1.08
 
 function shuffle(arr) {
   const a = [...arr];
@@ -23,6 +24,32 @@ function BackgroundSlideshow() {
   const idx = useRef(0);
   const alive = useRef(true);
   const advanceTimer = useRef(null);
+  const slideRefs = useRef({});
+
+  // Per-slide zoom via JS rAF (tracks each URL's progress independently)
+  useEffect(() => {
+    const progress = {}; // url → current scale
+    const RATE = 0.08 / (ZOOM_DURATION / 16.67); // per-frame increment at 60fps
+    let raf;
+
+    const tick = () => {
+      Object.keys(slideRefs.current).forEach(url => {
+        const el = slideRefs.current[url];
+        if (!el) return;
+        if (!(url in progress)) progress[url] = 1;
+        progress[url] = Math.min(progress[url] + RATE, 1.08);
+        el.style.transform = `scale(${progress[url]})`;
+      });
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const setSlideRef = useCallback((url) => (el) => {
+    slideRefs.current[url] = el;
+  }, []);
 
   const scheduleNext = useCallback(() => {
     advanceTimer.current = setTimeout(() => {
@@ -76,9 +103,7 @@ function BackgroundSlideshow() {
       .then(r => r.json())
       .then(data => {
         if (!alive.current) return;
-
         const gameGroups = [];
-
         data.data.forEach(p => {
           const group = [];
           if (p.card_image?.id) group.push(`${baseURL}/assets/${p.card_image.id}`);
@@ -94,24 +119,17 @@ function BackgroundSlideshow() {
               if (id) group.push(`${baseURL}/assets/${id}`);
             });
           }
-          if (group.length > 0) {
-            gameGroups.push(shuffle(group));
-          }
+          if (group.length > 0) gameGroups.push(shuffle(group));
         });
-
         if (gameGroups.length === 0) return;
 
-        // Interleave: round-robin between games so same-game images never appear consecutively
         const interleaved = [];
         const maxLen = Math.max(...gameGroups.map(g => g.length));
         for (let i = 0; i < maxLen; i++) {
           for (let g = 0; g < gameGroups.length; g++) {
-            if (i < gameGroups[g].length) {
-              interleaved.push(gameGroups[g][i]);
-            }
+            if (i < gameGroups[g].length) interleaved.push(gameGroups[g][i]);
           }
         }
-
         const limited = interleaved.slice(0, MAX_IMAGES);
         order.current = limited;
         limited.forEach(u => { const i = new Image(); i.src = u; });
@@ -124,9 +142,7 @@ function BackgroundSlideshow() {
   }, [scheduleNext]);
 
   useEffect(() => {
-    return () => {
-      if (advanceTimer.current) clearTimeout(advanceTimer.current);
-    };
+    return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current); };
   }, []);
 
   return (
@@ -136,6 +152,7 @@ function BackgroundSlideshow() {
         <div
           className="bg-slide"
           key={current}
+          ref={setSlideRef(current)}
           style={{
             backgroundImage: `url(${current})`,
             opacity: 1,
@@ -146,6 +163,7 @@ function BackgroundSlideshow() {
         <div
           className="bg-slide"
           key={entering}
+          ref={setSlideRef(entering)}
           style={{
             backgroundImage: `url(${entering})`,
             opacity: fadePct,
