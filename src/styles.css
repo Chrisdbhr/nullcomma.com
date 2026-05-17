@@ -1,7 +1,7 @@
 /* --- PALETA: Null Comma (Preto, Roxo, Verde) --- */
 :root {
   --color-darkest: #141414; /* Preto (Fundo) */
-  --color-dark: #1F1F1F;    /* Cinza (Cards e Sidebar) */
+  --color-dark: rgba(31, 31, 31, 0.65); /* Glass card background */
   --color-purple: #764fa2;  /* Roxo (Acento) */
   --color-green: #65cc9a;   /* Verde (Botões) */
   --color-light: #FFFFFF;   /* Texto */
@@ -70,10 +70,8 @@ body {
   background: linear-gradient(
     to right,
     rgba(20, 20, 20, 0.50) 0%,
-    rgba(20, 20, 20, 0.85) 10%,
-    rgba(20, 20, 20, 1) 30%,
-    rgba(20, 20, 20, 1) 70%,
-    rgba(20, 20, 20, 0.85) 90%,
+    rgba(20, 20, 20, 0.80) 30%,
+    rgba(20, 20, 20, 0.80) 70%,
     rgba(20, 20, 20, 0.50) 100%
   );
   pointer-events: none;
@@ -1048,6 +1046,20 @@ img {
 .home-section h3 {
   padding-bottom: 10px;
   font-weight: 600;
+}
+
+/* --- Liquid Glass (blur on dark card backgrounds) --- */
+.game-card,
+.game-detail-sidebar .sidebar-info-box,
+.home-section,
+.project-filter-container,
+.presskit-sidebar-box,
+.presskit-copy-box,
+.presskit-embed-box,
+.button-copy-desc,
+.button-copy-embed {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 /* --- Botão Secundário --- */
