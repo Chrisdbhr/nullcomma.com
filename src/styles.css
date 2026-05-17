@@ -1981,7 +1981,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .blog-post-detail {
   max-width: 800px;
   margin: 0 auto;
-  background: rgba(31, 31, 31, 0.85);
+  background: var(--color-dark);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 30px;
