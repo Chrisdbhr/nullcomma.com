@@ -947,7 +947,7 @@ img {
 /* --- Filter + Launcher Grid --- */
 .filter-launcher-grid {
   display: grid;
-  grid-template-columns: 1fr 35%;
+  grid-template-columns: 1fr 30%;
   gap: var(--main-margin-bottom);
   margin-bottom: var(--main-margin-bottom);
 }
@@ -1646,41 +1646,63 @@ img {
   font-size: 1.1rem; /* Um pouco menor para caber bem */
 }
 
-/* --- Launcher CTA (Mini) --- */
+/* --- Launcher CTA (Banner) --- */
 .launcher-cta-mini {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: var(--color-dark);
-  border: 1px solid #333;
+  gap: 8px;
+  background:
+    linear-gradient(135deg, rgba(118, 79, 162, 0.92) 0%, rgba(167, 110, 255, 0.85) 100%),
+    url('https://cms.nullcomma.com/assets/2a591f93-636e-40fb-81ba-1f8dc8ccee7a?width=1200&quality=50') center/cover no-repeat;
   border-radius: var(--border-radius);
-  padding: 10px 15px;
+  padding: 18px 12px;
+  box-shadow: 0 4px 15px rgba(145, 70, 255, 0.25);
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.launcher-cta-mini h3 {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-light);
-  margin: 0;
-  padding: 0;
-  border: none;
-  font-family: 'Inter', sans-serif;
+.launcher-cta-mini::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.launcher-cta-mini .button-primary {
-  background: var(--color-purple);
+.launcher-cta-mini:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 8px 30px rgba(145, 70, 255, 0.45);
+}
+
+.launcher-cta-mini:hover::before {
+  opacity: 1;
+}
+
+.launcher-cta-mini-icon {
+  font-size: 1.6rem;
   color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 6px 14px;
-  min-width: unset;
+  line-height: 1;
+  position: relative;
+  transition: transform 0.3s ease;
 }
 
-.launcher-cta-mini .button-primary:hover {
-  background: var(--color-light);
-  color: var(--color-darkest);
-  transform: scale(1.05);
+.launcher-cta-mini:hover .launcher-cta-mini-icon {
+  transform: translateY(-2px) scale(1.1);
+}
+
+.launcher-cta-mini-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
 }
 
 
