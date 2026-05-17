@@ -42,6 +42,34 @@ body {
   height: 100dvh;
   z-index: -1;
   overflow: hidden;
+  animation: bgZoom 20s ease-in-out infinite alternate;
+}
+
+.bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+}
+
+.bg-slide.show {
+  animation: bgFadeIn 1.5s ease-out forwards;
+}
+
+.bg-slide.visible {
+  opacity: 1;
+}
+
+@keyframes bgFadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes bgZoom {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.06); }
 }
 
 .bg-slide {
