@@ -23,25 +23,6 @@ function BackgroundSlideshow() {
   const idx = useRef(0);
   const alive = useRef(true);
   const advanceTimer = useRef(null);
-  const containerRef = useRef(null);
-  const zoomRef = useRef(1);
-
-  // Continuous one-direction zoom via JS
-  useEffect(() => {
-    let raf;
-    const ZOOM_RATE = (1.08 - 1.0) / (30 * 60); // reach 1.08 in 30s at 60fps
-
-    const tick = () => {
-      zoomRef.current = Math.min(zoomRef.current + ZOOM_RATE, 1.08);
-      if (containerRef.current) {
-        containerRef.current.style.transform = `scale(${zoomRef.current})`;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
 
   const scheduleNext = useCallback(() => {
     advanceTimer.current = setTimeout(() => {
@@ -56,7 +37,6 @@ function BackgroundSlideshow() {
       const begin = () => {
         if (done || !alive.current) return;
         done = true;
-        zoomRef.current = 1;
         setFadePct(0);
         setEntering(nextUrl);
       };
@@ -150,7 +130,7 @@ function BackgroundSlideshow() {
   }, []);
 
   return (
-    <div className="bg-slideshow" aria-hidden="true" ref={containerRef}>
+    <div className="bg-slideshow" aria-hidden="true">
       <div className="bg-slideshow-overlay" />
       {current && (
         <div
