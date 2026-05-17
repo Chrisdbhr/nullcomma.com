@@ -40,14 +40,33 @@ function BackgroundSlideshow() {
   }, []);
 
   useEffect(() => {
-    fetch(`${baseURL}/items/projects?fields=card_image.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
+    fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
       .then(r => r.json())
       .then(data => {
         if (!alive.current) return;
-        const imgs = data.data.filter(p => p.card_image?.id).map(p => `${baseURL}/assets/${p.card_image.id}`);
-        if (imgs.length < 2) return;
-        order.current = shuffle([...imgs]);
-        imgs.forEach(u => { const i = new Image(); i.src = u; });
+        const allUrls = [];
+
+        data.data.forEach(p => {
+          if (p.card_image?.id) allUrls.push(`${baseURL}/assets/${p.card_image.id}`);
+
+          if (p.steam_screenshots?.length > 0) {
+            p.steam_screenshots.forEach(ss => {
+              const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
+              if (url) allUrls.push(url);
+            });
+          }
+
+          if (p.screenshots?.length > 0) {
+            p.screenshots.forEach(ss => {
+              const id = ss.directus_files_id?.id;
+              if (id) allUrls.push(`${baseURL}/assets/${id}`);
+            });
+          }
+        });
+
+        if (allUrls.length < 2) return;
+        order.current = shuffle([...allUrls]);
+        allUrls.forEach(u => { const i = new Image(); i.src = u; });
         idx.current = 0;
         const first = order.current[0];
         itemsRef.current = [first, null];
