@@ -5,30 +5,10 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
-import { getAssetUrl, baseURL, getHashedColor } from '../utils'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { getAssetUrl, baseURL, getHashedColor, formatDate } from '../utils'
+import { CodeBlock } from '../components/CodeBlock';
 import ProjectCard from '../components/ProjectCard'
 import SafeImage from '../components/SafeImage'
-
-// Component for rendering code blocks with syntax highlighting
-const CodeBlock = ({ node, inline, className, children, ...props }) => {
-  const match = /language-(\w+)/.exec(className || '');
-  return !inline && match ? (
-    <SyntaxHighlighter
-      {...props}
-      style={dracula}
-      language={match[1]}
-      PreTag="div"
-    >
-      {String(children).replace(/\n$/, '')}
-    </SyntaxHighlighter>
-  ) : (
-    <code {...props} className={className}>
-      {children}
-    </code>
-  );
-};
 
 
 function BlogPostPage() {
@@ -103,7 +83,7 @@ function BlogPostPage() {
     ? getAssetUrl(post.cover_image.id, 1000, '', post.cover_image.type) // Otimizado para 1000px de largura
     : null;
     
-  const pubDate = new Date(post.date_published || Date.now()).toLocaleDateString('pt-BR');
+  const pubDate = formatDate(post.date_published);
 
   const description = post.content
     ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
@@ -180,9 +160,8 @@ function BlogPostPage() {
           {post.cover_image && (
             <SafeImage
               id={post.cover_image.id}
-              width={400}
-              quality={60}
-              options="height=225&fit=cover"
+              width={1000}
+              quality={75}
               mimeType={post.cover_image.type}
               alt={`Cover image of ${post.title}`}
             />

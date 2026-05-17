@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
-import { getAssetUrl, baseURL } from '../utils'
+import { baseURL } from '../utils'
 import SafeImage from '../components/SafeImage'
 
 // 2. Exporte o loader
@@ -21,7 +21,7 @@ export async function loader() {
       return {
         title: item.title || "No Title",
         link: `/blog/${item.id}`,
-        pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
+        pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
         coverImageId: item.cover_image?.id || null,
         coverImageType: item.cover_image?.type || '',
       };
@@ -50,9 +50,9 @@ function BlogListPage() {
         </div>
 
         <div className="blog-post-grid">
-          {posts.map((post, index) => (
+          {posts.map((post) => (
             <Link
-              key={index}
+              key={post.link}
               to={post.link}
               className="blog-post-card"
             >

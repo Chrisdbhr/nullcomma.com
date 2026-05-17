@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import SafeImage from './SafeImage'
-import { baseURL } from '../utils'
 
 const THUMBNAIL_WIDTH = 100;
 const THUMBNAIL_HEIGHT = 60;

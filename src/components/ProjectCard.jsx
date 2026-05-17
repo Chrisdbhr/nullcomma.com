@@ -1,22 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getAssetUrl, getHashedColor } from '../utils'
-import { normalizeEngineName } from '../utils/textUtils';
+import { getHashedColor } from '../utils'
+import { getPreferredTranslation } from '../utils/translationUtils';
 import SafeImage from './SafeImage';
-
-// Helper function to find the preferred English translation
-const getPreferredTranslation = (translations) => {
-  if (!translations || translations.length === 0) return {};
-  const enTranslation = translations.find(t => t.language.startsWith('en'));
-  if (enTranslation) return enTranslation;
-  const ptTranslation = translations.find(t => t.language.startsWith('pt'));
-  if (ptTranslation) return ptTranslation;
-  return translations[0] || {};
-}
 
 
 function ProjectCard({ project }) {
-  // Use preferred translation helper
   const translation = getPreferredTranslation(project.translations);
   const title = translation.title || 'Title Not Available'; 
   
@@ -33,7 +22,6 @@ function ProjectCard({ project }) {
       .trim();
   }
 
-  const engineName = normalizeEngineName(project.engine);
   const isUnreleased = new Date(project.release_date) > new Date();
   
   // Se project_type for null, padroniza para 'project'

@@ -22,13 +22,13 @@ function App() {
 
       <footer className="main-footer">
         <div className="main-footer-inner">
-          <p>
-            © 2025 Null Comma. All rights reserved.
-            <span className="footer-sep">·</span>
-            <a href="/privacy">Privacy</a>
-            <span className="footer-sep">·</span>
-            <a href="/terms">Terms</a>
-          </p>
+        <p>
+          © {new Date().getFullYear()} Null Comma. All rights reserved.
+          <span className="footer-sep">·</span>
+          <Link to="/privacy">Privacy</Link>
+          <span className="footer-sep">·</span>
+          <Link to="/terms">Terms</Link>
+        </p>
         </div>
       </footer>
     </Fragment>

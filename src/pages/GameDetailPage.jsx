@@ -4,39 +4,9 @@ import { baseURL, fieldsQuery, getHashedColor, getAssetUrl, formatDate } from '.
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CodeBlock } from '../components/CodeBlock';
 import SafeImage from '../components/SafeImage';
-
-// Helper function to find the preferred English translation
-const getPreferredTranslation = (translations) => {
-  if (!translations || translations.length === 0) return {};
-  const enTranslation = translations.find(t => t.language.startsWith('en'));
-  if (enTranslation) return enTranslation;
-  // Fallback to Portuguese or the first item
-  const ptTranslation = translations.find(t => t.language.startsWith('pt'));
-  if (ptTranslation) return ptTranslation;
-  return translations[0] || {};
-}
-
-// Component for rendering code blocks with syntax highlighting
-const CodeBlock = ({ node, inline, className, children, ...props }) => {
-  const match = /language-(\w+)/.exec(className || '');
-  return !inline && match ? (
-    <SyntaxHighlighter
-      {...props}
-      style={dracula}
-      language={match[1]}
-      PreTag="div"
-    >
-      {String(children).replace(/\n$/, '')}
-    </SyntaxHighlighter>
-  ) : (
-    <code {...props} className={className}>
-      {children}
-    </code>
-  );
-};
+import { getPreferredTranslation } from '../utils/translationUtils';
 
 function GameDetailPage() {
   const { projectId } = useParams()
@@ -53,10 +23,11 @@ function GameDetailPage() {
       setLoading(true);
       try {
         const response = await fetch(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setProject(data.data);
-      } catch (error) {
-        console.error("Error fetching game:", error);
+      } catch {
+        console.error("Error fetching game");
         setProject(null);
       }
     };
@@ -107,7 +78,7 @@ function GameDetailPage() {
         return `https://www.youtube.com/embed/${videoUrl.searchParams.get('v')}`;
       }
       return url;
-    } catch (e) {
+    } catch {
       return url;
     }
   }
@@ -306,7 +277,7 @@ function GameDetailPage() {
               <p><strong>Engine:</strong> {project.engine}</p>
             )}
             {project.release_date && (
-              <p><strong>Release Date:</strong> {new Date(project.release_date).toLocaleDateString('en-US')}</p>
+              <p><strong>Release Date:</strong> {formatDate(project.release_date)}</p>
             )}
             {translation.playtime && (
               <p><strong>Playtime:</strong> {translation.playtime}</p>

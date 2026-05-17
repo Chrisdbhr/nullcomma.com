@@ -3,15 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { baseURL, fieldsQuery, formatDate } from '../utils';
 import JSZip from 'jszip';
 import SafeImage from '../components/SafeImage';
-
-const getPreferredTranslation = (translations, lang) => {
-  if (!translations || translations.length === 0) return {};
-  const target = translations.find(t => t.language.startsWith(lang));
-  if (target) return target;
-  const en = translations.find(t => t.language.startsWith('en'));
-  if (en) return en;
-  return translations[0] || {};
-};
+import { getPreferredTranslation } from '../utils/translationUtils';
 
 async function fetchBlob(url) {
   try {
@@ -42,22 +34,34 @@ function PressKitPage() {
   const { projectId } = useParams();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [zipping, setZipping] = useState(false);
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('presskit-lang');
+    if (saved === 'pt' || saved === 'en') return saved;
+    return navigator.language.startsWith('pt') ? 'pt' : 'en';
+  });
   const [copied, setCopied] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    localStorage.setItem('presskit-lang', lang);
+  }, [lang]);
+
+  useEffect(() => {
     if (!projectId) return;
     const fetchProject = async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await fetch(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setProject(data.data);
       } catch (error) {
         console.error('Error fetching project:', error);
+        setError(error.message);
         setProject(null);
       }
       setLoading(false);
@@ -194,6 +198,17 @@ function PressKitPage() {
 
   if (loading) {
     return <div className="page-content"><h2>Loading press kit...</h2></div>;
+  }
+
+  if (error) {
+    return (
+      <div className="page-content fade-in">
+        <h2>Error Loading Press Kit</h2>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()} className="button-primary">Retry</button>
+        <Link to="/" className="button-secondary" style={{ marginLeft: '10px' }}>&larr; Go Home</Link>
+      </div>
+    );
   }
 
   if (!project) {

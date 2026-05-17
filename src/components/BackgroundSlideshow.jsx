@@ -3,6 +3,7 @@ import { baseURL } from '../utils';
 
 const SHOW_MS = 6000;
 const FADE_MS = 1500;
+const MAX_IMAGES = 15;
 
 function BackgroundSlideshow() {
   const [items, setItems] = useState([null, null]); // [current, fading] or [current, null]
@@ -65,8 +66,9 @@ function BackgroundSlideshow() {
         });
 
         if (allUrls.length < 2) return;
-        order.current = shuffle([...allUrls]);
-        allUrls.forEach(u => { const i = new Image(); i.src = u; });
+        const limitedUrls = allUrls.slice(0, MAX_IMAGES);
+        order.current = shuffle([...limitedUrls]);
+        limitedUrls.forEach(u => { const i = new Image(); i.src = u; });
         idx.current = 0;
         const first = order.current[0];
         itemsRef.current = [first, null];

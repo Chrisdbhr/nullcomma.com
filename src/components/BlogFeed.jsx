@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getAssetUrl, baseURL } from '../utils'
+import { baseURL } from '../utils'
 import SafeImage from './SafeImage'
 
 const getFilter = () => {
@@ -27,7 +27,7 @@ function BlogFeed() {
           return {
             title: item.title || "No Title",
             link: `/blog/${item.id}`,
-            pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
+            pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
             coverImageId: item.cover_image?.id || null,
             coverImageType: item.cover_image?.type || '',
           };
@@ -46,12 +46,24 @@ function BlogFeed() {
   return (
     <div className="blog-feed-container">
       <h3>Latest from the Blog</h3>
-      {loading && <p>Loading posts...</p>}
+      {loading && (
+        <div className="blog-post-grid">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="blog-post-card blog-post-card-skeleton">
+              <div className="blog-post-image-placeholder"></div>
+              <div className="blog-post-content">
+                <div className="skeleton-line skeleton-title"></div>
+                <div className="skeleton-line skeleton-date"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="blog-post-grid">
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <Link
-            key={index}
+            key={post.link}
             to={post.link}
             className="blog-post-card"
           >

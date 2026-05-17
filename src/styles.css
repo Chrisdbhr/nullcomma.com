@@ -1,5 +1,12 @@
 /* --- PALETA: Null Comma (Preto, Roxo, Verde) --- */
 :root {
+  --color-text: var(--color-light);
+  --color-text-secondary: var(--color-grey);
+  --color-primary: var(--color-purple);
+  --color-bg: var(--color-darkest);
+  --color-bg-secondary: #1a1a1a;
+  --color-bg-tertiary: #000;
+  --color-border: var(--color-dark);
   --color-darkest: #141414; /* Preto (Fundo) */
   --color-dark: rgba(31, 31, 31, 0.65); /* Glass card background */
   --color-purple: #764fa2;  /* Roxo (Acento) */
@@ -109,10 +116,10 @@ img {
 }
 
 .main-header {
-  padding: 20px 0;
-  border-bottom: 1px solid var(--color-dark);
-  margin-bottom: 30px;
+  padding: 30px 0 15px 0;
+  margin-bottom: var(--main-margin-bottom);
   text-align: center;
+  border-bottom: 1px solid var(--color-dark);
 }
 
 .main-header h1 {
@@ -263,6 +270,7 @@ img {
 }
 
 .game-card-image-container {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   background-color: #000;
@@ -1349,10 +1357,10 @@ img {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   border-top: 1px solid #333;
-  padding-top: 20px; 
-  margin-top: 20px; 
+  padding-top: 20px;
+  margin-top: 20px;
 }
 
 .social-links a {
@@ -1491,13 +1499,6 @@ img {
 }
 
 /* --- Novo Header de Texto --- */
-.main-header {
-  padding: 30px 0 15px 0;
-  margin-bottom: var(--main-margin-bottom);
-  text-align: center;
-  border-bottom: 1px solid var(--color-dark);
-}
-
 .site-title-link {
   text-decoration: none;
 }
@@ -1585,20 +1586,6 @@ img {
 .engine-stats-year {
   display: flex;
   gap: 10px;
-}
-.engine-stat-item-year {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--color-grey);
-  background: var(--color-dark);
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-
-.engine-stats-year {
-  display: flex;
-  gap: 10px;
   flex-wrap: wrap;
 }
 .engine-stat-item-year {
@@ -1656,9 +1643,6 @@ img {
 }
 
 /* --- 5. Redes Sociais (Mais Ícones) --- */
-.social-links {
-  gap: 15px; /* Reduz o gap para caber mais ícones */
-}
 
 /* --- 1. Label da Engine (Card) --- */
 .game-card-engine {
@@ -1677,14 +1661,6 @@ img {
 }
 
 /* --- Banner "Em Breve" (GameCard) --- */
-/* Adicione position: relative ao container da imagem que já existe */
-.game-card-image-container {
-  position: relative; /* Necessário para o banner */
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: #000;
-}
-
 /* Este é o novo estilo para o banner */
 .unreleased-banner {
   position: absolute;
@@ -2185,7 +2161,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
@@ -2210,9 +2186,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 
 /* Estilo unificado para TODOS os grupos de formulário */
-.form-group {
-  margin-bottom: 1.25rem;
-}
 
 .form-group label {
   display: block;
@@ -2865,4 +2838,46 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   display: flex;
   justify-content: center;
   gap: 15px;
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Accessibility: focus-visible */
+:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+
+/* Blog skeleton loading */
+.blog-post-card-skeleton {
+  pointer-events: none;
+}
+
+.skeleton-line {
+  background: var(--color-dark);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 80%;
+  margin-bottom: 8px;
+}
+
+.skeleton-date {
+  height: 14px;
+  width: 50%;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
