@@ -1050,6 +1050,7 @@ img {
 .home-section {
   margin-bottom: var(--main-margin-bottom);
   background-color: var(--color-dark);
+  border: 1px solid #333;
   padding: 20px;
   border-radius: var(--border-radius);
   width: 100%;
