@@ -12,6 +12,9 @@ function BackgroundSlideshow() {
   const timer = useRef(null);
   const alive = useRef(true);
   const itemsRef = useRef([null, null]);
+  const zoomRef = useRef(1);
+  const zoomDir = useRef(1);
+  const slideContainer = useRef(null);
 
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
@@ -79,16 +82,44 @@ function BackgroundSlideshow() {
   }, []);
 
   useEffect(() => {
-    if (!itemsRef.current[0]) return;
+    if (!items[0]) return;
     timer.current = setInterval(advance, SHOW_MS);
     return () => clearInterval(timer.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items[0], advance]);
+
+  // JS-driven smooth zoom animation
+  useEffect(() => {
+    let rafId;
+    const ZOOM_SPEED = 0.0003;
+    const ZOOM_MIN = 1;
+    const ZOOM_MAX = 1.08;
+
+    const animateZoom = () => {
+      zoomRef.current += ZOOM_SPEED * zoomDir.current;
+      if (zoomRef.current >= ZOOM_MAX) {
+        zoomRef.current = ZOOM_MAX;
+        zoomDir.current = -1;
+      } else if (zoomRef.current <= ZOOM_MIN) {
+        zoomRef.current = ZOOM_MIN;
+        zoomDir.current = 1;
+      }
+      if (slideContainer.current) {
+        const slides = slideContainer.current.querySelectorAll('.bg-slide');
+        slides.forEach(slide => {
+          slide.style.transform = `scale(${zoomRef.current})`;
+        });
+      }
+      rafId = requestAnimationFrame(animateZoom);
+    };
+
+    rafId = requestAnimationFrame(animateZoom);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   const [current, fading] = items;
 
   return (
-    <div className="bg-slideshow" aria-hidden="true">
+    <div className="bg-slideshow" aria-hidden="true" ref={slideContainer}>
       <div className="bg-slideshow-overlay" />
       {current != null && (
         <div className="bg-slide visible" key={current} style={{ backgroundImage: `url(${current})` }} />
