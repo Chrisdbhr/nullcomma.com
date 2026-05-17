@@ -26,7 +26,7 @@ function BackgroundSlideshow() {
 
         const urls = data.data
           .filter(p => p.card_image?.id)
-          .map(p => `${baseURL}/assets/${p.card_image.id}?width=1600&quality=60`);
+          .map(p => `${baseURL}/assets/${p.card_image.id}`);
 
         if (urls.length > 0) {
           setImages(urls);
