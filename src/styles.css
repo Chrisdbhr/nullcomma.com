@@ -28,7 +28,11 @@ body {
 /* --- Background Slideshow --- */
 .bg-slideshow {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   z-index: -1;
   overflow: hidden;
 }
@@ -377,6 +381,7 @@ img {
 
 .game-detail-main {
   min-width: 0;
+  background: rgba(31, 31, 31, 0.85);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 20px;
@@ -525,7 +530,11 @@ img {
 /* --- Lightbox --- */
 .gallery-lightbox {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   z-index: 10000;
   background: rgba(0, 0, 0, 0.95);
   display: flex;
@@ -684,7 +693,7 @@ img {
   width: 100%;
   height: 100%;
   max-width: calc(100vw - 80px);
-  max-height: calc(100vh - 200px);
+  max-height: calc(100dvh - 200px);
   aspect-ratio: 16 / 9;
   border-radius: 4px;
   pointer-events: none;
@@ -877,8 +886,9 @@ img {
   }
 
   .lightbox-image-container {
-    max-width: calc(100vw - 80px);
-    max-height: calc(100vh - 140px);
+    width: 100%;
+    height: 100%;
+    max-height: calc(100dvh - 140px);
   }
 }
 
@@ -1054,7 +1064,6 @@ img {
 
 /* --- Liquid Glass (blur on dark card backgrounds) --- */
 .game-detail-sidebar .sidebar-info-box,
-.game-detail-main,
 .blog-post-detail,
 .home-section,
 .project-filter-container,
@@ -1986,6 +1995,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .blog-post-detail {
   max-width: 800px;
   margin: 0 auto;
+  background: rgba(31, 31, 31, 0.85);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 30px;
