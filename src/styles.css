@@ -377,7 +377,6 @@ img {
 
 .game-detail-main {
   min-width: 0;
-  background: var(--color-dark);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 20px;
@@ -1054,13 +1053,12 @@ img {
 }
 
 /* --- Liquid Glass (blur on dark card backgrounds) --- */
-.game-card,
 .game-detail-sidebar .sidebar-info-box,
 .game-detail-main,
 .blog-post-detail,
-.blog-post-card,
 .home-section,
 .project-filter-container,
+.toc-sidebar,
 .presskit-sidebar-box,
 .presskit-copy-box,
 .presskit-embed-box,
@@ -1942,7 +1940,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   text-decoration: none;
   color: var(--color-text);
   transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  border: 1px solid var(--color-border);
+  border: 1px solid #333;
 }
 
 .blog-post-card:hover {
@@ -1988,7 +1986,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .blog-post-detail {
   max-width: 800px;
   margin: 0 auto;
-  background: var(--color-dark);
   border: 1px solid #333;
   border-radius: var(--border-radius);
   padding: 30px;
@@ -2103,11 +2100,11 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 
 /* --- Sidebar do TOC --- */
 .toc-sidebar {
-  background-color: var(--color-bg-secondary);
+  background: var(--color-dark);
+  border: 1px solid #333;
   padding: 1.5rem;
   border-radius: 8px;
-  border: 1px solid var(--color-border);
-  position: sticky; /* Fica fixo ao rolar */
+  position: sticky;
   top: 2rem;
 }
 
