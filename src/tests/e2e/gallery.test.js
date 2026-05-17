@@ -58,7 +58,7 @@ test.describe('ScreenshotGallery E2E', () => {
     expect(count).toBeGreaterThan(1);
 
     await thumbs.nth(count - 1).click();
-    await expect(page.locator('.lightbox-counter')).toHaveText(new RegExp(`${count} \/`));
+    await expect(page.locator('.lightbox-counter')).toHaveText(new RegExp(`${count} /`));
   });
 
   test('keyboard navigation works in lightbox', async ({ page }) => {

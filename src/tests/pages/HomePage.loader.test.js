@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { loader as homePageLoader } from '../../pages/HomePage';
-import { baseURL } from '../../utils';
 
 const mockProjects = [
   {

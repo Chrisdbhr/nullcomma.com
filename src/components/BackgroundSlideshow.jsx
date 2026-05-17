@@ -79,9 +79,10 @@ function BackgroundSlideshow() {
   }, []);
 
   useEffect(() => {
-    if (!items[0]) return;
+    if (!itemsRef.current[0]) return;
     timer.current = setInterval(advance, SHOW_MS);
     return () => clearInterval(timer.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items[0], advance]);
 
   const [current, fading] = items;

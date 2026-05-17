@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import BlogPostPage from '../../pages/BlogPostPage';
-import { baseURL } from '../../utils';
 
 const mockPost = {
   id: 'showcasing-automated-testing-in-unity',

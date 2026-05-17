@@ -246,6 +246,7 @@ function ScreenshotGallery({ screenshots }) {
       if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxOpen, resetKey, normalizedScreenshots.length, resetTimer, autoPlayEnabled]);
 
   if (normalizedScreenshots.length === 0) {
