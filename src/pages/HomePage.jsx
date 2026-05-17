@@ -178,15 +178,13 @@ function HomePage() {
       </div>
 
       <div className="home-hero-grid">
+        <ProjectTypeFilter
+          types={uniqueProjectTypes}
+          excludedTypes={excludedTypes}
+          onToggle={handleToggleType}
+        />
         <LauncherCTA />
       </div>
-
-
-      <ProjectTypeFilter
-        types={uniqueProjectTypes}
-        excludedTypes={excludedTypes}
-        onToggle={handleToggleType}
-      />
 
       <div className="home-section">
         <div className="home-section-header">

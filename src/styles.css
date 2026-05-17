@@ -949,51 +949,29 @@ img {
   overflow-wrap: break-word;
 }
 
-/* --- Home Hero Grid (Launcher + About Me) --- */
+/* --- Home Hero Grid (Filter + Launcher) --- */
 .home-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 65% 35%;
   gap: var(--main-margin-bottom);
   margin-bottom: var(--main-margin-bottom);
 }
 
-.about-me-mini {
+.launcher-cta-compact {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-.about-me-mini-content h3 {
-  color: var(--color-light);
-  font-size: 1.4rem;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--color-darkest);
-  padding-bottom: 8px;
-}
-
-.about-me-mini-content p {
-  color: var(--color-light);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.about-me-mini-stats {
+.launcher-download-btn {
+  font-size: 2.5rem;
+  width: 80px;
+  height: 80px;
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.mini-stat {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: var(--color-grey);
-  background: var(--color-darkest);
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-.mini-stat strong {
-  color: var(--color-purple);
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
 }
 
 @media (max-width: 768px) {
