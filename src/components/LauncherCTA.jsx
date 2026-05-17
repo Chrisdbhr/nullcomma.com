@@ -8,7 +8,7 @@ function LauncherCTA() {
       className="launcher-cta-mini"
     >
       <span className="launcher-cta-mini-icon"><i className="fas fa-download"></i></span>
-      <span className="launcher-cta-mini-text">Download Launcher</span>
+      <span className="launcher-cta-mini-text">Download Launcher Now</span>
     </a>
   )
 }

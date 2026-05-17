@@ -39,7 +39,7 @@ function DownloadButton({ project }) {
           href={LAUNCHER_INSTALLER_URL} 
           className="button-primary button-download"
         >
-          Download Launcher
+          Download Launcher Now
         </a>
          <button onClick={() => setShowInstallerLink(false)} className="button-secondary">
            I have it, try again
