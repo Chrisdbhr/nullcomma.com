@@ -8,18 +8,22 @@ function openLightbox(container) {
   if (mainImage) mainImage.click();
 }
 
+function getLightbox() {
+  return document.querySelector('.gallery-lightbox');
+}
+
 function getCounter(container) {
-  const el = container.querySelector('.lightbox-counter');
+  const el = getLightbox()?.querySelector('.lightbox-counter');
   return el ? el.textContent : null;
 }
 
-function clickLeftZone(container) {
-  const zone = container.querySelector('.lightbox-click-prev');
+function clickLeftZone() {
+  const zone = getLightbox()?.querySelector('.lightbox-click-prev');
   if (zone) zone.click();
 }
 
-function clickRightZone(container) {
-  const zone = container.querySelector('.lightbox-click-next');
+function clickRightZone() {
+  const zone = getLightbox()?.querySelector('.lightbox-click-next');
   if (zone) zone.click();
 }
 
@@ -117,12 +121,12 @@ describe('ScreenshotGallery', () => {
     it('should open lightbox when clicking main gallery image', async () => {
       const { container } = render(<ScreenshotGallery screenshots={threeScreenshots} />);
 
-      expect(container.querySelector('.gallery-lightbox')).toBeNull();
+      expect(getLightbox()).toBeNull();
 
       openLightbox(container);
 
       await waitFor(() => {
-        expect(container.querySelector('.gallery-lightbox')).not.toBeNull();
+        expect(getLightbox()).not.toBeNull();
       });
     });
 
@@ -143,11 +147,11 @@ describe('ScreenshotGallery', () => {
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
       // Left from 1 → 3 (wrapping backward)
-      clickLeftZone(container);
+      clickLeftZone();
       await waitFor(() => expect(getCounter(container)).toContain('3 / 3'));
 
       // Left from 3 → 2
-      clickLeftZone(container);
+      clickLeftZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
     });
 
@@ -158,11 +162,11 @@ describe('ScreenshotGallery', () => {
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
       // Right from 1 → 2
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
       // Right from 2 → 3
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('3 / 3'));
     });
 
@@ -172,16 +176,16 @@ describe('ScreenshotGallery', () => {
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('3 / 3'));
 
-      clickLeftZone(container);
+      clickLeftZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
-      clickLeftZone(container);
+      clickLeftZone();
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
     });
 
@@ -191,7 +195,7 @@ describe('ScreenshotGallery', () => {
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
-      const thumbnails = container.querySelectorAll('.lightbox-thumb');
+      const thumbnails = document.querySelectorAll('.lightbox-thumbnails .lightbox-thumb');
       expect(thumbnails.length).toBe(3);
 
       // Click the third thumbnail → image 3
@@ -239,7 +243,7 @@ describe('ScreenshotGallery', () => {
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
-      const iframe = container.querySelector('.lightbox-image-container iframe');
+      const iframe = getLightbox()?.querySelector('.lightbox-image-container iframe');
       expect(iframe).not.toBeNull();
       expect(iframe.getAttribute('src')).toContain(trailerUrl);
       expect(iframe.getAttribute('src')).toContain('playsinline=1');
@@ -251,13 +255,13 @@ describe('ScreenshotGallery', () => {
 
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
-      expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
+      expect(getLightbox()?.querySelector('.lightbox-image-container iframe')).not.toBeNull();
 
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
-      expect(container.querySelector('.lightbox-image-container iframe')).toBeNull();
-      expect(container.querySelector('.lightbox-image-container img')).not.toBeNull();
+      expect(getLightbox()?.querySelector('.lightbox-image-container iframe')).toBeNull();
+      expect(getLightbox()?.querySelector('.lightbox-image-container img')).not.toBeNull();
     });
 
     it('should restart video when navigating back to trailer slide', async () => {
@@ -265,16 +269,16 @@ describe('ScreenshotGallery', () => {
 
       openLightbox(container);
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
-      const firstIframe = container.querySelector('.lightbox-image-container iframe');
+      const firstIframe = getLightbox()?.querySelector('.lightbox-image-container iframe');
       expect(firstIframe).not.toBeNull();
 
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
 
-      clickLeftZone(container);
+      clickLeftZone();
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
-      const newIframe = container.querySelector('.lightbox-image-container iframe');
+      const newIframe = getLightbox()?.querySelector('.lightbox-image-container iframe');
       expect(newIframe).not.toBeNull();
       expect(newIframe).not.toBe(firstIframe);
     });
@@ -286,17 +290,17 @@ describe('ScreenshotGallery', () => {
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
       // Go to last slide
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('2 / 3'));
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('3 / 3'));
 
       // Right again → back to trailer (slide 1)
-      clickRightZone(container);
+      clickRightZone();
       await waitFor(() => expect(getCounter(container)).toContain('1 / 3'));
 
       // Should have iframe again
-      expect(container.querySelector('.lightbox-image-container iframe')).not.toBeNull();
+      expect(getLightbox()?.querySelector('.lightbox-image-container iframe')).not.toBeNull();
     });
 
     it('should auto-advance to next slide when YouTube video ends', async () => {

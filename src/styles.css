@@ -2900,3 +2900,32 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .social-links-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .page-content {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .glass-content-card {
+    margin-left: -8px;
+    margin-right: -8px;
+    border-radius: 0;
+  }
+
+  .blog-post-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .blog-post-card {
+    max-width: 100%;
+  }
+}

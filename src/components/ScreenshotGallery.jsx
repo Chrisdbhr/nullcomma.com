@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import ReactDOM from 'react-dom'
 import SafeImage from './SafeImage'
 
 const THUMBNAIL_WIDTH = 100;
@@ -385,7 +386,7 @@ function ScreenshotGallery({ screenshots }) {
       </div>
 
       {/* Lightbox Overlay */}
-      {lightboxOpen && (
+      {lightboxOpen && ReactDOM.createPortal(
         <div className="gallery-lightbox" ref={lightboxRef} onClick={hasMultipleImages ? undefined : closeLightbox}>
           {/* Progress bar */}
           {hasMultipleImages && (
@@ -508,7 +509,7 @@ function ScreenshotGallery({ screenshots }) {
             </div>
           )}
         </div>
-      )}
+      , document.body)}
     </>
   )
 }
