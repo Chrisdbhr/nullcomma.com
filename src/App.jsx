@@ -31,6 +31,7 @@ function App() {
           <span className="footer-sep">·</span>
           <Link to="/terms">Terms</Link>
         </p>
+        <a rel="me" href="https://mastodon.gamedev.place/@nullcomma" style={{ display: 'none' }}>Mastodon</a>
         </div>
       </footer>
     </Fragment>
