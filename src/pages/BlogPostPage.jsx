@@ -121,6 +121,7 @@ function BlogPostPage() {
       <meta name="twitter:title" content={post.title} />
       <meta name="twitter:description" content={description} />
       {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+      <meta name="fediverse:creator" content="@nullcomma@mastodon.gamedev.place" />
 
 
       <article className="blog-post-detail">
