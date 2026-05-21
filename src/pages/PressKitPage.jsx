@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { baseURL, fieldsQuery, formatDate } from '../utils';
-import JSZip from 'jszip';
 import SafeImage from '../components/SafeImage';
 import { getPreferredTranslation } from '../utils/translationUtils';
 
@@ -117,6 +116,7 @@ function PressKitPage() {
   const handleDownloadZip = async () => {
     if (!project) return;
     setZipping(true);
+    const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
     const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 

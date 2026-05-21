@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { baseURL } from '../utils';
+import { getCmsProjects, setCmsProjects } from '../utils/cmsCache';
 
 const SHOW_MS = 6000;
 const FADE_MS = 1500;
-const MAX_IMAGES = 15;
+const MAX_IMAGES = 8;
 const LOAD_TIMEOUT = 3000;
-const ZOOM_DURATION = 15000;
+const DEFER_MS = 2000;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -17,58 +18,23 @@ function shuffle(arr) {
 }
 
 function directusAssetUrl(id) {
-  return `${baseURL}/assets/${id}?width=1920&quality=80`;
+  return `${baseURL}/assets/${id}?width=1440&quality=60`;
 }
 
 function BackgroundSlideshow() {
   const [current, setCurrent] = useState(null);
   const [entering, setEntering] = useState(null);
   const [fadePct, setFadePct] = useState(0);
-  const [ready, setReady] = useState(false);
   const order = useRef([]);
   const idx = useRef(0);
   const alive = useRef(true);
   const advanceTimer = useRef(null);
-  const slideRefs = useRef({});
-
-  useEffect(() => {
-    if (document.readyState === 'complete') {
-      setReady(true);
-    } else {
-      const onLoad = () => setReady(true);
-      window.addEventListener('load', onLoad);
-      return () => window.removeEventListener('load', onLoad);
-    }
-  }, []);
-
-  useEffect(() => {
-    const progress = {};
-    const RATE = 0.08 / (ZOOM_DURATION / 16.67);
-    let raf;
-
-    const tick = () => {
-      Object.keys(slideRefs.current).forEach(url => {
-        const el = slideRefs.current[url];
-        if (!el) return;
-        if (!(url in progress)) progress[url] = 1;
-        progress[url] = Math.min(progress[url] + RATE, 1.08);
-        el.style.transform = `scale(${progress[url]})`;
-      });
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const setSlideRef = useCallback((url) => (el) => {
-    slideRefs.current[url] = el;
-  }, []);
 
   const scheduleNext = useCallback(() => {
     advanceTimer.current = setTimeout(() => {
       if (!alive.current) return;
       const o = order.current;
+      if (o.length === 0) return;
       const nextIdx = (idx.current + 1) % o.length;
       idx.current = nextIdx;
       const nextUrl = o[nextIdx];
@@ -88,11 +54,10 @@ function BackgroundSlideshow() {
     }, SHOW_MS);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!entering) return;
     const start = Date.now();
     let raf;
-
     const animate = () => {
       const elapsed = Date.now() - start;
       const pct = Math.min(elapsed / FADE_MS, 1);
@@ -105,22 +70,18 @@ function BackgroundSlideshow() {
         raf = requestAnimationFrame(animate);
       }
     };
-
     raf = requestAnimationFrame(animate);
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-    };
+    return () => { if (raf) cancelAnimationFrame(raf); };
   }, [entering, scheduleNext]);
 
   useEffect(() => {
-    if (!ready) return;
+    const timer = setTimeout(() => {
+      if (!alive.current) return;
 
-    fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
-      .then(r => r.json())
-      .then(data => {
-        if (!alive.current) return;
+      const useProjects = (projects) => {
+        if (!alive.current || !projects) return;
         const gameGroups = [];
-        data.data.forEach(p => {
+        projects.forEach(p => {
           const group = [];
           if (p.card_image?.id) group.push(directusAssetUrl(p.card_image.id));
           if (p.steam_screenshots?.length > 0) {
@@ -148,23 +109,37 @@ function BackgroundSlideshow() {
         }
         const limited = interleaved.slice(0, MAX_IMAGES);
         order.current = limited;
-
         idx.current = 0;
-        const firstUrl = order.current[0];
 
+        const firstUrl = limited[0];
         const img = new Image();
         img.onload = () => { if (alive.current) { setFadePct(0); setEntering(firstUrl); } };
         img.onerror = () => { if (alive.current) { setFadePct(0); setEntering(firstUrl); } };
         img.src = firstUrl;
+      };
 
-        for (let i = 1; i < limited.length; i++) {
-          const bg = new Image();
-          bg.src = limited[i];
-        }
-      })
-      .catch(() => {});
-    return () => { alive.current = false; };
-  }, [ready, scheduleNext]);
+      const cached = getCmsProjects();
+      if (cached) {
+        const games = Array.isArray(cached) ? cached.filter(p => p.project_type === 'game') : [];
+        useProjects(games);
+        return;
+      }
+
+      fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
+        .then(r => r.json())
+        .then(data => {
+          if (!alive.current) return;
+          setCmsProjects(data.data);
+          useProjects(data.data);
+        })
+        .catch(() => {});
+    }, DEFER_MS);
+
+    return () => {
+      clearTimeout(timer);
+      alive.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current); };
@@ -177,7 +152,6 @@ function BackgroundSlideshow() {
         <div
           className="bg-slide"
           key={current}
-          ref={setSlideRef(current)}
           style={{
             backgroundImage: `url(${current})`,
             opacity: 1,
@@ -188,7 +162,6 @@ function BackgroundSlideshow() {
         <div
           className="bg-slide"
           key={entering}
-          ref={setSlideRef(entering)}
           style={{
             backgroundImage: `url(${entering})`,
             opacity: fadePct,

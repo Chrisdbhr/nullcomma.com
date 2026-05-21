@@ -53,6 +53,12 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   will-change: transform, opacity;
+  animation: kenburns 15s ease-out forwards;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
 .bg-slideshow-overlay {
@@ -2911,6 +2917,31 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   background: var(--color-dark);
   border-radius: 8px;
   animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-back-btn {
+  height: 1.2rem;
+  width: 120px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-game-title {
+  height: 2.2rem;
+  width: 60%;
+  margin-bottom: 1.5rem;
+}
+
+.skeleton-gallery {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.skeleton-sidebar-box {
+  height: 150px;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
 }
 
 .skeleton-title {

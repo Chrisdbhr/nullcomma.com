@@ -4,6 +4,7 @@ import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../utils'
+import { setCmsProjects } from '../utils/cmsCache'
 import LauncherCTA from '../components/LauncherCTA'
 import ProjectTypeFilter from '../components/ProjectTypeFilter'
 import { normalizeEngineName } from '../utils/textUtils';
@@ -34,6 +35,7 @@ export async function loader() {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data = await response.json();
     const totalProjects = data.data;
+    setCmsProjects(totalProjects);
 
     const now = new Date();
     const currentYear = now.getFullYear();

@@ -13,7 +13,10 @@ import HomePage, { loader as homePageLoader } from './pages/HomePage.jsx';
 import './styles.css';
 
 // Páginas carregadas sob demanda (code splitting)
-const GameDetailPage = lazy(() => import('./pages/GameDetailPage.jsx'));
+const GameDetailPage = lazy(() => import('./pages/GameDetailPage.jsx').then(m => ({
+  default: m.default,
+  loader: m.loader,
+})));
 const BlogListPage = lazy(() => import('./pages/BlogListPage.jsx').then(m => ({
   default: m.default,
   loader: m.loader,
@@ -34,6 +37,28 @@ function SuspenseFallback() {
       minHeight: '300px',
     }}>
       <div className="spinner" />
+    </div>
+  );
+}
+
+function GameDetailSkeleton() {
+  return (
+    <div className="page-content game-detail-page fade-in">
+      <div className="skeleton skeleton-back-btn" />
+      <div className="skeleton skeleton-game-title" />
+      <div className="game-detail-layout">
+        <div className="game-detail-main">
+          <div className="skeleton skeleton-gallery" />
+          <div className="skeleton skeleton-text" />
+          <div className="skeleton skeleton-text short" />
+          <div className="skeleton skeleton-text" />
+          <div className="skeleton skeleton-text" />
+        </div>
+        <aside className="game-detail-sidebar">
+          <div className="skeleton skeleton-sidebar-box" />
+          <div className="skeleton skeleton-sidebar-box" />
+        </aside>
+      </div>
     </div>
   );
 }
@@ -87,10 +112,14 @@ const router = createBrowserRouter([
       {
         path: "project/:projectId",
         element: (
-          <Suspense fallback={<SuspenseFallback />}>
+          <Suspense fallback={<GameDetailSkeleton />}>
             <GameDetailPage />
           </Suspense>
-        )
+        ),
+        loader: async (...args) => {
+          const { loader } = await import('./pages/GameDetailPage.jsx');
+          return loader(...args);
+        }
       },
       {
         path: "blog",

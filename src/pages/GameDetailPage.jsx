@@ -1,50 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import React, { useMemo } from 'react'
+import { useLoaderData, Link, useNavigate } from 'react-router-dom'
 import { baseURL, fieldsQuery, getHashedColor, getAssetUrl, formatDate } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
 import { CodeBlock } from '../components/CodeBlock';
 import SafeImage from '../components/SafeImage';
 import { getPreferredTranslation } from '../utils/translationUtils';
+import LazyEmbed from '../components/LazyEmbed';
+
+export async function loader({ params }) {
+  const response = await fetch(`${baseURL}/items/projects/${params.projectId}?${fieldsQuery}`);
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  const data = await response.json();
+  return data.data;
+}
+
+function MarkdownImg({ src, alt, ...props }) {
+  return (
+    <img
+      src={src}
+      alt={alt || ''}
+      loading="lazy"
+      decoding="async"
+      {...props}
+    />
+  )
+}
 
 function GameDetailPage() {
-  const { projectId } = useParams()
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!projectId) return;
-
-    // --- 1. Busca os dados do Jogo ---
-    const fetchGame = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        setProject(data.data);
-      } catch {
-        console.error("Error fetching game");
-        setProject(null);
-      }
-    };
-
-    const loadAllData = async () => {
-      setLoading(true);
-      await fetchGame();
-      setLoading(false);
-    }
-
-    loadAllData();
-
-  }, [projectId]);
-
-  if (loading) {
-    return <div className="page-content"><h2>Loading...</h2></div>;
-  }
+  const project = useLoaderData()
+  const navigate = useNavigate()
 
   if (!project) {
     return (
@@ -57,60 +45,56 @@ function GameDetailPage() {
     )
   }
 
-  const translation = getPreferredTranslation(project.translations);
+  const translation = getPreferredTranslation(project.translations)
 
-  // SEO Meta Calculation
-  const cardImageId = project.card_image?.id;
-  const cardImageType = project.card_image?.type;
-  const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType, 70);
+  const cardImageId = project.card_image?.id
+  const cardImageType = project.card_image?.type
+  const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType, 70)
 
-  const title = translation.title || 'Title Not Available'; // Define title for meta tags
+  const title = translation.title || 'Title Not Available'
 
   const description = translation.synopsis
     ? translation.synopsis.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : `${title} — Null Comma. Find out more about this game/project.`;
+    : `${title} — Null Comma. Find out more about this game/project.`
 
   const getEmbedUrl = (url) => {
-    if (!url) return null;
+    if (!url) return null
     try {
-      const videoUrl = new URL(url);
+      const videoUrl = new URL(url)
       if (videoUrl.hostname.includes('youtube.com')) {
-        return `https://www.youtube.com/embed/${videoUrl.searchParams.get('v')}`;
+        return `https://www.youtube.com/embed/${videoUrl.searchParams.get('v')}`
       }
-      return url;
+      return url
     } catch {
-      return url;
+      return url
     }
   }
 
-  const trailerEmbedUrl = getEmbedUrl(project.trailer_url);
+  const trailerEmbedUrl = getEmbedUrl(project.trailer_url)
 
-  // Filter only published related posts
-  const relatedPosts = project.related_posts?.filter(post => post.post_id.status === 'published') || [];
+  const relatedPosts = useMemo(
+    () => (project.related_posts?.filter(post => post.post_id.status === 'published') || []),
+    [project]
+  )
 
-  // Use Steam screenshots when available, fall back to Directus uploads
   const galleryScreenshots = project.steam_screenshots?.length > 0
     ? project.steam_screenshots
-    : project.screenshots;
+    : project.screenshots
 
-  // Prepend trailer as first gallery slide when available
   const galleryItems = trailerEmbedUrl
-    ? [{ type: 'video', url: trailerEmbedUrl, title: 'Trailer' }, ...galleryScreenshots]
-    : galleryScreenshots;
+    ? [{ type: 'video', url: trailerEmbedUrl, title: 'Trailer' }, ...(galleryScreenshots || [])]
+    : (galleryScreenshots || [])
 
   return (
     <div className="page-content game-detail-page fade-in">
-      {/* SEO META TAGS */}
       <title>{`${title} - Null Comma`}</title>
       <meta name="description" content={description} />
 
-      {/* Open Graph Tags */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="article" />
       {imageUrl && <meta property="og:image" content={imageUrl} />}
 
-      {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
@@ -128,34 +112,33 @@ function GameDetailPage() {
 
           {project.steam_id && (
             <div className="steam-widget-container">
-              <iframe
+              <LazyEmbed
                 src={`https://store.steampowered.com/widget/${project.steam_id}/`}
-                frameBorder="0"
-                width="100%"
                 height="190"
                 title="Steam Widget"
-              ></iframe>
+              />
             </div>
           )}
 
           <div className="game-synopsis">
             <ReactMarkdown
+              rehypePlugins={[rehypeRaw, rehypeSlug]}
               components={{
-                code: CodeBlock, // Renderiza código usando o componente CodeBlock
+                code: CodeBlock,
+                img: MarkdownImg,
               }}
             >
               {translation.synopsis}
             </ReactMarkdown>
           </div>
 
-          {/* Related Posts Section */}
           {relatedPosts.length > 0 && (
             <div className="github-readme-box">
               <h3>Related Articles</h3>
               <div className="blog-post-grid">
                 {relatedPosts.map((post) => {
-                  const coverImageId = post.post_id.cover_image?.id;
-                  const coverImageType = post.post_id.cover_image?.type;
+                  const coverImageId = post.post_id.cover_image?.id
+                  const coverImageType = post.post_id.cover_image?.type
 
                   return (
                     <Link
@@ -181,7 +164,7 @@ function GameDetailPage() {
                         <span className="blog-post-date">{formatDate(post.post_id.date_published)}</span>
                       </div>
                     </Link>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -192,26 +175,16 @@ function GameDetailPage() {
         <aside className="game-detail-sidebar">
 
           {project.executable_path ? (
-            // 1. Se tem executável, mostra o botão de download
             <DownloadButton project={project} />
           ) : (
-            // 2. Senão, checamos as outras opções:
-            //    Se NÃO tem web, NEM Google, NEM Apple, E NEM GITHUB...
             (!project.web_version_url && !project.google_play_url && !project.app_store_url && !project.github_url) ? (
-              // ...então o jogo está realmente "Em breve"
               <button className="button-primary button-disabled" disabled>
                 Coming Soon
               </button>
-            ) : (
-              // ...se TIVER qualquer um desses outros links, não mostramos nada aqui,
-              // pois os links já vão aparecer nos blocos abaixo.
-              null
-            )
+            ) : null
           )}
 
-          {/* 4. LINKS ADICIONADOS DE VOLTA (com base no turno anterior) */}
           <div className="game-links">
-            {/* Link de Jogar Online */}
             {project.web_version_url && (
               <a
                 href={project.web_version_url}
@@ -223,7 +196,6 @@ function GameDetailPage() {
               </a>
             )}
 
-            {/* Link do Código Fonte (GitHub) */}
             {project.github_url && (
               <a
                 href={project.github_url}
@@ -242,7 +214,6 @@ function GameDetailPage() {
             )}
           </div>
 
-          {/* Links das Lojas de Aplicativo */}
           {(project.google_play_url || project.app_store_url) && (
             <div className="sidebar-info-box">
               <div className="game-store-links">
@@ -270,7 +241,6 @@ function GameDetailPage() {
             </div>
           )}
 
-          {/* O restante dos seus blocos de Detalhes e Tags */}
           <div className="sidebar-info-box">
             <h4>Details</h4>
             {project.engine && (
@@ -290,7 +260,6 @@ function GameDetailPage() {
             )}
           </div>
 
-          {/* Only show tags section if there are tags */}
           {project.tags && project.tags.length > 0 && (
             <div className="sidebar-info-box">
               <h4>Tags</h4>

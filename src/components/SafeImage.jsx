@@ -41,6 +41,7 @@ function SafeImage({ id, src, width, options, mimeType, alt, className, quality,
     onLoad: handleLoad,
     onError: handleError,
     fetchpriority,
+    loading: fetchpriority === 'high' ? undefined : 'lazy',
     ...imgProps,
   }
 
