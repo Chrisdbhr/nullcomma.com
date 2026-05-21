@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
@@ -6,117 +6,148 @@ import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
 import { getAssetUrl, baseURL, getHashedColor, formatDate } from '../utils'
-import { CodeBlock } from '../components/CodeBlock';
+import { CodeBlock } from '../components/CodeBlock'
 import ProjectCard from '../components/ProjectCard'
 import SafeImage from '../components/SafeImage'
+import LazyEmbed from '../components/LazyEmbed'
 
 
 function BlogPostPage() {
-  const { slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [tocItems, setTocItems] = useState([]);
-  const [readingTime, setReadingTime] = useState(0);
-  const [loading, setLoading] = useState(true); // Fixed: useState(true)
+  const { slug } = useParams()
+  const [post, setPost] = useState(null)
+  const [tocItems, setTocItems] = useState([])
+  const [readingTime, setReadingTime] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchPost = async () => {
-      
-      // Fields required by ProjectCard component on the related project object
       const PROJECT_CARD_REQUIRED_FIELDS = [
         'id', 'status', 'release_date', 'engine', 'project_type',
         'card_image.id', 'card_image.type',
         'translations.*',
         'tags.tags_id',
-      ];
-      
-      // Prefix all required fields with 'related_projects.projects_id.'
+      ]
+
       const RELATED_PROJECT_FIELDS = PROJECT_CARD_REQUIRED_FIELDS
         .map(field => `related_projects.projects_id.${field}`)
-        .join(',');
-      
+        .join(',')
+
       const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,tags.tags_id,${RELATED_PROJECT_FIELDS}`
-      
+
       try {
-        setLoading(true);
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const data = await response.json();
-        
+        setLoading(true)
+        const response = await fetch(API_URL)
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+
+        const data = await response.json()
+
         if (data.data) {
-          setPost(data.data);
-          setReadingTime(getReadingTime(data.data.content));
-          setTocItems(extractToc(data.data.content));
+          setPost(data.data)
+          setReadingTime(getReadingTime(data.data.content))
+          setTocItems(extractToc(data.data.content))
         } else {
-          throw new Error("Post not found");
+          throw new Error("Post not found")
         }
       } catch (error) {
-        console.error("Error fetching post:", error);
-        setPost(null);
+        console.error("Error fetching post:", error)
+        setPost(null)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchPost();
-  }, [slug]);
+    fetchPost()
+  }, [slug])
+
+  const imageUrl = post?.cover_image
+    ? getAssetUrl(post.cover_image.id, 1000, '', post.cover_image.type)
+    : null
+
+  const pubDate = post ? formatDate(post.date_published) : ''
+
+  const description = post?.content
+    ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
+    : "Read this post on Null Comma."
+
+  const relatedProjects = useMemo(() => {
+    if (!post?.related_projects) return []
+    return post.related_projects
+      .map(link => link.projects_id)
+      .filter(project => {
+        if (!project) return false
+        const status = project.status
+        return import.meta.env.DEV
+          ? status === 'published' || status === 'draft'
+          : status === 'published'
+      })
+  }, [post])
+
+  const MarkdownImg = useCallback(({ src, alt, ...props }) => {
+    return (
+      <img
+        src={src}
+        alt={alt || ''}
+        loading="lazy"
+        decoding="async"
+        {...props}
+      />
+    )
+  }, [])
+
+  const MarkdownIframe = useCallback(({ src, ...props }) => {
+    return <LazyEmbed src={src} {...props} />
+  }, [])
 
   if (loading) {
     return (
       <>
         <title>Loading Post... - Null Comma</title>
-        <p>Loading post...</p>
+        <div className="blog-post-layout">
+          <article className="blog-post-detail">
+            <header className="blog-post-header skeleton-header">
+              <div className="skeleton skeleton-title" />
+              <div className="skeleton skeleton-meta" />
+              <div className="skeleton skeleton-cover" />
+            </header>
+            <div className="blog-post-body">
+              <div className="skeleton skeleton-text" />
+              <div className="skeleton skeleton-text" />
+              <div className="skeleton skeleton-text short" />
+              <div className="skeleton skeleton-text" />
+              <div className="skeleton skeleton-text" />
+              <div className="skeleton skeleton-text short" />
+              <div className="skeleton skeleton-text" />
+              <div className="skeleton skeleton-text" />
+            </div>
+          </article>
+          <aside className="blog-post-sidebar-container">
+            <div className="skeleton skeleton-toc" />
+          </aside>
+        </div>
       </>
-    );
+    )
   }
-  
+
   if (!post) {
     return (
       <>
         <title>Post Not Found - Null Comma</title>
         <p>Post not found.</p>
       </>
-    );
+    )
   }
-
-  const imageUrl = post.cover_image 
-    ? getAssetUrl(post.cover_image.id, 1000, '', post.cover_image.type) // Otimizado para 1000px de largura
-    : null;
-    
-  const pubDate = formatDate(post.date_published);
-
-  const description = post.content
-    ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : "Read this post on Null Comma.";
-
-  // Extract and filter related projects based on environment status requirements
-  const relatedProjects = (post.related_projects || [])
-    .map(link => link.projects_id)
-    .filter(project => {
-      if (!project) return false;
-      const status = project.status;
-      
-      if (import.meta.env.DEV) {
-        return status === 'published' || status === 'draft';
-      } else {
-        return status === 'published';
-      }
-    });
-
 
   return (
     <div className="blog-post-layout">
-      
+
       <title>{`${post.title} - Null Comma`}</title>
       <meta name="description" content={description} />
-      
-      {/* Open Graph (para Discord, Facebook, etc.) */}
+
       <meta property="og:title" content={post.title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="article" />
       {imageUrl && <meta property="og:image" content={imageUrl} />}
-      
-      {/* Twitter Cards (para o Twitter) */}
+
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={post.title} />
       <meta name="twitter:description" content={description} />
@@ -134,14 +165,13 @@ function BlogPostPage() {
                 &bull; {readingTime} min read
               </span>
             )}
-          </div>       
+          </div>
 
-          {/* Display Blog Post Tags */}
           {(post.tags && post.tags.length > 0) && (
             <div className="blog-post-tags">
               {post.tags.map(tag => {
-                const tagId = tag.tags_id || tag;
-                const color = getHashedColor(tagId);
+                const tagId = tag.tags_id || tag
+                const color = getHashedColor(tagId)
                 return (
                   <span
                     key={tagId}
@@ -153,7 +183,7 @@ function BlogPostPage() {
                   >
                     {tagId}
                   </span>
-                );
+                )
               })}
             </div>
           )}
@@ -165,25 +195,24 @@ function BlogPostPage() {
               quality={75}
               mimeType={post.cover_image.type}
               alt={`Cover image of ${post.title}`}
+              fetchpriority="high"
             />
           )}
         </header>
-        
+
         <div className="blog-post-body">
           <ReactMarkdown
-            rehypePlugins={[
-              rehypeRaw, 
-              rehypeSlug 
-            ]}
+            rehypePlugins={[rehypeRaw, rehypeSlug]}
             components={{
-              code: CodeBlock, // Renderiza código usando o componente CodeBlock
+              code: CodeBlock,
+              img: MarkdownImg,
+              iframe: MarkdownIframe,
             }}
           >
             {post.content}
           </ReactMarkdown>
         </div>
 
-        {/* Related Projects Section */}
         {relatedProjects.length > 0 && (
           <div className="github-readme-box">
             <h3>Related Projects</h3>
@@ -194,7 +223,7 @@ function BlogPostPage() {
             </div>
           </div>
         )}
-        
+
       </article>
 
       <aside className="blog-post-sidebar-container">

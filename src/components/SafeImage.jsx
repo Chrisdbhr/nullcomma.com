@@ -10,7 +10,7 @@ import { getAssetUrl, getFallbackUrl, baseURL } from '../utils'
  * GIFs are converted to animated WebP by the server for better compression.
  * When both primary and fallback sources fail (e.g., 403, 500), shows a placeholder.
  */
-function SafeImage({ id, src, width, options, mimeType, alt, className, quality, useOriginal, ...imgProps }) {
+function SafeImage({ id, src, width, options, mimeType, alt, className, quality, useOriginal, fetchpriority, ...imgProps }) {
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
 
@@ -40,6 +40,7 @@ function SafeImage({ id, src, width, options, mimeType, alt, className, quality,
     className: `${className || ''} ${loading ? 'image-loading' : ''}`.trim(),
     onLoad: handleLoad,
     onError: handleError,
+    fetchpriority,
     ...imgProps,
   }
 
