@@ -9,7 +9,6 @@ import { getAssetUrl, baseURL, getHashedColor, formatDate } from '../utils'
 import { CodeBlock } from '../components/CodeBlock'
 import ProjectCard from '../components/ProjectCard'
 import SafeImage from '../components/SafeImage'
-import LazyEmbed from '../components/LazyEmbed'
 
 
 function BlogPostPage() {
@@ -92,10 +91,6 @@ function BlogPostPage() {
         {...props}
       />
     )
-  }, [])
-
-  const MarkdownIframe = useCallback(({ src, ...props }) => {
-    return <LazyEmbed src={src} {...props} />
   }, [])
 
   if (loading) {
@@ -206,7 +201,6 @@ function BlogPostPage() {
             components={{
               code: CodeBlock,
               img: MarkdownImg,
-              iframe: MarkdownIframe,
             }}
           >
             {post.content}
