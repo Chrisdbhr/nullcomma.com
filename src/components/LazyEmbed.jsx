@@ -26,20 +26,26 @@ function LazyEmbed({ src, title, className, width, height, placeholder, ...props
     return () => observer.disconnect()
   }, [])
 
+  const embedHeight = parseInt(height, 10) || 400
+
   return (
-    <div ref={ref} className={`lazy-embed ${className || ''}`}>
+    <div
+      ref={ref}
+      className={`lazy-embed ${className || ''}`}
+      style={height ? { height: embedHeight } : undefined}
+    >
       {visible ? (
         <iframe
           src={src}
           title={title || ''}
           width={width || '100%'}
-          height={height || '400'}
+          height={embedHeight}
           loading="lazy"
           allowFullScreen
           {...props}
         />
       ) : (
-        <div className="lazy-embed-placeholder">
+        <div className="lazy-embed-placeholder" style={{ height: embedHeight }}>
           {placeholder || 'Loading embed...'}
         </div>
       )}

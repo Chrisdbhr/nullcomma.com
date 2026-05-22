@@ -1650,6 +1650,21 @@ img {
   color: var(--color-darkest);
 }
 
+/* --- Steam Button --- */
+.button-secondary.button-steam {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #1b2838;
+  color: #66c0f4;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.button-secondary.button-steam:hover {
+  background-color: #66c0f4;
+  color: #1b2838;
+}
+
 /* --- 5. Redes Sociais (Mais Ícones) --- */
 
 /* --- 1. Label da Engine (Card) --- */
@@ -2079,8 +2094,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 /* Em telas maiores, 3 colunas (a primeira é o espaço da sidebar principal) */
 @media (min-width: 1024px) {
   .blog-post-layout {
-    /* Define 3 colunas: conteúdo principal e sidebar do TOC */
-    grid-template-columns: minmax(0, 3fr) 1fr; 
+    grid-template-columns: minmax(300px, 3fr) 1fr;
   }
 }
 
@@ -2983,6 +2997,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 
 .lazy-embed iframe {
   width: 100%;
+  height: 100%;
   border: none;
   border-radius: var(--border-radius);
 }
@@ -2992,7 +3007,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 200px;
   background: var(--color-dark);
   border-radius: var(--border-radius);
   color: var(--color-grey);

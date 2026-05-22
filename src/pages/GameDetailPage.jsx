@@ -185,6 +185,17 @@ function GameDetailPage() {
           )}
 
           <div className="game-links">
+            {project.steam_id && (
+              <a
+                href={`https://store.steampowered.com/app/${project.steam_id}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-secondary button-steam"
+              >
+                <i className="fab fa-steam"></i> View on Steam
+              </a>
+            )}
+
             {project.web_version_url && (
               <a
                 href={project.web_version_url}
