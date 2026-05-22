@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
  * Wrapper that defers iframe mounting until it enters the viewport.
  * Shows a placeholder while waiting.
  */
-function LazyEmbed({ src, title, className, width, height, placeholder, ...props }) {
+function LazyEmbed({ src, title, className, width, height, placeholder }) {
   const [visible, setVisible] = useState(false)
   const ref = useRef(null)
 
@@ -42,7 +42,6 @@ function LazyEmbed({ src, title, className, width, height, placeholder, ...props
           height={embedHeight}
           loading="lazy"
           allowFullScreen
-          {...props}
         />
       ) : (
         <div className="lazy-embed-placeholder" style={{ height: embedHeight }}>
