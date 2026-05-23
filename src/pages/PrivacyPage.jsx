@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 function PrivacyPage() {
   return (
     <div className="page-content fade-in" style={{ maxWidth: '720px', margin: '0 auto' }}>
-      <Link to="/" className="button-back">&larr; Back</Link>
-
       <div className="glass-content-card">
         <h1 style={{ color: 'var(--color-light)', fontSize: '2rem', marginBottom: '0.5rem' }}>Privacy Policy</h1>
         <p style={{ color: 'var(--color-grey)', marginBottom: '1.5rem' }}>This policy applies to all Null Comma products: this website, games, tools, applications, and any services or integrations provided under the Null Comma brand.</p>

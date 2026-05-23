@@ -1,10 +1,12 @@
 import { Fragment } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import BackgroundSlideshow from './components/BackgroundSlideshow';
 import { useReferral } from './hooks/useReferral';
 
 function App() {
   const referral = useReferral();
+  const location = useLocation();
+  const isRoot = location.pathname === '/';
 
   return (
     <Fragment>
@@ -12,6 +14,7 @@ function App() {
         <BackgroundSlideshow />
 
         <header className="main-header">
+          {!isRoot && <Link to="/" className="main-header-back">&larr; Back</Link>}
           <Link to="/" className="site-title-link">
             <h1>{referral ? referral.title : 'Null Comma'}</h1>
             <span>{referral ? referral.subtitle : 'Games, prototypes & dev insights'}</span>

@@ -104,10 +104,24 @@ img {
 }
 
 .main-header {
+  position: relative;
   padding: 30px 0 15px 0;
   margin-bottom: var(--main-margin-bottom);
   text-align: center;
   border-bottom: 1px solid var(--color-dark);
+}
+
+.main-header-back {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-grey);
+  font-size: 0.95rem;
+}
+
+.main-header-back:hover {
+  color: var(--color-light);
 }
 
 .main-header h1 {

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useLoaderData, Link, useNavigate } from 'react-router-dom'
+import { useLoaderData } from 'react-router-dom'
 import { baseURL, fieldsQuery, getHashedColor, getAssetUrl, formatDate } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
@@ -32,7 +32,6 @@ function MarkdownImg({ src, alt, ...props }) {
 
 function GameDetailPage() {
   const project = useLoaderData()
-  const navigate = useNavigate()
 
   if (!project) {
     return (
@@ -100,9 +99,6 @@ function GameDetailPage() {
       <meta name="twitter:description" content={description} />
       {imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
-      <button onClick={() => navigate('/')} className="button-back">
-        &larr; Back
-      </button>
       <h2 className="game-title">{translation.title}</h2>
 
       <div className="game-detail-layout">
