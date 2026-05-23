@@ -58,16 +58,22 @@ async function fetchJson(url) {
 // ── Inline fallback styles (dark theme, matches site aesthetic) ──
 const FALLBACK_CSS = `
 body{margin:0;background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.6}
-.static-root{max-width:720px;margin:0 auto;padding:2rem 1.5rem}
+.static-root{max-width:720px;margin:0 auto;padding:2rem 1.5rem;min-height:100vh;display:flex;flex-direction:column}
 .static-root a{color:#a78bfa}
 .static-root a:hover{color:#c4b5fd}
 .static-root h1{font-family:'Crimson Pro',Georgia,serif;font-size:2rem;margin:0 0 .5rem;color:#fff}
 .static-root h2{font-family:'Crimson Pro',Georgia,serif;font-size:1.4rem;margin:1.5rem 0 .5rem;color:#ddd}
+.static-root h2:first-of-type{margin-top:1rem}
 .static-root .meta{color:#999;font-size:.875rem;margin-bottom:1rem}
 .static-root ul{padding-left:1.2rem}
-.static-root li{margin-bottom:.25rem}
-.static-root .nav-links{margin-top:2rem;padding-top:1rem;border-top:1px solid #333}
-.static-root .nav-links a{display:inline-block;margin-right:1rem}
+.static-root li{margin-bottom:.4rem}
+.static-root .static-footer{margin-top:auto;padding-top:1.5rem;border-top:1px solid #333;font-size:.875rem;color:#888;text-align:center}
+.static-root .static-footer a{margin:0 .5rem}
+.static-root .proj-list{list-style:none;padding:0}
+.static-root .proj-list li{padding:.6rem 0;border-bottom:1px solid #222}
+.static-root .proj-list li:last-child{border-bottom:none}
+.static-root .proj-list .proj-title{font-size:1.1rem;font-weight:600;color:#fff}
+.static-root .proj-list .proj-meta{font-size:.85rem;color:#999}
 `;
 
 // ── Build static HTML ──
@@ -182,37 +188,103 @@ function blogPostLD(post, title, description, imageUrl, date) {
   return ld;
 }
 
+// ── Clean markdown from text for display ──
+function cleanText(text) {
+  if (!text) return '';
+  return text
+    .replace(/^#+\s+/gm, '')
+    .replace(/[*\[\]()]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ── Site footer shared across all pages ──
+function siteFooter() {
+  return `<div class="static-footer">
+© Null Comma ·
+<a href="/">Home</a> ·
+<a href="/about">About</a> ·
+<a href="/blog">Blog</a> ·
+<a href="/privacy">Privacy</a> ·
+<a href="/terms">Terms</a>
+</div>`;
+}
+
 // ── Fallback body for static routes ──
-function homeBody() {
+function homeBody(projects, posts) {
+  const projLines = projects.map(p => {
+    const t = prefTranslation(p.translations);
+    const name = e(t.title || p.id);
+    const meta = [p.project_type, p.engine].filter(Boolean).join(' · ');
+    return `<li>
+<a href="/project/${e(p.id)}" class="proj-title">${name}</a>
+<div class="proj-meta">${e(meta)}</div>
+</li>`;
+  }).join('\n');
+
+  const postLines = posts.slice(0, 4).map(p => {
+    const date = p.date_published ? new Date(p.date_published).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
+  }).join('\n');
+
   return `<h1>Null Comma</h1>
 <p>Games, prototypes & dev insights by <strong>Christopher Ravailhe</strong>.</p>
 <p>Senior C# Developer and QA Test Automation specialist. 25+ games shipped across PC, console, and mobile.</p>
-<div class="nav-links">
-<a href="/about">About</a>
-<a href="/blog">Blog</a>
-<a href="/privacy">Privacy</a>
-<a href="/terms">Terms</a>
-<a href="https://discord.nullcomma.com">Discord</a>
-<a href="https://github.com/Chrisdbhr">GitHub</a>
-</div>`;
+
+<h2>Games &amp; Projects</h2>
+<ul class="proj-list">
+${projLines}
+</ul>
+
+<h2>Latest Blog Posts</h2>
+<ul>
+${postLines}
+</ul>
+
+<div style="margin-top:1rem">
+<a href="/blog" style="color:#a78bfa">All posts →</a>
+</div>
+
+${siteFooter()}`;
 }
 
 function aboutBody() {
   return `<h1>About Null Comma</h1>
 <p><strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.</p>
 <p>Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.</p>
-<div class="nav-links"><a href="/">← Home</a></div>`;
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/Chrisdbhr">GitHub</a></li>
+<li><a href="https://store.steampowered.com/curator/46087468">Steam Curator</a></li>
+<li><a href="https://www.youtube.com/@chrisjogos">YouTube (@chrisjogos)</a></li>
+<li><a href="https://discord.nullcomma.com">Discord</a></li>
+<li><a href="https://www.linkedin.com/company/105116562">LinkedIn</a></li>
+</ul>
+
+${siteFooter()}`;
 }
 
-function blogListBody() {
+function blogListBody(posts) {
+  const postLines = posts.map(p => {
+    const date = p.date_published ? new Date(p.date_published).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
+  }).join('\n');
+
   return `<h1>Blog</h1>
 <p>Devlogs, tutorials, and game development insights by Christopher Ravailhe.</p>
-<div class="nav-links"><a href="/">← Home</a></div>`;
+
+<h2>All Posts</h2>
+<ul>
+${postLines}
+</ul>
+
+${siteFooter()}`;
 }
 
-function staticBody(title, backLink) {
+function staticBody(title) {
   return `<h1>${e(title)}</h1>
-<div class="nav-links"><a href="${backLink || '/'}">← Back</a></div>`;
+${siteFooter()}`;
 }
 
 function projectBody(project, t, imageUrl) {
@@ -223,8 +295,7 @@ function projectBody(project, t, imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
   }
   if (synopsis) {
-    const clean = synopsis.replace(/[#*\[\]()]+/g, '').trim();
-    lines.push(`<p>${e(clean)}</p>`);
+    lines.push(`<p>${e(cleanText(synopsis))}</p>`);
   }
   lines.push(`<ul>`);
   if (project.engine) lines.push(`<li><strong>Engine:</strong> ${e(project.engine)}</li>`);
@@ -232,7 +303,7 @@ function projectBody(project, t, imageUrl) {
   if (project.project_type) lines.push(`<li><strong>Type:</strong> ${e(project.project_type)}</li>`);
   if (project.steam_id) lines.push(`<li><a href="https://store.steampowered.com/app/${e(project.steam_id)}">View on Steam</a></li>`);
   lines.push(`</ul>`);
-  lines.push(`<div class="nav-links"><a href="/">← Null Comma</a></div>`);
+  lines.push(siteFooter());
   return lines.join('\n');
 }
 
@@ -244,10 +315,10 @@ function blogBody(post, imageUrl) {
   }
   lines.push(`<div class="meta">${post.date_published ? `Published: ${e(post.date_published)}` : ''}</div>`);
   if (post.content) {
-    const clean = post.content.replace(/[#*\[\]()\n\r]+/g, ' ').trim();
-    lines.push(`<p>${e(truncate(clean, 500))}</p>`);
+    lines.push(`<p>${e(truncate(cleanText(post.content), 800))}</p>`);
   }
-  lines.push(`<div class="nav-links"><a href="/blog">← Blog</a> · <a href="/">Null Comma</a></div>`);
+  lines.push(`<div style="margin:1rem 0"><a href="/blog" style="color:#a78bfa">← Back to Blog</a></div>`);
+  lines.push(siteFooter());
   return lines.join('\n');
 }
 
@@ -316,7 +387,7 @@ async function main() {
       'Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments.',
       `${SITE_URL}/android-chrome-512x512.png`,
       [websiteLD(), personLD()],
-      homeBody(),
+      homeBody(projects, posts),
       siteUrl('/'),
     ),
     priority: 1.0,
@@ -346,7 +417,7 @@ async function main() {
       'Devlogs, tutorials, and game development insights by Christopher Ravailhe.',
       null,
       websiteLD(),
-      blogListBody(),
+      blogListBody(posts),
       siteUrl('/blog'),
     ),
     priority: 0.9,
@@ -365,7 +436,7 @@ async function main() {
         `${title} for Null Comma.`,
         null,
         null,
-        staticBody(title, '/'),
+        staticBody(title),
         siteUrl(path),
       ),
       priority: 0.5,
