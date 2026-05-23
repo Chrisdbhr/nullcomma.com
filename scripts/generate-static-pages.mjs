@@ -204,6 +204,11 @@ function cleanText(text) {
     .trim();
 }
 
+// ── "Back to home" link for non-root pages ──
+function backLink() {
+  return '<a href="/" class="button-back">← Back to nullcomma.com</a>';
+}
+
 // ── Site footer shared across all pages ──
 function siteFooter() {
   return `<div class="static-footer">
@@ -255,7 +260,8 @@ ${siteFooter()}`;
 }
 
 function aboutBody() {
-  return `<div class="content-card">
+  return `${backLink()}
+<div class="content-card">
 <h1>About Null Comma</h1>
 <p><strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.</p>
 <p>Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.</p>
@@ -270,6 +276,8 @@ function aboutBody() {
 </ul>
 </div>
 
+${backLink()}
+
 ${siteFooter()}`;
 }
 
@@ -279,8 +287,8 @@ function blogListBody(posts) {
     return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
   }).join('\n');
 
-  return `<div class="content-card">
-<a href="/" class="button-back">← Home</a>
+  return `${backLink()}
+<div class="content-card">
 <h1>Blog</h1>
 <p>Devlogs, tutorials, and game development insights by Christopher Ravailhe.</p>
 
@@ -290,22 +298,27 @@ ${postLines}
 </ul>
 </div>
 
+${backLink()}
+
 ${siteFooter()}`;
 }
 
 function staticBody(title) {
-  return `<div class="content-card">
-<a href="/" class="button-back">← Back to nullcomma.com</a>
+  return `${backLink()}
+<div class="content-card">
 <h1>${e(title)}</h1>
 </div>
+
+${backLink()}
+
 ${siteFooter()}`;
 }
 
 function projectBody(project, t, imageUrl) {
   const title = t.title || 'Untitled Project';
   const synopsis = t.synopsis || '';
-  const lines = [`<div class="content-card">`];
-  lines.push(`<a href="/" class="button-back">← Back</a>`);
+  const lines = [backLink()];
+  lines.push(`<div class="content-card">`);
   lines.push(`<h1>${e(title)}</h1>`);
   if (imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
@@ -320,14 +333,15 @@ function projectBody(project, t, imageUrl) {
   if (project.steam_id) lines.push(`<li><a href="https://store.steampowered.com/app/${e(project.steam_id)}">View on Steam</a></li>`);
   lines.push(`</ul>`);
   lines.push(`</div>`);
+  lines.push(backLink());
   lines.push(siteFooter());
   return lines.join('\n');
 }
 
 function blogBody(post, imageUrl) {
   const title = post.title || 'Untitled Post';
-  const lines = [`<div class="content-card">`];
-  lines.push(`<a href="/" class="button-back">← Back</a>`);
+  const lines = [backLink()];
+  lines.push(`<div class="content-card">`);
   lines.push(`<h1>${e(title)}</h1>`);
   if (imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
@@ -337,7 +351,7 @@ function blogBody(post, imageUrl) {
     lines.push(`<p>${e(truncate(cleanText(post.content), 800))}</p>`);
   }
   lines.push(`</div>`);
-  lines.push(`<div style="margin:1rem 0"><a href="/blog" style="color:#a78bfa">← Back to Blog</a></div>`);
+  lines.push(backLink());
   lines.push(siteFooter());
   return lines.join('\n');
 }
