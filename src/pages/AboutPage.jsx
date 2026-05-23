@@ -7,7 +7,7 @@ import {
 function AboutPage() {
   return (
     <div className="page-content fade-in" style={{ maxWidth: '720px', margin: '0 auto' }}>
-      <Link to="/" className="button-back">&larr; Back to nullcomma.com</Link>
+      <Link to="/" className="button-back">&larr; Back</Link>
 
       <div className="glass-content-card">
         <h1 style={{ color: 'var(--color-light)', fontSize: '2rem', marginBottom: '0.5rem' }}>About</h1>

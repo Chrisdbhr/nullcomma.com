@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
@@ -133,6 +133,9 @@ function BlogPostPage() {
   }
 
   return (
+    <>
+    <Link to="/" className="button-back">&larr; Back</Link>
+
     <div className="blog-post-layout">
 
       <title>{`${post.title} - Null Comma`}</title>
@@ -224,6 +227,7 @@ function BlogPostPage() {
         <TableOfContents items={tocItems} />
       </aside>
     </div>
+    </>
   )
 }
 

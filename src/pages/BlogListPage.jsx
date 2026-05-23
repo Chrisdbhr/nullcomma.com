@@ -44,6 +44,8 @@ function BlogListPage() {
       <meta property="og:description" content="Articles and devlogs by Christopher Ravailhe on Null Comma. Game development, Unity, C#, and more." />
       <meta name="fediverse:creator" content="@nullcomma@mastodon.gamedev.place" />
 
+      <Link to="/" className="button-back">&larr; Back</Link>
+
       <div className="blog-list-page">
         <div className="blog-list-header">
           <h2>Blog</h2>

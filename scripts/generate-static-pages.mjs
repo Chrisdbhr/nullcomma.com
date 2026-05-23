@@ -7,7 +7,8 @@ const DIST = resolve('dist');
 
 const PROJECT_FIELDS =
   'fields=id,translations.language,translations.title,translations.synopsis,' +
-  'card_image.id,card_image.type,engine,release_date,steam_id,project_type,status';
+  'card_image.id,card_image.type,engine,release_date,steam_id,project_type,status,' +
+  'screenshots.directus_files_id.id,screenshots.directus_files_id.type,steam_screenshots';
 
 const BLOG_FIELDS =
   'fields=id,title,date_published,cover_image.id,cover_image.type,content&sort=-date_published';
@@ -209,6 +210,59 @@ function backLink() {
   return '<a href="/" class="button-back">← Back</a>';
 }
 
+// ── Basic markdown to HTML (images, links, headings, bold, lists, code) ──
+function mdToHtml(text) {
+  if (!text) return '';
+  let html = text;
+
+  // code blocks (must come before inline code)
+  html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+    return `<pre><code>${e(code.trim())}</code></pre>`;
+  });
+
+  // images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
+    return `<img src="${e(src)}" alt="${e(alt)}" style="max-width:100%;border-radius:8px;margin:.5rem 0" />`;
+  });
+
+  // links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // bold
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // italic
+  html = html.replace(/\*([^*]+)\*/g, (m, t) => {
+    const s = t.trim();
+    if (s.includes('<') || s.includes('>')) return m;
+    return `<em>${s}</em>`;
+  });
+
+  // headings
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+
+  // unordered list items
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+
+  // paragraphs
+  const parts = html.split(/\n\n+/);
+  html = parts.map(p => {
+    p = p.trim();
+    if (!p) return '';
+    if (p.startsWith('<')) return p;
+    return `<p>${p}</p>`;
+  }).join('\n');
+
+  return html;
+}
+
 // ── Site footer shared across all pages ──
 function siteFooter() {
   return `<div class="static-footer">
@@ -323,6 +377,29 @@ function projectBody(project, t, imageUrl) {
   if (imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
   }
+
+  // gallery screenshots
+  const screenshots = [];
+  if (project.steam_screenshots?.length > 0) {
+    for (const ss of project.steam_screenshots) {
+      const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
+      if (url) screenshots.push(url);
+    }
+  }
+  if (project.screenshots?.length > 0) {
+    for (const ss of project.screenshots) {
+      const id = ss.directus_files_id?.id;
+      if (id) screenshots.push(`${CMS_URL}/assets/${id}?width=720&quality=60`);
+    }
+  }
+  if (screenshots.length > 0) {
+    lines.push(`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:1rem 0">`);
+    for (const url of screenshots) {
+      lines.push(`<a href="${e(url)}" target="_blank" rel="noopener"><img src="${e(url)}" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>`);
+    }
+    lines.push(`</div>`);
+  }
+
   if (synopsis) {
     lines.push(`<p>${e(cleanText(synopsis))}</p>`);
   }
@@ -348,7 +425,7 @@ function blogBody(post, imageUrl) {
   }
   lines.push(`<div class="meta">${post.date_published ? `Published: ${e(post.date_published)}` : ''}</div>`);
   if (post.content) {
-    lines.push(`<p>${e(truncate(cleanText(post.content), 800))}</p>`);
+    lines.push(mdToHtml(post.content));
   }
   lines.push(`</div>`);
   lines.push(backLink());

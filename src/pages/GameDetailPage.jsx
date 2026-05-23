@@ -101,7 +101,7 @@ function GameDetailPage() {
       {imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
       <button onClick={() => navigate('/')} className="button-back">
-        &larr; Go Back
+        &larr; Back
       </button>
       <h2 className="game-title">{translation.title}</h2>
 
