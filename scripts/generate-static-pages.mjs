@@ -206,7 +206,7 @@ function cleanText(text) {
 
 // ── "Back to home" link for non-root pages ──
 function backLink() {
-  return '<a href="/" class="button-back">← Back to nullcomma.com</a>';
+  return '<a href="/" class="button-back">← Back</a>';
 }
 
 // ── Site footer shared across all pages ──
