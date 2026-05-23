@@ -55,32 +55,31 @@ async function fetchJson(url) {
   return res.json();
 }
 
-// ── Inline fallback styles (matches privacy/terms glass-card style) ──
+// ── Inline fallback styles (scoped under .static-root to not affect React) ──
 const FALLBACK_CSS = `
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.7;min-height:100vh}
-a{color:#a78bfa;text-decoration:none}
-a:hover{text-decoration:underline}
+body{background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.7}
 .static-root{max-width:720px;margin:0 auto;padding:40px 24px 80px;min-height:100vh;display:flex;flex-direction:column}
-.button-back{display:inline-block;margin-bottom:24px;color:#a78bfa;font-size:.95rem}
-.button-back:hover{text-decoration:underline}
-.content-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px}
-.content-card h1{font-family:'Crimson Pro',Georgia,serif;color:#fff;font-size:2rem;margin-bottom:.5rem}
-.content-card h2{color:#a78bfa;font-size:1.3rem;margin-top:2rem;margin-bottom:.75rem}
-.content-card h2:first-of-type{margin-top:0}
-.content-card p,.content-card li{color:#ccc;margin-bottom:.75rem}
-.content-card ul{padding-left:1.5rem;margin-bottom:1rem}
-.content-card li{margin-bottom:.4rem}
-.content-card strong{color:#e0e0e0}
-.content-card .meta{color:#999;font-size:.875rem;margin-bottom:1rem}
-.content-card .last-updated{color:#888;font-size:.85rem;margin-top:2rem}
-.proj-list{list-style:none;padding:0}
-.proj-list li{padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.proj-list li:last-child{border-bottom:none}
-.proj-list .proj-title{font-size:1.1rem;font-weight:600;color:#fff}
-.proj-list .proj-meta{font-size:.85rem;color:#999}
-.static-footer{margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.875rem;color:#888;text-align:center;margin-top:2rem}
-.static-footer a{margin:0 .5rem}
+.static-root a{color:#a78bfa;text-decoration:none}
+.static-root a:hover{text-decoration:underline}
+.static-root .button-back{display:inline-block;margin-bottom:24px;color:#a78bfa;font-size:.95rem}
+.static-root .button-back:hover{text-decoration:underline}
+.static-root .content-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px}
+.static-root .content-card h1{font-family:'Crimson Pro',Georgia,serif;color:#fff;font-size:2rem;margin-bottom:.5rem}
+.static-root .content-card h2{color:#a78bfa;font-size:1.3rem;margin-top:2rem;margin-bottom:.75rem}
+.static-root .content-card h2:first-of-type{margin-top:0}
+.static-root .content-card p,.static-root .content-card li{color:#ccc;margin-bottom:.75rem}
+.static-root .content-card ul{padding-left:1.5rem;margin-bottom:1rem}
+.static-root .content-card li{margin-bottom:.4rem}
+.static-root .content-card strong{color:#e0e0e0}
+.static-root .content-card .meta{color:#999;font-size:.875rem;margin-bottom:1rem}
+.static-root .content-card .last-updated{color:#888;font-size:.85rem;margin-top:2rem}
+.static-root .proj-list{list-style:none;padding:0}
+.static-root .proj-list li{padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.static-root .proj-list li:last-child{border-bottom:none}
+.static-root .proj-list .proj-title{font-size:1.1rem;font-weight:600;color:#fff}
+.static-root .proj-list .proj-meta{font-size:.85rem;color:#999}
+.static-root .static-footer{margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.875rem;color:#888;text-align:center;margin-top:2rem}
+.static-root .static-footer a{margin:0 .5rem}
 `;
 
 // ── Build static HTML ──
