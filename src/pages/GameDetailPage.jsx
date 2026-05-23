@@ -36,7 +36,7 @@ function GameDetailPage() {
 
   if (!project) {
     return (
-      <div className="page-content">
+      <div className="page-content fade-in">
         <h2>Game Not Found</h2>
         <Link to="/" className="button-primary">
           &larr; Go back to Home
@@ -86,7 +86,7 @@ function GameDetailPage() {
     : (galleryScreenshots || [])
 
   return (
-    <div className="page-content game-detail-page">
+    <div className="page-content game-detail-page fade-in">
       <title>{`${title} - Null Comma`}</title>
       <meta name="description" content={description} />
 

@@ -202,7 +202,7 @@ function PressKitPage() {
 
   if (error) {
     return (
-      <div className="page-content">
+      <div className="page-content fade-in">
         <h2>Error Loading Press Kit</h2>
         <p>{error}</p>
         <button onClick={() => window.location.reload()} className="button-primary">Retry</button>
@@ -213,7 +213,7 @@ function PressKitPage() {
 
   if (!project) {
     return (
-      <div className="page-content">
+      <div className="page-content fade-in">
         <h2>Project Not Found</h2>
         <Link to="/" className="button-primary">&larr; Go back to Home</Link>
       </div>
@@ -253,7 +253,7 @@ function PressKitPage() {
   const ogImageUrl = cardImageId ? `${baseURL}/assets/${cardImageId}?width=1200&quality=80` : null;
 
   return (
-    <div className="page-content presskit-page">
+    <div className="page-content fade-in presskit-page">
       <title>{`${title} — Press Kit | Null Comma`}</title>
       <meta name="description" content={`Press kit for ${title}. Download logos, screenshots, and project info.`} />
       <meta property="og:title" content={`${title} — Press Kit`} />

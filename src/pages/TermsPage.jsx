@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function TermsPage() {
   return (
-    <div className="page-content" style={{ maxWidth: '720px', margin: '0 auto' }}>
+    <div className="page-content fade-in" style={{ maxWidth: '720px', margin: '0 auto' }}>
       <Link to="/" className="button-back">&larr; Back to nullcomma.com</Link>
 
       <div className="glass-content-card">
