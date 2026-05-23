@@ -24,7 +24,11 @@ function e(str) {
 
 function truncate(text, len = 160) {
   if (!text) return '';
-  const clean = text.replace(/[*\[\]()\n\r]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const clean = text
+    .replace(/^#+\s+/gm, '')
+    .replace(/[*\[\]()\n\r]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
   return clean.length > len ? clean.substring(0, len) + '...' : clean;
 }
 
