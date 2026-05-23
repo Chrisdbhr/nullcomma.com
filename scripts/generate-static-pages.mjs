@@ -55,25 +55,32 @@ async function fetchJson(url) {
   return res.json();
 }
 
-// ── Inline fallback styles (dark theme, matches site aesthetic) ──
+// ── Inline fallback styles (matches privacy/terms glass-card style) ──
 const FALLBACK_CSS = `
-body{margin:0;background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.6}
-.static-root{max-width:720px;margin:0 auto;padding:2rem 1.5rem;min-height:100vh;display:flex;flex-direction:column}
-.static-root a{color:#a78bfa}
-.static-root a:hover{color:#c4b5fd}
-.static-root h1{font-family:'Crimson Pro',Georgia,serif;font-size:2rem;margin:0 0 .5rem;color:#fff}
-.static-root h2{font-family:'Crimson Pro',Georgia,serif;font-size:1.4rem;margin:1.5rem 0 .5rem;color:#ddd}
-.static-root h2:first-of-type{margin-top:1rem}
-.static-root .meta{color:#999;font-size:.875rem;margin-bottom:1rem}
-.static-root ul{padding-left:1.2rem}
-.static-root li{margin-bottom:.4rem}
-.static-root .static-footer{margin-top:auto;padding-top:1.5rem;border-top:1px solid #333;font-size:.875rem;color:#888;text-align:center}
-.static-root .static-footer a{margin:0 .5rem}
-.static-root .proj-list{list-style:none;padding:0}
-.static-root .proj-list li{padding:.6rem 0;border-bottom:1px solid #222}
-.static-root .proj-list li:last-child{border-bottom:none}
-.static-root .proj-list .proj-title{font-size:1.1rem;font-weight:600;color:#fff}
-.static-root .proj-list .proj-meta{font-size:.85rem;color:#999}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.7;min-height:100vh}
+a{color:#a78bfa;text-decoration:none}
+a:hover{text-decoration:underline}
+.static-root{max-width:720px;margin:0 auto;padding:40px 24px 80px;min-height:100vh;display:flex;flex-direction:column}
+.button-back{display:inline-block;margin-bottom:24px;color:#a78bfa;font-size:.95rem}
+.button-back:hover{text-decoration:underline}
+.content-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px}
+.content-card h1{font-family:'Crimson Pro',Georgia,serif;color:#fff;font-size:2rem;margin-bottom:.5rem}
+.content-card h2{color:#a78bfa;font-size:1.3rem;margin-top:2rem;margin-bottom:.75rem}
+.content-card h2:first-of-type{margin-top:0}
+.content-card p,.content-card li{color:#ccc;margin-bottom:.75rem}
+.content-card ul{padding-left:1.5rem;margin-bottom:1rem}
+.content-card li{margin-bottom:.4rem}
+.content-card strong{color:#e0e0e0}
+.content-card .meta{color:#999;font-size:.875rem;margin-bottom:1rem}
+.content-card .last-updated{color:#888;font-size:.85rem;margin-top:2rem}
+.proj-list{list-style:none;padding:0}
+.proj-list li{padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.proj-list li:last-child{border-bottom:none}
+.proj-list .proj-title{font-size:1.1rem;font-weight:600;color:#fff}
+.proj-list .proj-meta{font-size:.85rem;color:#999}
+.static-footer{margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.875rem;color:#888;text-align:center;margin-top:2rem}
+.static-footer a{margin:0 .5rem}
 `;
 
 // ── Build static HTML ──
@@ -227,7 +234,8 @@ function homeBody(projects, posts) {
     return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
   }).join('\n');
 
-  return `<h1>Null Comma</h1>
+  return `<div class="content-card">
+<h1>Null Comma</h1>
 <p>Games, prototypes & dev insights by <strong>Christopher Ravailhe</strong>.</p>
 <p>Senior C# Developer and QA Test Automation specialist. 25+ games shipped across PC, console, and mobile.</p>
 
@@ -241,15 +249,15 @@ ${projLines}
 ${postLines}
 </ul>
 
-<div style="margin-top:1rem">
-<a href="/blog" style="color:#a78bfa">All posts →</a>
+<p><a href="/blog">All posts →</a></p>
 </div>
 
 ${siteFooter()}`;
 }
 
 function aboutBody() {
-  return `<h1>About Null Comma</h1>
+  return `<div class="content-card">
+<h1>About Null Comma</h1>
 <p><strong>Christopher Ravailhe</strong> is a Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. He has shipped 25+ games across PC, console, and mobile platforms.</p>
 <p>Null Comma serves as a hub for his games, prototypes, and technical experiments. The blog section features devlogs, tutorials, and game development insights.</p>
 
@@ -261,6 +269,7 @@ function aboutBody() {
 <li><a href="https://discord.nullcomma.com">Discord</a></li>
 <li><a href="https://www.linkedin.com/company/105116562">LinkedIn</a></li>
 </ul>
+</div>
 
 ${siteFooter()}`;
 }
@@ -271,26 +280,34 @@ function blogListBody(posts) {
     return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
   }).join('\n');
 
-  return `<h1>Blog</h1>
+  return `<div class="content-card">
+<a href="/" class="button-back">← Home</a>
+<h1>Blog</h1>
 <p>Devlogs, tutorials, and game development insights by Christopher Ravailhe.</p>
 
 <h2>All Posts</h2>
 <ul>
 ${postLines}
 </ul>
+</div>
 
 ${siteFooter()}`;
 }
 
 function staticBody(title) {
-  return `<h1>${e(title)}</h1>
+  return `<div class="content-card">
+<a href="/" class="button-back">← Back to nullcomma.com</a>
+<h1>${e(title)}</h1>
+</div>
 ${siteFooter()}`;
 }
 
 function projectBody(project, t, imageUrl) {
   const title = t.title || 'Untitled Project';
   const synopsis = t.synopsis || '';
-  const lines = [`<h1>${e(title)}</h1>`];
+  const lines = [`<div class="content-card">`];
+  lines.push(`<a href="/" class="button-back">← Back</a>`);
+  lines.push(`<h1>${e(title)}</h1>`);
   if (imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
   }
@@ -303,13 +320,16 @@ function projectBody(project, t, imageUrl) {
   if (project.project_type) lines.push(`<li><strong>Type:</strong> ${e(project.project_type)}</li>`);
   if (project.steam_id) lines.push(`<li><a href="https://store.steampowered.com/app/${e(project.steam_id)}">View on Steam</a></li>`);
   lines.push(`</ul>`);
+  lines.push(`</div>`);
   lines.push(siteFooter());
   return lines.join('\n');
 }
 
 function blogBody(post, imageUrl) {
   const title = post.title || 'Untitled Post';
-  const lines = [`<h1>${e(title)}</h1>`];
+  const lines = [`<div class="content-card">`];
+  lines.push(`<a href="/" class="button-back">← Back</a>`);
+  lines.push(`<h1>${e(title)}</h1>`);
   if (imageUrl) {
     lines.push(`<p><img src="${e(imageUrl)}?width=720&quality=60" alt="${e(title)}" style="max-width:100%;border-radius:8px" /></p>`);
   }
@@ -317,6 +337,7 @@ function blogBody(post, imageUrl) {
   if (post.content) {
     lines.push(`<p>${e(truncate(cleanText(post.content), 800))}</p>`);
   }
+  lines.push(`</div>`);
   lines.push(`<div style="margin:1rem 0"><a href="/blog" style="color:#a78bfa">← Back to Blog</a></div>`);
   lines.push(siteFooter());
   return lines.join('\n');
@@ -351,6 +372,7 @@ async function main() {
   try {
     const data = await fetchJson(`${CMS_URL}/items/projects?${PROJECT_FIELDS}&filter[status][_eq]=published`);
     projects = data.data || [];
+    projects.sort((a, b) => new Date(b.release_date || 0) - new Date(a.release_date || 0));
     console.log(`  ${projects.length} projects`);
   } catch (err) {
     console.warn('  Failed:', err.message);
