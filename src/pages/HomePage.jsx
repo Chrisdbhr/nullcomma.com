@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
+import { useReferral } from '../hooks/useReferral'
 import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
@@ -107,6 +108,8 @@ export async function loader() {
 
 // --- COMPONENTE PRINCIPAL ---
 function HomePage() {
+  const referral = useReferral();
+
   // 3. Pegue os dados do loader. Sem loading, sem useEffect!
   const {
     totalProjectsCount,
@@ -184,7 +187,7 @@ function HomePage() {
     <div className="page-content fade-in">
 
       {/* SEO META TAGS for Home Page */}
-      <title>Null Comma — Indie Games & Dev Insights</title>
+      <title>{referral ? 'Null Comma (ChrisJogos.com) — Indie Games & Dev Insights' : 'Null Comma — Indie Games & Dev Insights'}</title>
       <meta name="description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
 
       <div className="home-section">

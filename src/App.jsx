@@ -1,8 +1,11 @@
 import { Fragment } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import BackgroundSlideshow from './components/BackgroundSlideshow';
+import { useReferral } from './hooks/useReferral';
 
 function App() {
+  const referral = useReferral();
+
   return (
     <Fragment>
       <div className="app-container">
@@ -10,8 +13,8 @@ function App() {
 
         <header className="main-header">
           <Link to="/" className="site-title-link">
-            <h1>Null Comma</h1>
-            <span>Games, prototypes & dev insights</span>
+            <h1>{referral ? referral.title : 'Null Comma'}</h1>
+            <span>{referral ? referral.subtitle : 'Games, prototypes & dev insights'}</span>
           </Link>
         </header>
 
