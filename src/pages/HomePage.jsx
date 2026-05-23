@@ -184,7 +184,7 @@ function HomePage() {
   const showHiddenCard = excludedTypes.length > 0;
 
   return (
-    <div className="page-content fade-in">
+    <div className="page-content">
 
       {/* SEO META TAGS for Home Page */}
       <title>{referral ? 'Null Comma (ChrisJogos.com) — Indie Games & Dev Insights' : 'Null Comma — Indie Games & Dev Insights'}</title>

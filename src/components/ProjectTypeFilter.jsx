@@ -5,7 +5,7 @@ function ProjectTypeFilter({ types, excludedTypes, onToggle }) {
   if (types.length <= 1) return null;
 
   return (
-    <div className="project-filter-container fade-in">
+    <div className="project-filter-container">
       <div className="filter-header">
         <h4>Filter by Project Type:</h4>
         <div className="filter-buttons">
