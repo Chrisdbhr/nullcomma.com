@@ -119,7 +119,7 @@ ${bodyHtml}
 </div>
 </div>
 <script type="module" crossorigin src="/assets/index-BtQkfkz5.js"></script>
-<script>(function(){var r=document.getElementById('root');if(r){r.innerHTML='<div style=\"display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:1.5rem;background:#141414;color:#fff\">Loading Portfolio...</div>';}})();</script>
+<script>(function(){var r=document.getElementById('root');if(r){r.innerHTML='<div style=\"display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:1.5rem;background:#141414;color:#fff\">Loading...</div>';}})();</script>
 <noscript><style>.static-root{display:block!important}</style></noscript>
 <style>${FALLBACK_CSS}</style>
 </body>
