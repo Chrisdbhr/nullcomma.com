@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, Link } from 'react-router-dom'
 import { baseURL, fieldsQuery, getHashedColor, getAssetUrl, formatDate } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
