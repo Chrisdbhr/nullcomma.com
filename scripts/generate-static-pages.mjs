@@ -486,8 +486,9 @@ async function main() {
 
   // Extract hashed asset references from the built template
   const jsMatch = template.match(/<script[^>]+src="([^"]+\.js)"/);
-  const cssMatch = template.match(/<link[^>]+href="([^"]+\.css)"/);
   JS_SRC = jsMatch ? jsMatch[1] : '/assets/index.js';
+  // Vite CSS has crossorigin attr, pick that one over all.min.css
+  const cssMatch = template.match(/<link[^>]+crossorigin[^>]+href="([^"]+\.css)"/);
   CSS_HREF = cssMatch ? cssMatch[1] : '/assets/index.css';
 
   const sitemapRoutes = [];
