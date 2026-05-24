@@ -31,13 +31,13 @@ function App() {
         <p>
           © {new Date().getFullYear()} Null Comma. All rights reserved.
           <span className="footer-sep">·</span>
-          <Link to="/about">About</Link>
-          <span className="footer-sep">·</span>
           <Link to="/privacy">Privacy</Link>
           <span className="footer-sep">·</span>
           <Link to="/terms">Terms</Link>
           <span className="footer-sep">·</span>
           <a href="https://status.nullcomma.com" target="_blank" rel="noopener noreferrer">Status</a>
+          <span className="footer-sep">·</span>
+          <a href="https://translate.nullcomma.com" target="_blank" rel="noopener noreferrer">Translate</a>
         </p>
         <a rel="me" href="https://mastodon.gamedev.place/@nullcomma" style={{ display: 'none' }}>Mastodon</a>
         </div>

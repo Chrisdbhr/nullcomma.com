@@ -3,64 +3,112 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>What The Dog Remembers — Null Comma</title>
-<meta name="description" content="Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spri..." />
-<meta property="og:title" content="What The Dog Remembers — Null Comma" />
-<meta property="og:description" content="Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spring from his own mind." />
+<title>Null Comma — Games, Prototypes &amp; Dev Insights</title>
+<meta name="description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
+<meta property="og:title" content="Null Comma — Games, Prototypes &amp; Dev Insights" />
+<meta property="og:description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://nullcomma.com/project/what-the-dog-remembers" />
-<meta property="og:image" content="https://cms.nullcomma.com/assets/c304cd7b-9d4f-40b8-865c-df536ecd073e?width=1200" />
+<meta property="og:url" content="https://nullcomma.com/" />
+<meta property="og:image" content="https://nullcomma.com/android-chrome-512x512.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="What The Dog Remembers — Null Comma" />
-<meta name="twitter:description" content="Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spring from his own mind." />
-<meta name="twitter:image" content="https://cms.nullcomma.com/assets/c304cd7b-9d4f-40b8-865c-df536ecd073e?width=1200" />
+<meta name="twitter:title" content="Null Comma — Games, Prototypes &amp; Dev Insights" />
+<meta name="twitter:description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
+<meta name="twitter:image" content="https://nullcomma.com/android-chrome-512x512.png" />
 <meta name="darkreader" content="no-darken" />
 <meta name="darkreader-lock" />
-<link rel="canonical" href="https://nullcomma.com/project/what-the-dog-remembers" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"What The Dog Remembers","description":"Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spring from his own mind.","url":"https://nullcomma.com/project/what-the-dog-remembers","author":{"@type":"Person","name":"Christopher Ravailhe"},"applicationCategory":"Game","image":"https://cms.nullcomma.com/assets/c304cd7b-9d4f-40b8-865c-df536ecd073e?width=1200","applicationSubCategory":"Unity 6.3","datePublished":"2026-10-20T12:00:00","sameAs":"https://store.steampowered.com/app/4500460"}</script>
+<link rel="canonical" href="https://nullcomma.com/" />
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebSite","name":"Null Comma","url":"https://nullcomma.com","description":"Games, prototypes & dev insights by Christopher Ravailhe.","author":{"@type":"Person","name":"Christopher Ravailhe"}},{"@context":"https://schema.org","@type":"Person","name":"Christopher Ravailhe","description":"Senior C# Developer and QA Test Automation specialist with over 9 years of experience in Unity. 25+ games shipped across PC, console, and mobile.","url":"https://nullcomma.com","sameAs":["https://github.com/Chrisdbhr","https://www.linkedin.com/company/105116562","https://www.youtube.com/@chrisjogos"]}]</script>
 <link rel="stylesheet" href="/assets/index-D-hR2Mhn.css" />
 </head>
 <body>
 <div id="root">
 <div class="static-root">
-<a href="/" class="button-back">← Back</a>
 <div class="content-card">
-<h1>What The Dog Remembers</h1>
-<p><img src="https://cms.nullcomma.com/assets/c304cd7b-9d4f-40b8-865c-df536ecd073e?width=1200?width=720&quality=60" alt="What The Dog Remembers" style="max-width:100%;border-radius:8px" /></p>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:1rem 0">
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/50ab7a54f7d43419aa6a6f5d584ee579c5a07944/ss_50ab7a54f7d43419aa6a6f5d584ee579c5a07944.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/50ab7a54f7d43419aa6a6f5d584ee579c5a07944/ss_50ab7a54f7d43419aa6a6f5d584ee579c5a07944.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/8fce82a241eff33c2ac375e81854a1672583f835/ss_8fce82a241eff33c2ac375e81854a1672583f835.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/8fce82a241eff33c2ac375e81854a1672583f835/ss_8fce82a241eff33c2ac375e81854a1672583f835.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/25580106bdbecf6b78e2fe00bec0e72b93f100db/ss_25580106bdbecf6b78e2fe00bec0e72b93f100db.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/25580106bdbecf6b78e2fe00bec0e72b93f100db/ss_25580106bdbecf6b78e2fe00bec0e72b93f100db.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5c63b43f749b42b9d1bbb3afcaf99077bed00164/ss_5c63b43f749b42b9d1bbb3afcaf99077bed00164.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5c63b43f749b42b9d1bbb3afcaf99077bed00164/ss_5c63b43f749b42b9d1bbb3afcaf99077bed00164.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/e4c351155cb4cf9772cd7131174761ec47c19950/ss_e4c351155cb4cf9772cd7131174761ec47c19950.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/e4c351155cb4cf9772cd7131174761ec47c19950/ss_e4c351155cb4cf9772cd7131174761ec47c19950.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/009f25683e0677e1568fc58cda25f2f7a1b12d23/ss_009f25683e0677e1568fc58cda25f2f7a1b12d23.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/009f25683e0677e1568fc58cda25f2f7a1b12d23/ss_009f25683e0677e1568fc58cda25f2f7a1b12d23.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/478253ffc9753a8b4bc6996d81d3955c55f3cd32/ss_478253ffc9753a8b4bc6996d81d3955c55f3cd32.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/478253ffc9753a8b4bc6996d81d3955c55f3cd32/ss_478253ffc9753a8b4bc6996d81d3955c55f3cd32.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/1ed4f50d62d0709c2acc9825488b67bca0f031f5/ss_1ed4f50d62d0709c2acc9825488b67bca0f031f5.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/1ed4f50d62d0709c2acc9825488b67bca0f031f5/ss_1ed4f50d62d0709c2acc9825488b67bca0f031f5.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/24e3a428481476d3bdb730dc941776f79441f395/ss_24e3a428481476d3bdb730dc941776f79441f395.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/24e3a428481476d3bdb730dc941776f79441f395/ss_24e3a428481476d3bdb730dc941776f79441f395.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5b985d36bed346c091cb650e2cc397ce24d9c708/ss_5b985d36bed346c091cb650e2cc397ce24d9c708.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5b985d36bed346c091cb650e2cc397ce24d9c708/ss_5b985d36bed346c091cb650e2cc397ce24d9c708.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-<a href="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/4ecb6e190fa03ec97e40ce6bfb45a75dd5bbd308/ss_4ecb6e190fa03ec97e40ce6bfb45a75dd5bbd308.1920x1080.jpg?t=1778819317" target="_blank" rel="noopener"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/4ecb6e190fa03ec97e40ce6bfb45a75dd5bbd308/ss_4ecb6e190fa03ec97e40ce6bfb45a75dd5bbd308.1920x1080.jpg?t=1778819317" alt="" style="width:100%;border-radius:6px;border:1px solid rgba(255,255,255,.08)" /></a>
-</div>
-<p>Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spring from his own mind.</p>
-<ul>
-<li><strong>Engine:</strong> Unity 6.3</li>
-<li><strong>Release Date:</strong> 2026-10-20T12:00:00</li>
-<li><strong>Type:</strong> game</li>
-<li><a href="https://store.steampowered.com/app/4500460">View on Steam</a></li>
-<li><a href="https://translate.nullcomma.com/projects/what-the-dog-remembers/">Help Translate</a></li>
+<h1>Null Comma</h1>
+<p>Games, prototypes & dev insights by <strong>Christopher Ravailhe</strong>.</p>
+<p>Senior C# Developer and QA Test Automation specialist. 25+ games shipped across PC, console, and mobile.</p>
+
+<h2>Games &amp; Projects</h2>
+<ul class="proj-list">
+<li>
+<a href="/project/what-the-dog-remembers" class="proj-title">What The Dog Remembers</a>
+<div class="proj-meta">game · Unity 6.3</div>
+</li>
+<li>
+<a href="/project/kindle-games" class="proj-title">Kindle Games</a>
+<div class="proj-meta">game · Javascript</div>
+</li>
+<li>
+<a href="/project/paper-psg" class="proj-title">Teaching Introductory Game Audio to Undergraduate Students Using a Novel Digital Game Template</a>
+<div class="proj-meta">paper · Paper</div>
+</li>
+<li>
+<a href="/project/mashnikov3" class="proj-title">Elden Evil: Sabs Die Twice</a>
+<div class="proj-meta">game · Unity 2022.3</div>
+</li>
+<li>
+<a href="/project/Resultarias" class="proj-title">Resultarias</a>
+<div class="proj-meta">game · Unity 2023</div>
+</li>
+<li>
+<a href="/project/mashnikov2" class="proj-title">Assassin&#39;s Nanner: Zero Down</a>
+<div class="proj-meta">game · Unity 2022.3</div>
+</li>
+<li>
+<a href="/project/mashnikov" class="proj-title">Mashnikov</a>
+<div class="proj-meta">game · Unity 2022.3</div>
+</li>
+<li>
+<a href="/project/killershapeshifters" class="proj-title">Killershapeshifters</a>
+<div class="proj-meta">game · Construct 2</div>
+</li>
+<li>
+<a href="/project/enigma-core" class="proj-title">NCDK - Unity Tools &amp; Extensions</a>
+<div class="proj-meta">tool · .NET</div>
+</li>
+<li>
+<a href="/project/beetools-vr" class="proj-title">Beetools VR &amp; Mobile Apps</a>
+<div class="proj-meta">app · Unity 2019</div>
+</li>
+<li>
+<a href="/project/a-casa-desconhecida" class="proj-title">A Casa Desconhecida</a>
+<div class="proj-meta">game · Unreal Engine 4</div>
+</li>
+<li>
+<a href="/project/face-3d" class="proj-title">Face 3D Mobile Apps</a>
+<div class="proj-meta">app · Unity 5</div>
+</li>
+<li>
+<a href="/project/for-you-a-special-game" class="proj-title">For You - A Special Game</a>
+<div class="proj-meta">game · Construct 2</div>
+</li>
+<li>
+<a href="/project/night-at-closed-frameworks" class="proj-title">Night At Closed Frameworks</a>
+<div class="proj-meta">game · Open Frameworks</div>
+</li>
 </ul>
+
+<h2>Latest Blog Posts</h2>
+<ul>
+<li><a href="/blog/showcasing-automated-testing-in-unity">Showcasing Automated Testing Mastery in Unity</a> <span class="proj-meta">— Oct 10, 2024</span></li>
+<li><a href="/blog/localization-how-my-game-is-translated">Localization - How my game is translated to 14+ languages with almost no cost</a> <span class="proj-meta">— Mar 4, 2023</span></li>
+</ul>
+
+<p><a href="/blog">All posts →</a></p>
 </div>
-<a href="/" class="button-back">← Back</a>
+
 <div class="static-footer">
 © Null Comma ·
 <a href="/">Home</a> ·
 <a href="/about">About</a> ·
 <a href="/blog">Blog</a> ·
 <a href="/privacy">Privacy</a> ·
-<a href="/terms">Terms</a>
+<a href="/terms">Terms</a> ·
+<a href="https://status.nullcomma.com" target="_blank" rel="noopener">Status</a>
 </div>
 </div>
 </div>
-<script type="module" crossorigin src="/assets/index-D7dSpO8p.js"></script>
+<script type="module" crossorigin src="/assets/index-CBfzaxtN.js"></script>
 <noscript><style>.static-root{display:block!important}</style></noscript>
 <style>
 body{background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;line-height:1.7}
