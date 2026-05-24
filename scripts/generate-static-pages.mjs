@@ -5,6 +5,9 @@ const CMS_URL = 'https://cms.nullcomma.com';
 const SITE_URL = 'https://nullcomma.com';
 const DIST = resolve('dist');
 
+let JS_SRC = '/assets/index.js';
+let CSS_HREF = '/assets/index.css';
+
 const PROJECT_FIELDS =
   'fields=id,translations.language,translations.title,translations.synopsis,' +
   'card_image.id,card_image.type,engine,release_date,steam_id,project_type,status,' +
@@ -110,7 +113,7 @@ function pageHtml(title, description, ogImage, jsonld, bodyHtml, canonical) {
 <meta name="darkreader-lock" />
 <link rel="canonical" href="${e(canon)}" />
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
-<link rel="stylesheet" href="/assets/index-CN8VNxnb.css" />
+<link rel="stylesheet" href="${e(CSS_HREF)}" />
 </head>
 <body>
 <div id="root">
@@ -118,8 +121,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script
 ${bodyHtml}
 </div>
 </div>
-<script type="module" crossorigin src="/assets/index-BtQkfkz5.js"></script>
-<script>(function(){var r=document.getElementById('root');if(r){r.innerHTML='<div style=\"display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:1.5rem;background:#141414;color:#fff\">Loading...</div>';}})();</script>
+<script type="module" crossorigin src="${e(JS_SRC)}"></script>
 <noscript><style>.static-root{display:block!important}</style></noscript>
 <style>${FALLBACK_CSS}</style>
 </body>
@@ -485,8 +487,8 @@ async function main() {
   // Extract hashed asset references from the built template
   const jsMatch = template.match(/<script[^>]+src="([^"]+\.js)"/);
   const cssMatch = template.match(/<link[^>]+href="([^"]+\.css)"/);
-  const jsSrc = jsMatch ? jsMatch[1] : '/assets/index.js';
-  const cssHref = cssMatch ? cssMatch[1] : '/assets/index.css';
+  JS_SRC = jsMatch ? jsMatch[1] : '/assets/index.js';
+  CSS_HREF = cssMatch ? cssMatch[1] : '/assets/index.css';
 
   const sitemapRoutes = [];
   const ROUTES = [];
