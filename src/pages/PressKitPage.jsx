@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { baseURL, fieldsQuery, formatDate } from '../utils';
 import SafeImage from '../components/SafeImage';
 import { getPreferredTranslation } from '../utils/translationUtils';
@@ -42,7 +42,6 @@ function PressKitPage() {
   });
   const [copied, setCopied] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem('presskit-lang', lang);
@@ -266,7 +265,6 @@ function PressKitPage() {
       {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
       <div className="presskit-top-bar">
-        <button onClick={() => navigate(-1)} className="button-back">&larr; Back</button>
         <div className="presskit-lang-toggle">
           <button className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
           <button className={lang === 'pt' ? 'active' : ''} onClick={() => setLang('pt')}>PT</button>
