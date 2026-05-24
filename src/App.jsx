@@ -36,6 +36,8 @@ function App() {
           <Link to="/privacy">Privacy</Link>
           <span className="footer-sep">·</span>
           <Link to="/terms">Terms</Link>
+          <span className="footer-sep">·</span>
+          <a href="https://status.nullcomma.com" target="_blank" rel="noopener noreferrer">Status</a>
         </p>
         <a rel="me" href="https://mastodon.gamedev.place/@nullcomma" style={{ display: 'none' }}>Mastodon</a>
         </div>

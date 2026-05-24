@@ -273,7 +273,8 @@ function siteFooter() {
 <a href="/about">About</a> ·
 <a href="/blog">Blog</a> ·
 <a href="/privacy">Privacy</a> ·
-<a href="/terms">Terms</a>
+<a href="/terms">Terms</a> ·
+<a href="https://status.nullcomma.com" target="_blank" rel="noopener">Status</a>
 </div>`;
 }
 
