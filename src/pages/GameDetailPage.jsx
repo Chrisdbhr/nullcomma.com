@@ -192,6 +192,15 @@ function GameDetailPage() {
               </a>
             )}
 
+            <a
+              href={`https://translate.nullcomma.com/projects/${project.id}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button-secondary button-weblate"
+            >
+              <i className="fas fa-language"></i> Help Translate
+            </a>
+
             {project.web_version_url && (
               <a
                 href={project.web_version_url}

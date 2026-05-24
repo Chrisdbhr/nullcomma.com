@@ -1679,6 +1679,21 @@ img {
   color: #1b2838;
 }
 
+.button-secondary.button-weblate {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #2e3440;
+  color: #88c0d0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.button-secondary.button-weblate:hover {
+  background-color: #88c0d0;
+  color: #2e3440;
+}
+
 /* --- 5. Redes Sociais (Mais Ícones) --- */
 
 /* --- 1. Label da Engine (Card) --- */

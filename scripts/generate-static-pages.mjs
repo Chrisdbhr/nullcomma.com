@@ -410,6 +410,7 @@ function projectBody(project, t, imageUrl) {
   if (project.release_date) lines.push(`<li><strong>Release Date:</strong> ${e(project.release_date)}</li>`);
   if (project.project_type) lines.push(`<li><strong>Type:</strong> ${e(project.project_type)}</li>`);
   if (project.steam_id) lines.push(`<li><a href="https://store.steampowered.com/app/${e(project.steam_id)}">View on Steam</a></li>`);
+  lines.push(`<li><a href="https://translate.nullcomma.com/projects/${e(project.id)}/">Help Translate</a></li>`);
   lines.push(`</ul>`);
   lines.push(`</div>`);
   lines.push(backLink());
