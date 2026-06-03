@@ -253,14 +253,14 @@ function PressKitPage() {
 
   return (
     <div className="page-content fade-in presskit-page">
-      <title>{`${title} — Press Kit | Null Comma`}</title>
+      <title>{`${title} - Press Kit | Null Comma`}</title>
       <meta name="description" content={`Press kit for ${title}. Download logos, screenshots, and project info.`} />
-      <meta property="og:title" content={`${title} — Press Kit`} />
+      <meta property="og:title" content={`${title} - Press Kit`} />
       <meta property="og:description" content={shortDesc} />
       <meta property="og:type" content="article" />
       {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={`${title} — Press Kit`} />
+      <meta name="twitter:title" content={`${title} - Press Kit`} />
       <meta name="twitter:description" content={shortDesc} />
       {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 

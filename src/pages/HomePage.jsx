@@ -187,7 +187,7 @@ function HomePage() {
     <div className="page-content fade-in">
 
       {/* SEO META TAGS for Home Page */}
-      <title>{referral ? 'Null Comma (ChrisJogos.com) — Indie Games & Dev Insights' : 'Null Comma — Indie Games & Dev Insights'}</title>
+      <title>{referral ? 'Null Comma (ChrisJogos.com) - Indie Games & Dev Insights' : 'Null Comma - Indie Games & Dev Insights'}</title>
       <meta name="description" content="Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments." />
 
       <div className="home-section">

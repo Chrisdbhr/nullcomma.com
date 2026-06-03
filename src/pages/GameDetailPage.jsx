@@ -54,7 +54,7 @@ function GameDetailPage() {
 
   const description = translation.synopsis
     ? translation.synopsis.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : `${title} — Null Comma. Find out more about this game/project.`
+    : `${title} - Null Comma. Find out more about this game/project.`
 
   const getEmbedUrl = (url) => {
     if (!url) return null

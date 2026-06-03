@@ -292,7 +292,7 @@ function homeBody(projects, posts) {
 
   const postLines = posts.slice(0, 4).map(p => {
     const date = p.date_published ? new Date(p.date_published).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
+    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">- ${date}</span>` : ''}</li>`;
   }).join('\n');
 
   return `<div class="content-card">
@@ -341,7 +341,7 @@ ${siteFooter()}`;
 function blogListBody(posts) {
   const postLines = posts.map(p => {
     const date = p.date_published ? new Date(p.date_published).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">— ${date}</span>` : ''}</li>`;
+    return `<li><a href="/blog/${e(p.id)}">${e(p.title)}</a>${date ? ` <span class="proj-meta">- ${date}</span>` : ''}</li>`;
   }).join('\n');
 
   return `${backLink()}
@@ -502,7 +502,7 @@ async function main() {
   ROUTES.push({
     path: '/',
     html: pageHtml(
-      'Null Comma — Games, Prototypes & Dev Insights',
+      'Null Comma - Games, Prototypes & Dev Insights',
       'Discover indie games, prototypes, and dev insights by Christopher Ravailhe. Unity, C#, and game development experiments.',
       `${SITE_URL}/android-chrome-512x512.png`,
       [websiteLD(), personLD()],
@@ -517,7 +517,7 @@ async function main() {
   ROUTES.push({
     path: '/about',
     html: pageHtml(
-      'About — Null Comma',
+      'About - Null Comma',
       'Learn about Christopher Ravailhe, a Senior C# Developer with 9+ years of Unity experience and 25+ shipped games.',
       null,
       personLD(),
@@ -532,7 +532,7 @@ async function main() {
   ROUTES.push({
     path: '/blog',
     html: pageHtml(
-      'Blog — Null Comma',
+      'Blog - Null Comma',
       'Devlogs, tutorials, and game development insights by Christopher Ravailhe.',
       null,
       websiteLD(),
@@ -551,7 +551,7 @@ async function main() {
     ROUTES.push({
       path,
       html: pageHtml(
-        `${title} — Null Comma`,
+        `${title} - Null Comma`,
         `${title} for Null Comma.`,
         null,
         null,
@@ -567,14 +567,14 @@ async function main() {
   for (const project of projects) {
     const t = prefTranslation(project.translations);
     const title = t.title || 'Untitled Project';
-    const description = t.synopsis || `${title} — Null Comma`;
+    const description = t.synopsis || `${title} - Null Comma`;
     const imageUrl = assetUrl(project.card_image?.id);
     const ld = projectLD(project, title, description, imageUrl);
 
     ROUTES.push({
       path: `/project/${project.id}`,
       html: pageHtml(
-        `${title} — Null Comma`,
+        `${title} - Null Comma`,
         description,
         imageUrl,
         ld,
@@ -589,14 +589,14 @@ async function main() {
   // ── Blog posts ──
   for (const post of posts) {
     const title = post.title || 'Untitled Post';
-    const description = post.content ? truncate(post.content, 200) : `${title} — Null Comma`;
+    const description = post.content ? truncate(post.content, 200) : `${title} - Null Comma`;
     const imageUrl = assetUrl(post.cover_image?.id);
     const ld = blogPostLD(post, title, description, imageUrl, post.date_published);
 
     ROUTES.push({
       path: `/blog/${post.id}`,
       html: pageHtml(
-        `${title} — Null Comma`,
+        `${title} - Null Comma`,
         description,
         imageUrl,
         ld,
