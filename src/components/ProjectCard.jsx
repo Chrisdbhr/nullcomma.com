@@ -5,7 +5,7 @@ import { getPreferredTranslation } from '../utils/translationUtils';
 import SafeImage from './SafeImage';
 
 
-function ProjectCard({ project }) {
+function ProjectCard({ project, onFilterClick, activeFilter }) {
   const translation = getPreferredTranslation(project.translations);
   const title = translation.title || 'Title Not Available'; 
   
@@ -16,7 +16,6 @@ function ProjectCard({ project }) {
   if (translation.synopsis) {
     firstLineSynopsis = translation.synopsis
       .split('\n')[0]
-      // Remove Markdown headers (#, ##, ###) se estiverem no início da linha
       .replace(/^(#+\s*)/, '')
       .replace(/([*_~]|<br\s*\/?>|\[.*?\]\(.*?\))/g, '')
       .trim();
@@ -24,11 +23,19 @@ function ProjectCard({ project }) {
 
   const isUnreleased = new Date(project.release_date) > new Date();
   
-  // Se project_type for null, padroniza para 'project'
   const projectType = project.project_type || 'project';
 
+  const isActiveTag = (kind, value) =>
+    activeFilter?.kind === kind && activeFilter?.value === value;
+
+  const handleTagClick = (e, kind, value) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onFilterClick?.(kind, value, project.id);
+  };
+
   return (
-    <Link to={`/project/${project.id}`} className="game-card">
+    <Link to={`/project/${project.id}`} className="game-card" data-project-id={project.id}>
       <div className="game-card-image-container">
         {cardImageId ? (
           <SafeImage
@@ -59,25 +66,26 @@ function ProjectCard({ project }) {
           {project.tags.slice(0, 3).map((tag) => (
             <span
               key={tag.tags_id}
-              className="game-tag"
+              className={`game-tag${isActiveTag('tag', tag.tags_id) ? ' game-tag-active' : ''}`}
               style={{
                 backgroundColor: '#111',
                 color: getHashedColor(tag.tags_id),
               }}
+              onClick={(e) => handleTagClick(e, 'tag', tag.tags_id)}
             >
               {tag.tags_id}
             </span>
           ))}
         </div>
 
-        {/* --- FOOTER UPDATED --- */}
         <div className="game-card-footer">
           <div className="game-card-footer-left">
             <span
-              className="game-tag"  
+              className={`game-tag${isActiveTag('type', projectType) ? ' game-tag-active' : ''}`}
               style={{
                 backgroundColor: getHashedColor(projectType)
               }}
+              onClick={(e) => handleTagClick(e, 'type', projectType)}
             >
               {projectType}
             </span>

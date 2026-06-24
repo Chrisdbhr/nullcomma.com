@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState, useRef } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { useReferral } from '../hooks/useReferral'
+import { useMasonry } from '../hooks/useMasonry'
 import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../utils'
 import { setCmsProjects } from '../utils/cmsCache'
 import LauncherCTA from '../components/LauncherCTA'
-import ProjectTypeFilter from '../components/ProjectTypeFilter'
 import { normalizeEngineName } from '../utils/textUtils';
 import {
   FaGithub, FaSteam, FaLinkedin,
@@ -38,39 +38,6 @@ export async function loader() {
     const totalProjects = data.data;
     setCmsProjects(totalProjects);
 
-    const now = new Date();
-    const currentYear = now.getFullYear();
-
-    // Latest: current year + unreleased (future dates)
-    const latestProjects = totalProjects
-      .filter(g => {
-        const releaseDate = new Date(g.release_date);
-        return releaseDate.getFullYear() === currentYear || releaseDate > now;
-      })
-      .sort((a, b) => {
-        const aFuture = new Date(a.release_date) > now;
-        const bFuture = new Date(b.release_date) > now;
-        if (aFuture && !bFuture) return -1;
-        if (!aFuture && bFuture) return 1;
-        if (aFuture && bFuture) return new Date(a.release_date) - new Date(b.release_date);
-        return new Date(b.release_date) - new Date(a.release_date);
-      });
-
-    // Past projects excluding current year
-    const pastProjects = totalProjects
-      .filter(g => {
-        const releaseDate = new Date(g.release_date);
-        return releaseDate <= now && releaseDate.getFullYear() !== currentYear;
-      })
-      .sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
-
-    const groupedPastProjects = pastProjects.reduce((acc, project) => {
-      const year = new Date(project.release_date).getFullYear();
-      if (!acc[year]) acc[year] = [];
-      acc[year].push(project);
-      return acc;
-    }, {});
-
     // Lógica para extrair tipos de projeto únicos
     const allProjectTypes = new Set();
     totalProjects.forEach(p => {
@@ -81,26 +48,19 @@ export async function loader() {
 
     const totalProjectsCount = totalProjects.length;
     const totalEngineStats = getEngineStats(totalProjects);
-    const sortedYears = Object.keys(groupedPastProjects).sort((a, b) => b - a);
 
     return {
       totalProjects,
-      latestProjects,
-      groupedPastProjects,
       totalProjectsCount,
       totalEngineStats,
-      sortedYears,
       uniqueProjectTypes
     };
   } catch (error) {
     console.error("Error fetching projects:", error);
     return {
       totalProjects: [],
-      latestProjects: [],
-      groupedPastProjects: {},
       totalProjectsCount: 0,
       totalEngineStats: [],
-      sortedYears: [],
       uniqueProjectTypes: []
     };
   }
@@ -112,76 +72,66 @@ function HomePage() {
 
   // 3. Pegue os dados do loader. Sem loading, sem useEffect!
   const {
+    totalProjects,
     totalProjectsCount,
     totalEngineStats,
-    latestProjects: initialLatest,
-    groupedPastProjects: initialGrouped,
-    sortedYears,
     uniqueProjectTypes
   } = useLoaderData();
 
-  // Estado para os tipos de projeto que DEVEM ser excluídos
-  const [excludedTypes, setExcludedTypes] = useState([]);
+  // Estado para o filtro ativo: null = todos, { kind, value } = filtrado
+  const [filter, setFilter] = useState(null);
+  const [lastClickedId, setLastClickedId] = useState(null);
 
-  // Função para alternar o estado de um tipo de projeto
-  const handleToggleType = (type) => {
-    setExcludedTypes(prev => {
-      if (prev.includes(type)) {
-        return prev.filter(t => t !== type); // Incluir (remover da lista de exclusão)
-      } else {
-        return [...prev, type]; // Excluir (adicionar à lista de exclusão)
-      }
-    });
+  const handleFilterClick = (kind, value, projectId) => {
+    if (projectId) setLastClickedId(projectId);
+    setFilter(prev =>
+      prev?.kind === kind && prev?.value === value ? null : { kind, value }
+    );
   };
 
-  // NOVO: Função para remover uma lista específica de exclusões (o que o usuário clicou no card)
-  const handleRemoveExclusions = (typesToRemove) => {
-    if (typesToRemove && typesToRemove.length > 0) {
-      setExcludedTypes(prev => prev.filter(type => !typesToRemove.includes(type)));
-    }
-  };
-
-  // 5. Função de filtro: Aplica a lógica de exclusão
-  const filterProjects = (projects) => {
-    if (excludedTypes.length === 0) return projects;
-
-    return projects.filter(project => {
-      const type = project.project_type || 'project';
-      return !excludedTypes.includes(type);
-    });
-  };
-
-  // 6. Aplicar o filtro nos projetos e calcular quantos foram escondidos
-
-  // Projetos Latest (ano atual + futuros)
-  const filteredLatestProjects = filterProjects(initialLatest);
-
-  // Projetos passados agrupados (excluindo ano atual)
-  const filteredGroupedPastProjects = {};
-  let totalVisibleProjects = filteredLatestProjects.length;
-
-  sortedYears.forEach(year => {
-    const filtered = filterProjects(initialGrouped[year]);
-    if (filtered.length > 0) {
-      filteredGroupedPastProjects[year] = filtered;
-    }
-    totalVisibleProjects += filtered.length;
-  });
-
-  // HELPER: Calcula quais tipos excluídos são relevantes para a lista de projetos fornecida
-  const getRelevantExcludedTypes = (initialProjects) => {
-      const relevantTypes = new Set();
-      initialProjects.forEach(p => {
-          const type = p.project_type || 'project';
-          if (excludedTypes.includes(type)) {
-              relevantTypes.add(type);
-          }
+  const clearFilter = () => {
+    setFilter(null);
+    if (lastClickedId) {
+      requestAnimationFrame(() => {
+        const el = document.querySelector(`[data-project-id="${lastClickedId}"]`);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
-      return Array.from(relevantTypes).sort();
+    }
   };
+
+  const filterProjects = (projects) => {
+    if (!filter) return projects;
+    return projects.filter(project => {
+      if (filter.kind === 'type')
+        return (project.project_type || 'project') === filter.value;
+      if (filter.kind === 'tag')
+        return project.tags?.some(t => t.tags_id === filter.value);
+      return true;
+    });
+  };
+
+  // Year grouping: unifica todos os projetos num grid só, ordenado por data
+  const allSortedByDate = [...totalProjects].sort(
+    (a, b) => new Date(b.release_date) - new Date(a.release_date)
+  );
+
+  const groupedByYear = {};
+  allSortedByDate.forEach(p => {
+    const year = new Date(p.release_date).getFullYear();
+    if (!groupedByYear[year]) groupedByYear[year] = [];
+    groupedByYear[year].push(p);
+  });
+  const years = Object.keys(groupedByYear).sort((a, b) => b - a);
+
+  const currentYear = new Date().getFullYear();
+
+  const totalVisibleProjects = years.reduce((sum, year) => {
+    return sum + filterProjects(groupedByYear[year]).length;
+  }, 0);
 
   const projectsHidden = totalProjectsCount - totalVisibleProjects;
-  const showHiddenCard = excludedTypes.length > 0;
+  const gridRef = useRef(null);
+  useMasonry(gridRef, [filter, totalProjects, years]);
 
   return (
     <div className="page-content fade-in">
@@ -194,14 +144,7 @@ function HomePage() {
         <BlogFeed />
       </div>
 
-      <div className="filter-launcher-grid">
-        <ProjectTypeFilter
-          types={uniqueProjectTypes}
-          excludedTypes={excludedTypes}
-          onToggle={handleToggleType}
-        />
-        <LauncherCTA />
-      </div>
+      <LauncherCTA />
 
       <div className="home-section">
         <div className="home-section-header">
@@ -225,134 +168,44 @@ function HomePage() {
           )}
         </div>
 
-        {/* Renderização dos Projetos */}
+        <div ref={gridRef} className="game-grid">
+          {years.map(year => {
+            const yearProjects = groupedByYear[year];
+            const yearVisible = filterProjects(yearProjects);
+            const yearHidden = yearProjects.length - yearVisible.length;
 
-        {/* Seção Latest (ano atual + lançamentos futuros) */}
-        {(initialLatest.length > 0) && (
-          <section className="year-group">
-            <div className="home-section-header">
-              <h3 className="year-title">Latest</h3>
-              {(() => {
-                const latestEngineStats = getEngineStats(filteredLatestProjects);
-                if (latestEngineStats.length === 0) return null;
-                return (
-                  <div className="engine-stats-year">
-                    {latestEngineStats.map(([engine, count]) => (
-                      <span key={engine} className="engine-stat-item-year">
-                        {engine} ({count})
-                      </span>
-                    ))}
-                  </div>
-                );
-              })()}
-            </div>
+            if (yearVisible.length === 0 && yearHidden === 0) return null;
 
-            {/* Caso A: Todos ocultos */}
-            {filteredLatestProjects.length === 0 && initialLatest.length > 0 ? (
-               <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                 All {initialLatest.length} latest projects have been hidden by filters.
-               </p>
-            ) : (
-            // Caso B/C: Projetos visíveis
-            <div className="game-grid">
-              {filteredLatestProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-
-              {/* Card de Projetos Ocultos (Latest) */}
-              {initialLatest.length > filteredLatestProjects.length && showHiddenCard && (() => {
-                const projectsHiddenInLatest = initialLatest.length - filteredLatestProjects.length;
-                const relevantExcludedTypes = getRelevantExcludedTypes(initialLatest);
-                const excludedTypesList = relevantExcludedTypes.join(', ');
-
-                return (
-                  <div
-                    className="game-card hidden-projects-card"
-                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
-                  >
-                    <div className="hidden-card-content">
-                      <h4>+{projectsHiddenInLatest} Hidden Projects</h4>
-                      <p>
-                        Hidden by: <strong>{excludedTypesList}</strong>.
-                      </p>
-                      <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
-                         Click to re-enable these types.
-                      </p>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-          </section>
-        )}
-
-        {/* Seção Projetos Lançados por Ano (excluindo ano atual) */}
-        {sortedYears.map((year) => {
-          const initialYearProjects = initialGrouped[year];
-          const filteredYearProjects = filteredGroupedPastProjects[year] || [];
-
-          const projectsHiddenInYear = initialYearProjects.length - filteredYearProjects.length;
-          const allProjectsHidden = projectsHiddenInYear === initialYearProjects.length;
-
-          if (allProjectsHidden && initialYearProjects.length > 0) {
             return (
-              <section key={year} className="year-group">
-                <div className="home-section-header">
-                  <h3 className="year-title">{year}</h3>
-                </div>
-                <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                  All {initialYearProjects.length} projects from {year} have been hidden by filters.
-                </p>
-              </section>
-            );
-          }
-
-          if (filteredYearProjects.length === 0) return null;
-
-          const yearEngineStats = getEngineStats(filteredYearProjects);
-
-          const relevantExcludedTypes = getRelevantExcludedTypes(initialYearProjects);
-          const excludedTypesList = relevantExcludedTypes.join(', ');
-
-          return (
-            <section key={year} className="year-group">
-              <div className="home-section-header">
-                <h3 className="year-title">{year}</h3>
-                <div className="engine-stats-year">
-                  {yearEngineStats.map(([engine, count]) => (
-                    <span key={engine} className="engine-stat-item-year">
-                      {engine} ({count})
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="game-grid">
-                {filteredYearProjects.map((project) => (
-                  <ProjectCard key={project.id} project={project} />
+              <Fragment key={year}>
+                {yearVisible.map((project, i) => (
+                  <div key={project.id} className={`game-grid-item${i === 0 ? ' year-first' : ''}`}>
+                    {i === 0 && year !== currentYear && <span className="year-marker">{year}</span>}
+                    <ProjectCard
+                      project={project}
+                      onFilterClick={handleFilterClick}
+                      activeFilter={filter}
+                    />
+                  </div>
                 ))}
-
-                {projectsHiddenInYear > 0 && showHiddenCard && (
+                {yearHidden > 0 && (
                   <div
+                    key={`hidden-${year}`}
                     className="game-card hidden-projects-card"
-                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
+                    onClick={clearFilter}
                   >
                     <div className="hidden-card-content">
-                      <h4>+{projectsHiddenInYear} Hidden Projects</h4>
-                      <p>
-                        Hidden by: <strong>{excludedTypesList}</strong>.
-                      </p>
+                      <h4>+{yearHidden} Hidden from {year}</h4>
                       <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
-                         Click to re-enable these types.
+                        Click to show all.
                       </p>
                     </div>
                   </div>
                 )}
-              </div>
-            </section>
-          );
-        })}
+              </Fragment>
+            );
+          })}
+        </div>
 
         {totalProjectsCount > 0 && totalVisibleProjects === 0 && (
             <p style={{ textAlign: 'center', marginTop: '40px', color: '#a0a0a0' }}>

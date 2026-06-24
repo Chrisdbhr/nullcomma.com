@@ -195,13 +195,12 @@ img {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 1rem;
-  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease;
 }
 
 .community-discord-btn:hover {
   background: #4a54c9;
   color: #fff;
-  transform: scale(1.03);
 }
 
 .community-socials h4 {
@@ -219,12 +218,11 @@ img {
 .social-links-grid a {
   font-size: 1.8rem;
   color: var(--color-grey);
-  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  transition: color var(--transition-speed) ease;
 }
 
 .social-links-grid a:hover {
   color: var(--color-purple);
-  transform: scale(1.15);
 }
 
 @media (max-width: 768px) {
@@ -247,13 +245,16 @@ img {
   font-weight: 600;
 }
 
-/* --- Grid de Jogos (HomePage) --- */
+/* --- Grid de Jogos (HomePage) - Masonry via JS --- */
 .game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
+  margin-top: 20px;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+}
+
+.game-grid > * {
+  /* positioned absolutely by useMasonry hook */
 }
 
 /* --- Card de Jogo (GameCard) --- */
@@ -263,12 +264,12 @@ img {
   background: var(--color-dark);
   border: 1px solid;
   border-color: var(--border-color-light) var(--border-color-dark) var(--border-color-dark) var(--border-color-light);
-  transition: transform var(--transition-speed) ease;
+  transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
 .game-card:hover {
-  transform: scale(1.04);
-  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border-color: var(--color-purple);
 }
 
 .game-card-image-container {
@@ -340,7 +341,6 @@ img {
 .button-primary:hover {
   background: var(--color-light);
   color: #000;
-  transform: scale(1.03);
 }
 
 .button-primary.button-download {
@@ -631,9 +631,6 @@ img {
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-.lightbox-close:active {
-  transform: scale(0.9);
-}
 
 /* Image counter */
 .lightbox-counter {
@@ -1149,12 +1146,16 @@ img {
 }
 
 /* --- Blog Feed (BlogFeed.jsx) --- */
-.blog-post-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
+.blog-feed-container .blog-post-grid {
+  column-width: 240px;
+  column-gap: 20px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.blog-feed-container .blog-post-grid > * {
+  break-inside: avoid;
+  margin-bottom: 20px;
 }
 
 .blog-post-card {
@@ -1164,11 +1165,10 @@ img {
   border-color: var(--border-color-light) var(--border-color-dark) var(--border-color-dark) var(--border-color-light);
   overflow: hidden;
   text-decoration: none;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
 .blog-post-card:hover {
-  transform: scale(1.03);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   border-color: var(--color-purple);
 }
@@ -1212,8 +1212,32 @@ img {
   color: var(--color-grey);
 }
 
-.blog-view-all {
-  margin-top: 10px;
+.blog-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.blog-feed-header h3 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.blog-view-all-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-purple);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color var(--transition-speed) ease;
+}
+
+.blog-view-all-link:hover {
+  color: var(--color-light);
 }
 
 /* --- Formulário de Contato (ContactForm.jsx) --- */
@@ -1278,10 +1302,6 @@ img {
     font-size: 1.8rem; /* Reduced title size on mobile */
   }
 
-  .game-grid {
-    grid-template-columns: 1fr; /* Prevents overflow on very narrow screens */
-  }
-  
   .blog-post-item {
     flex-direction: column;
     align-items: flex-start;
@@ -1299,10 +1319,6 @@ img {
 
 @media (max-width: 400px) {
   .game-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .blog-post-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1361,6 +1377,18 @@ img {
   font-size: 0.8rem;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
+  cursor: pointer;
+  transition: box-shadow var(--transition-speed) ease, outline-color var(--transition-speed) ease;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+}
+
+.game-tag:hover {
+  outline-color: rgba(255, 255, 255, 0.3);
+}
+
+.game-tag-active {
+  outline-color: var(--color-purple) !important;
 }
 
 .game-tag-outline {
@@ -1388,12 +1416,11 @@ img {
 .social-links a {
   font-size: 1.8rem;
   color: var(--color-grey);
-  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  transition: color var(--transition-speed) ease;
 }
 
 .social-links a:hover {
   color: var(--color-purple);
-  transform: scale(1.15);
 }
 
 /* --- Logo Null Comma --- */
@@ -1410,7 +1437,7 @@ img {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 15px;
+  opacity: 0.5;
 }
 
 .profile-brand-link {
@@ -1464,7 +1491,6 @@ img {
   margin: 0;
 }
 .profile-brand-link:hover .brand-logo {
-  transform: scale(1.05);
   opacity: 1;
 }
 
@@ -1764,17 +1790,18 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   background:
     linear-gradient(135deg, rgba(118, 79, 162, 0.92) 0%, rgba(167, 110, 255, 0.85) 100%),
     url('https://cms.nullcomma.com/assets/2a591f93-636e-40fb-81ba-1f8dc8ccee7a?width=1200&quality=50') center/cover no-repeat;
   border-radius: var(--border-radius);
-  padding: 10px 16px;
+  padding: 16px 24px;
+  margin-bottom: var(--main-margin-bottom);
   box-shadow: 0 4px 15px rgba(145, 70, 255, 0.25);
   overflow: hidden;
   position: relative;
   text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .launcher-cta-mini::before {
@@ -1787,7 +1814,6 @@ img {
 }
 
 .launcher-cta-mini:hover {
-  transform: scale(1.06) translateY(-2px);
   box-shadow: 0 8px 30px rgba(145, 70, 255, 0.45);
 }
 
@@ -1800,16 +1826,11 @@ img {
   color: #fff;
   line-height: 1;
   position: relative;
-  transition: transform 0.3s ease;
-}
-
-.launcher-cta-mini:hover .launcher-cta-mini-icon {
-  transform: translateY(-2px) scale(1.1);
 }
 
 .launcher-cta-mini-text {
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #fff;
   text-transform: uppercase;
@@ -1823,7 +1844,6 @@ img {
 .discord-button:hover {
   background-color: #4a54c9;
   color: #fff;
-  transform: scale(1.03);
 }
 
 /* --- Layout About Me + Contact (Home Page) --- */
@@ -1884,13 +1904,12 @@ img {
   gap: 10px;
   border: 1px solid;
   border-color: var(--border-color-light) var(--border-color-dark) var(--border-color-dark) var(--border-color-light);
-  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease;
 }
 
 .discord-button:hover {
   background-color: #4a54c9;
   color: #fff;
-  transform: scale(1.03);
 }
 
 /* --- Responsividade da Grid Contato --- */
@@ -1997,14 +2016,14 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   background: var(--color-dark);
   text-decoration: none;
   color: var(--color-text);
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out;
   border: 1px solid;
   border-color: var(--border-color-light) var(--border-color-dark) var(--border-color-dark) var(--border-color-light);
 }
 
 .blog-post-card:hover {
-  transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-purple);
 }
 
 .blog-post-image-container {
@@ -2448,12 +2467,13 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 250px; 
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  min-height: 250px;
+  opacity: 0.55;
+  transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, opacity var(--transition-speed) ease;
   cursor: pointer;
 }
 .game-card.hidden-projects-card:hover {
-  transform: scale(1.04);
+  opacity: 1;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   border-color: var(--color-purple);
 }
@@ -2470,6 +2490,37 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   font-size: 0.9rem;
   line-height: 1.4;
 }
+
+/* --- Ano Marker (Grid Unificada) --- */
+.game-grid-item {
+  position: relative;
+  display: flex;
+}
+
+.game-grid-item .game-card {
+  width: 100%;
+}
+
+.year-marker {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  z-index: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-grey);
+  background: var(--color-dark);
+  padding: 3px 12px 3px 8px;
+  line-height: 1.2;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%);
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
 
 /* --- Press Kit Page --- */
 .presskit-page {
@@ -3059,11 +3110,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
     margin-left: -8px;
     margin-right: -8px;
     border-radius: 0;
-  }
-
-  .blog-post-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
   }
 
   .blog-post-card {

@@ -45,7 +45,10 @@ function BlogFeed() {
 
   return (
     <div className="blog-feed-container">
-      <h3>Latest from the Blog</h3>
+      <div className="blog-feed-header">
+        <h3>Latest from the Blog</h3>
+        <Link to="/blog" className="blog-view-all-link">View all posts &rarr;</Link>
+      </div>
       {loading && (
         <div className="blog-post-grid">
           {[...Array(4)].map((_, i) => (
@@ -88,10 +91,6 @@ function BlogFeed() {
           </Link>
         ))}
       </div>
-
-      <Link to="/blog" className="button-secondary blog-view-all">
-        View all posts &rarr;
-      </Link>
     </div>
   )
 }
