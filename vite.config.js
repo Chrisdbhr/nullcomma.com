@@ -10,10 +10,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'markdown': ['react-markdown', 'rehype-raw', 'rehype-slug'],
-          'syntax-highlighter': ['react-syntax-highlighter'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router')) return 'react-vendor'
+          if (id.includes('node_modules/react-markdown') || id.includes('node_modules/rehype')) return 'markdown'
+          if (id.includes('node_modules/react-syntax-highlighter')) return 'syntax-highlighter'
         },
       },
     },
