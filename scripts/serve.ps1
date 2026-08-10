@@ -24,7 +24,14 @@ if ($Rebuild) {
   Copy-Item dist/index.html dist/404.html -Force
 }
 
-$proc = Start-Process -FilePath $nodePath -ArgumentList $vitePath, "preview", "--port", $Port -NoNewWindow -PassThru
+$logDir = Join-Path $env:TEMP "opencode"
+New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+$stdoutLog = Join-Path $logDir "vite-preview-$Port.out.log"
+$stderrLog = Join-Path $logDir "vite-preview-$Port.err.log"
+
+# Detached from the caller's stdout/stderr (no -NoNewWindow): the shell
+# invoking this script returns immediately instead of waiting forever.
+$proc = Start-Process -FilePath $nodePath -ArgumentList $vitePath, "preview", "--port", $Port -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 
 $maxWait = 10
 $elapsed = 0
