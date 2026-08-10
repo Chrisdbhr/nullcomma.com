@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import BackgroundSlideshow from './components/BackgroundSlideshow';
+import StatusBanner from './components/StatusBanner';
 import { useReferral } from './hooks/useReferral';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <Fragment>
+      <StatusBanner />
       <div className="app-container">
         <BackgroundSlideshow />
 

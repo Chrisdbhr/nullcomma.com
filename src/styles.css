@@ -20,6 +20,69 @@
   --border-color-dark: #222;
 }
 
+/* --- Recovery mode banner (CMS offline) --- */
+.cms-status-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: #33270a;
+  color: #f5d78e;
+  border-bottom: 1px solid #6b5320;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.cms-status-banner button {
+  background: #6b5320;
+  color: #fceec7;
+  border: 1px solid #8a6a2f;
+  border-radius: 6px;
+  padding: 4px 14px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.cms-status-banner button:hover {
+  background: #82662a;
+}
+
+.cms-status-banner button:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.banner-spinner {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 6px;
+  vertical-align: -0.1em;
+  border: 2px solid rgba(252, 238, 199, 0.35);
+  border-top-color: #fceec7;
+  border-radius: 50%;
+  animation: banner-spin 0.7s linear infinite;
+}
+
+@keyframes banner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .cms-status-banner {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
