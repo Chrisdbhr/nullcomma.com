@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { baseURL, fieldsQuery, formatDate } from '../utils';
 import SafeImage from '../components/SafeImage';
 import { getPreferredTranslation } from '../utils/translationUtils';
+import { fetchJsonCms, getStaticProjects } from '../utils/staticData';
 
 async function fetchBlob(url) {
   try {
@@ -52,13 +53,18 @@ function PressKitPage() {
     const fetchProject = async () => {
       setLoading(true);
       setError(null);
+      const snapshotProject = getStaticProjects()?.find(p => p.id === projectId)
+      if (snapshotProject) {
+        setProject(snapshotProject)
+        setLoading(false)
+        return
+      }
+
       try {
-        const response = await fetch(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
+        const data = await fetchJsonCms(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
         setProject(data.data);
       } catch (error) {
-        console.error('Error fetching project:', error);
+        console.error('CMS unreachable and no snapshot:', error);
         setError(error.message);
         setProject(null);
       }

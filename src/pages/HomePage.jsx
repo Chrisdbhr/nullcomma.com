@@ -7,6 +7,7 @@ import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../utils'
 import { setCmsProjects } from '../utils/cmsCache'
+import { fetchJsonCms, getStaticProjects } from '../utils/staticData'
 import LauncherCTA from '../components/LauncherCTA'
 import { normalizeEngineName } from '../utils/textUtils';
 import {
@@ -31,12 +32,20 @@ const getEngineStats = (games) => {
 
 // 2. EXPORTE O SEU LOADER (que o main.jsx importa)
 export async function loader() {
-  try {
-    const response = await fetch(`${baseURL}/items/projects?${fieldsQuery}`);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    const data = await response.json();
-    const totalProjects = data.data;
-    setCmsProjects(totalProjects);
+  let totalProjects;
+  const snapshot = getStaticProjects();
+  if (snapshot) {
+    totalProjects = snapshot;
+  } else {
+    try {
+      const response = await fetchJsonCms(`${baseURL}/items/projects?${fieldsQuery}`);
+      totalProjects = response.data;
+    } catch (error) {
+      console.error("CMS unreachable and no snapshot:", error);
+      totalProjects = [];
+    }
+  }
+  setCmsProjects(totalProjects);
 
     // Lógica para extrair tipos de projeto únicos
     const allProjectTypes = new Set();
@@ -55,15 +64,6 @@ export async function loader() {
       totalEngineStats,
       uniqueProjectTypes
     };
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return {
-      totalProjects: [],
-      totalProjectsCount: 0,
-      totalEngineStats: [],
-      uniqueProjectTypes: []
-    };
-  }
 }
 
 // --- COMPONENTE PRINCIPAL ---

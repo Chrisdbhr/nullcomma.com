@@ -9,6 +9,7 @@ import { getAssetUrl, baseURL, getHashedColor, formatDate } from '../utils'
 import { CodeBlock } from '../components/CodeBlock'
 import ProjectCard from '../components/ProjectCard'
 import SafeImage from '../components/SafeImage'
+import { fetchJsonCms, getStaticPosts } from '../utils/staticData'
 
 
 function BlogPostPage() {
@@ -33,12 +34,18 @@ function BlogPostPage() {
 
       const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,tags.tags_id,${RELATED_PROJECT_FIELDS}`
 
+      const snapshotPost = getStaticPosts()?.find(p => p.id === slug)
+      if (snapshotPost) {
+        setPost(snapshotPost)
+        setReadingTime(getReadingTime(snapshotPost.content))
+        setTocItems(extractToc(snapshotPost.content))
+        setLoading(false)
+        return
+      }
+
       try {
         setLoading(true)
-        const response = await fetch(API_URL)
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-
-        const data = await response.json()
+        const data = await fetchJsonCms(API_URL)
 
         if (data.data) {
           setPost(data.data)
@@ -48,7 +55,7 @@ function BlogPostPage() {
           throw new Error("Post not found")
         }
       } catch (error) {
-        console.error("Error fetching post:", error)
+        console.error("CMS unreachable and no snapshot:", error)
         setPost(null)
       } finally {
         setLoading(false)

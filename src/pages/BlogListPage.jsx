@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
 import { baseURL } from '../utils'
 import SafeImage from '../components/SafeImage'
+import { fetchJsonCms, getStaticPosts } from '../utils/staticData'
 
 // 2. Exporte o loader
 export async function loader() {
@@ -11,26 +12,26 @@ export async function loader() {
 
   const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id,cover_image.type&${filter}&sort=-date_published`
 
-  try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-    const data = await response.json();
-
-    const allPosts = data.data.map((item) => {
-      return {
-        title: item.title || "No Title",
-        link: `/blog/${item.id}`,
-        pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
-        coverImageId: item.cover_image?.id || null,
-        coverImageType: item.cover_image?.type || '',
-      };
-    });
-    return allPosts;
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    return [];
+  let allPostsRaw = getStaticPosts();
+  if (!allPostsRaw) {
+    try {
+      const data = await fetchJsonCms(API_URL);
+      allPostsRaw = data.data;
+    } catch (error) {
+      console.error("CMS unreachable and no snapshot:", error);
+      allPostsRaw = [];
+    }
   }
+
+  return allPostsRaw.map((item) => {
+    return {
+      title: item.title || "No Title",
+      link: `/blog/${item.id}`,
+      pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
+      coverImageId: item.cover_image?.id || null,
+      coverImageType: item.cover_image?.type || '',
+    };
+  });
 }
 
 function BlogListPage() {

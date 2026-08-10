@@ -36,7 +36,7 @@ describe('BlogListPage Loader', () => {
 
     // In dev mode, the filter uses _in=published,draft
     const expectedUrl = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id,cover_image.type&filter[status][_in]=published,draft&sort=-date_published`;
-    expect(fetch).toHaveBeenCalledWith(expectedUrl);
+    expect(fetch.mock.calls[0][0]).toBe(expectedUrl);
 
     expect(result).toHaveLength(2);
 

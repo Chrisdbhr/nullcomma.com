@@ -10,12 +10,19 @@ import { CodeBlock } from '../components/CodeBlock';
 import SafeImage from '../components/SafeImage';
 import { getPreferredTranslation } from '../utils/translationUtils';
 import LazyEmbed from '../components/LazyEmbed';
+import { fetchJsonCms, getStaticProjects } from '../utils/staticData';
 
 export async function loader({ params }) {
-  const response = await fetch(`${baseURL}/items/projects/${params.projectId}?${fieldsQuery}`);
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  const data = await response.json();
-  return data.data;
+  const snapshotProject = getStaticProjects()?.find(p => p.id === params.projectId);
+  if (snapshotProject) return snapshotProject;
+
+  try {
+    const data = await fetchJsonCms(`${baseURL}/items/projects/${params.projectId}?${fieldsQuery}`);
+    return data.data;
+  } catch (error) {
+    console.error("CMS unreachable and no snapshot:", error);
+    return null;
+  }
 }
 
 function MarkdownImg({ src, alt, ...props }) {

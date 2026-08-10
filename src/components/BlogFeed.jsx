@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { baseURL } from '../utils'
 import SafeImage from './SafeImage'
+import { fetchJsonCms, getStaticPosts } from '../utils/staticData'
 
 const getFilter = () => {
   return import.meta.env.DEV
@@ -17,11 +18,23 @@ function BlogFeed() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const snapshotPosts = getStaticPosts();
+      if (snapshotPosts) {
+        setPosts(snapshotPosts.map((item) => {
+          return {
+            title: item.title || "No Title",
+            link: `/blog/${item.id}`,
+            pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
+            coverImageId: null,
+            coverImageType: '',
+          };
+        }));
+        setLoading(false);
+        return;
+      }
 
-        const data = await response.json();
+      try {
+        const data = await fetchJsonCms(API_URL);
 
         const feedPosts = data.data.map((item) => {
           return {
@@ -34,7 +47,8 @@ function BlogFeed() {
         });
         setPosts(feedPosts);
       } catch (error) {
-        console.error("Error fetching blog posts:", error);
+        console.error("CMS unreachable and no snapshot:", error);
+        setPosts([]);
       } finally {
         setLoading(false);
       }

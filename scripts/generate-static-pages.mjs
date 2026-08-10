@@ -4,6 +4,7 @@ import { resolve, dirname } from 'path';
 const CMS_URL = 'https://cms.nullcomma.com';
 const SITE_URL = 'https://nullcomma.com';
 const DIST = resolve('dist');
+const SNAPSHOT_PATH = resolve('scripts/data/cms-snapshot.json');
 
 let JS_SRC = '/assets/index.js';
 let CSS_HREF = '/assets/index.css';
@@ -53,10 +54,35 @@ function assetUrl(id, width = 1200) {
   return id ? `${CMS_URL}/assets/${id}?width=${width}` : null;
 }
 
-async function fetchJson(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}: ${url}`);
-  return res.json();
+async function fetchJson(url, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}: ${url}`);
+    return res.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function loadSnapshot() {
+  try {
+    return JSON.parse(readFileSync(SNAPSHOT_PATH, 'utf-8'));
+  } catch (err) {
+    console.warn(`  No snapshot available (${err.message})`);
+    return { projects: [], posts: [] };
+  }
+}
+
+function saveSnapshot(projects, posts) {
+  try {
+    mkdirSync(dirname(SNAPSHOT_PATH), { recursive: true });
+    writeFileSync(SNAPSHOT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), projects, posts }, null, 2));
+    console.log(`  Snapshot updated (${projects.length} projects, ${posts.length} posts)`);
+  } catch (err) {
+    console.warn(`  Failed to save snapshot: ${err.message}`);
+  }
 }
 
 // ── Inline fallback styles (scoped under .static-root to not affect React) ──
@@ -87,6 +113,8 @@ body{background:#141414;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;lin
 `;
 
 // ── Build static HTML ──
+let STATIC_DATA_JSON = 'null';
+
 function pageHtml(title, description, ogImage, jsonld, bodyHtml, canonical) {
   const ogTitle = e(title);
   const ogDesc = e(truncate(description, 200));
@@ -113,6 +141,7 @@ function pageHtml(title, description, ogImage, jsonld, bodyHtml, canonical) {
 <meta name="darkreader-lock" />
 <link rel="canonical" href="${e(canon)}" />
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
+<script>window.__STATIC_DATA__ = ${STATIC_DATA_JSON};</script>
 <link rel="stylesheet" href="${e(CSS_HREF)}" />
 </head>
 <body>
@@ -431,7 +460,11 @@ function blogBody(post, imageUrl) {
   }
   lines.push(`<div class="meta">${post.date_published ? `Published: ${e(post.date_published)}` : ''}</div>`);
   if (post.content) {
-    lines.push(mdToHtml(post.content));
+    // Snapshot content is already HTML; CMS content is markdown
+    const content = post.content.trim().startsWith('<')
+      ? post.content
+      : mdToHtml(post.content);
+    lines.push(content);
   }
   lines.push(`</div>`);
   lines.push(backLink());
@@ -465,6 +498,7 @@ async function main() {
   // Fetch CMS data
   console.log('Fetching projects...');
   let projects = [];
+  let posts = [];
   try {
     const data = await fetchJson(`${CMS_URL}/items/projects?${PROJECT_FIELDS}&filter[status][_eq]=published`);
     projects = data.data || [];
@@ -475,7 +509,6 @@ async function main() {
   }
 
   console.log('Fetching blog posts...');
-  let posts = [];
   try {
     const data = await fetchJson(`${CMS_URL}/items/blog_posts?${BLOG_FIELDS}&filter[status][_eq]=published`);
     posts = data.data || [];
@@ -483,6 +516,23 @@ async function main() {
   } catch (err) {
     console.warn('  Failed:', err.message);
   }
+
+  if (projects.length > 0 || posts.length > 0) {
+    saveSnapshot(projects, posts);
+  } else {
+    console.log('CMS unreachable, falling back to embedded snapshot...');
+    const snap = loadSnapshot();
+    projects = snap.projects || [];
+    posts = snap.posts || [];
+    projects.sort((a, b) => new Date(b.release_date || 0) - new Date(a.release_date || 0));
+    console.log(`  Using snapshot: ${projects.length} projects, ${posts.length} posts`);
+  }
+
+  // Embed snapshot data for the React app (hydrates from it when the CMS is down)
+  STATIC_DATA_JSON = JSON.stringify({ projects, posts })
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
 
   // Read Vite-built index.html for asset references
   console.log('Reading template...');
@@ -589,7 +639,8 @@ async function main() {
   // ── Blog posts ──
   for (const post of posts) {
     const title = post.title || 'Untitled Post';
-    const description = post.content ? truncate(post.content, 200) : `${title} - Null Comma`;
+    const cleanContent = post.content ? post.content.replace(/<[^>]*>/g, ' ') : '';
+    const description = cleanContent ? truncate(cleanContent, 200) : `${title} - Null Comma`;
     const imageUrl = assetUrl(post.cover_image?.id);
     const ld = blogPostLD(post, title, description, imageUrl, post.date_published);
 

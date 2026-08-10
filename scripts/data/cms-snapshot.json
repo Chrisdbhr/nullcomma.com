@@ -1,0 +1,555 @@
+{
+  "generatedAt": "2026-08-09T02:48:24.464Z",
+  "projects": [
+    {
+      "id": "what-the-dog-remembers",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unity 6.3",
+      "release_date": "2026-10-20T12:00:00",
+      "steam_id": "4500460",
+      "translations": [
+        {
+          "language": "en",
+          "title": "What The Dog Remembers",
+          "synopsis": "Under the watchful eye of his dog, a man isolates himself in a trailer for seven nights, where he is forced to confront inexplicable anomalies that seem to spring from his own mind."
+        }
+      ],
+      "card_image": {
+        "id": "c304cd7b-9d4f-40b8-865c-df536ecd073e"
+      },
+      "screenshots": [],
+      "steam_screenshots": [
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/50ab7a54f7d43419aa6a6f5d584ee579c5a07944/ss_50ab7a54f7d43419aa6a6f5d584ee579c5a07944.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/8fce82a241eff33c2ac375e81854a1672583f835/ss_8fce82a241eff33c2ac375e81854a1672583f835.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/25580106bdbecf6b78e2fe00bec0e72b93f100db/ss_25580106bdbecf6b78e2fe00bec0e72b93f100db.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5c63b43f749b42b9d1bbb3afcaf99077bed00164/ss_5c63b43f749b42b9d1bbb3afcaf99077bed00164.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/e4c351155cb4cf9772cd7131174761ec47c19950/ss_e4c351155cb4cf9772cd7131174761ec47c19950.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/009f25683e0677e1568fc58cda25f2f7a1b12d23/ss_009f25683e0677e1568fc58cda25f2f7a1b12d23.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/478253ffc9753a8b4bc6996d81d3955c55f3cd32/ss_478253ffc9753a8b4bc6996d81d3955c55f3cd32.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/1ed4f50d62d0709c2acc9825488b67bca0f031f5/ss_1ed4f50d62d0709c2acc9825488b67bca0f031f5.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/24e3a428481476d3bdb730dc941776f79441f395/ss_24e3a428481476d3bdb730dc941776f79441f395.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/5b985d36bed346c091cb650e2cc397ce24d9c708/ss_5b985d36bed346c091cb650e2cc397ce24d9c708.1920x1080.jpg?t=1783969617",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4500460/6c222770a13ed94c1f746e729c6156dda38f034d/ss_6c222770a13ed94c1f746e729c6156dda38f034d.1920x1080.jpg?t=1783969617"
+      ],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "kindle-games",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Javascript",
+      "release_date": "2026-03-07T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Kindle Games",
+          "synopsis": "A collection of web-based games specifically designed and optimized for the experimental browser found on legacy Kindle E-readers e.g., Kindle Paperwhite 10th Gen. How to play Type kindle.nullcomma.comhttps://kindle.nullcomma.com in your kindle browser!"
+        }
+      ],
+      "card_image": {
+        "id": "1ac06e77-ea18-4d10-b8cb-eb155c4c7f97"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "1ac06e77-ea18-4d10-b8cb-eb155c4c7f97"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "30185f15-d55d-42b1-a430-84634b8bbab0"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "8e0fedda-1777-4cf4-97c5-0532bab14dc9"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "b1e6fb90-4249-45b8-9d96-578a696c8f1b"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "7b14a6f0-9630-4599-9db6-ed8f7bac8d32"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "f0ea310e-9e7f-4054-bfc3-ca12fdbe3ecc"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "paper-psg",
+      "status": "published",
+      "project_type": "paper",
+      "engine": "Paper",
+      "release_date": "2024-12-09T06:17:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Teaching Introductory Game Audio to Undergraduate Students Using a Novel Digital Game Template",
+          "synopsis": "Abstract: In this paper we describe the PUCPR SOUND GAME PSG: a digital game template that was developed in order to provide support for the game audio introductory teaching to undergraduate students of Digital Games. To use the game, the student does not need to have prior knowledge of art, design or even digital game programming. It was developed to abstract them from these matters, allowing them to create, test, and refine sound effects and music by easily changing files in the game template folder. From the teacher’s point of view, the game speeds up the monitoring and feedback process since the productions are centralised in a single place. The evaluation process is facilitated: the teacher is responsible for running the game containing the complete sound package of each student, identifying whether or not it meets the established criteria. We also present a thorough evaluation of eight different offerings of the module, being 4 without using PSG and 4 using PSG. The 8 offerings had the same learning objectives and were taught by the same teacher. The analysis of the results shows that there was a significant improvement in student learning and a reduction in the number of failing students when using PSG. - Published in Setúbal: SciTePress, 2024. - Co-authored with Claudio Carville, Lucas Adamo, and Carlos N. Silla Jr. - Developed the PUCPR SOUND GAME PSG, a Unity-based game template for teaching game audio to undergraduate students. - Conducted a thorough evaluation of 8 course offerings, demonstrating a significant improvement in student learning and a reduction in failure rates when using PSG. - Available at DOI 10.5220/0012701100003693.https://www.scitepress.org/Link.aspx?doi=10.5220/0012701100003693"
+        }
+      ],
+      "card_image": {
+        "id": "c022a3f2-3cbb-4040-b434-ec94458f60ad"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "c022a3f2-3cbb-4040-b434-ec94458f60ad"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "mashnikov3",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unity 2022.3",
+      "release_date": "2023-05-03T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Elden Evil: Sabs Die Twice",
+          "synopsis": "Sabs tem sua namorada, Li, baleada friamente por Nosferaty. Agora, ele busca respostas sobre o que levou ao ataque em uma ilha em Assaré-CE."
+        }
+      ],
+      "card_image": {
+        "id": "b3190ecd-75e7-49ca-8b2f-c673e24daf62"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "b3190ecd-75e7-49ca-8b2f-c673e24daf62"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "eb6e1956-c63e-4608-9fae-c9f819a0484e"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "ddc162f3-1352-4f33-aa53-bbaf7f68ab56"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "61195520-bce2-49c6-a803-14d7b886945f"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "779b0203-ff87-4719-97ec-4115dc7016ad"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "0fa81668-9ce6-45ed-8d57-da6ef9ca79a7"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "d0a09b4b-34cf-4f71-a228-36ac1969a8fd"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "2b4e6afb-9a2d-43cf-b086-2f40ac28cc2b"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "Resultarias",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unity 2023",
+      "release_date": "2023-01-03T12:00:00",
+      "steam_id": "2230030",
+      "translations": [
+        {
+          "language": "en",
+          "title": "Resultarias",
+          "synopsis": "Resultarias is a surrealist walking simulator narrated by dream exploration. You play as Utsuki, a girl that for some reason doesn't want to leave her room and will only explore the world through her dreams."
+        }
+      ],
+      "card_image": {
+        "id": "0a345908-c87f-497b-8ebb-48a9b82b60d3"
+      },
+      "screenshots": [],
+      "steam_screenshots": [
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_4342fa6e1d6992020739937f99156f50b0ca7c77.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/dfc359f4c5648acbfafd2745b658d2cb2acfdfad/ss_dfc359f4c5648acbfafd2745b658d2cb2acfdfad.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_df5e6caad4696d84eb461b3d916f5144cde55841.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_eaf8d91ecc3a1516bd9c6794ed343178a267bd5c.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_0639c366d29383d7aa5f1b7b5e6b37f25c70ba46.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_fed4d14f29d512b02fae1fb5b5dcd838aaeff3df.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_c153d3154524c6018e9aa70b2b8922d381dfad8c.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_9494c66fd9f3b5e3373e0dae28aabf272280ab5e.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_0b467b837be5780cb09e5aa8683b409631be426e.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_bc8053a9cf758edfe7776a57b956a8ab8c73ad45.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_37657ed5e8d7a18551d8d3120e240f6f907a7998.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_1125b84749f281810255d6370aca487007240b0e.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_4c80f841063d840c293b4a908de351a6e3079b8b.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_cf64c5839b721b6834d1d6b75fbdd23d82ce5f9f.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_5704f85eb127942b720c1ee613361e6b62c6d109.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/13dbbe6ddc398bdae964082ed4a1faffd815e90a/ss_13dbbe6ddc398bdae964082ed4a1faffd815e90a.1920x1080.jpg?t=1784072502",
+        "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2230030/ss_67a67b5c3a78ade35d57b608d06690bb648defef.1920x1080.jpg?t=1784072502"
+      ],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "mashnikov2",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unity 2022.3",
+      "release_date": "2021-08-09T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Assassin's Nanner: Zero Down",
+          "synopsis": "Nanner perde contato com Mashnikov e precisa fugir com sua amiga de infância Naomi durante o evento em Ourinhos. Jogo focado em narrativa com várias cenas e até dublagem profissional. Desenvolvido em 4 semanas em agosto de 2021 usando o Unity que fiz junto com meus amigos do Discord como presente de aniversário!"
+        }
+      ],
+      "card_image": {
+        "id": "5f388fd9-21e3-477f-930d-cf470bfabf96"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "5f388fd9-21e3-477f-930d-cf470bfabf96"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "eaeab547-23cb-4581-a794-70d691d96659"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "d9a081de-916e-4088-8cf3-d5c9cd0d0db6"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "55f05142-7986-46b7-ad7f-c235479b2214"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "4dcad9c9-6693-47fc-b28a-9cc61ace97c1"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "fca800aa-fc4a-4572-84a0-97d185cf6116"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "eff02c2e-cbbc-4798-baa0-94b461abfc36"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "mashnikov",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unity 2022.3",
+      "release_date": "2021-06-22T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Mashnikov",
+          "synopsis": "O mundo está sendo dominado por streamers querendo formar um exército de telespectadores zumbis, o soldado Mashnikov é convocado para erradicar o epicentro da epidemia em Ourinhos-SP. O jogo é uma sátira e tem várias referências a memes e foi criado em Julho de 2021 em duas semanas como presente de aniversário por mim e membros da comunidade do Concord, puramente diversão. Conteúdo Você pode desbloquear Conquistas e o jogo conta com Modificadores para alterar como ele funciona! O jogo é bem completo, com segredos e conteúdo após o final do jogo para diversão."
+        }
+      ],
+      "card_image": {
+        "id": "279c8e26-449a-46b5-8bf2-306a539bbcd0"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "2dcc77fa-9245-48b3-8da1-87d72a78ad30"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "bd1eccff-5372-45f1-a58e-4bb989c01bd2"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "killershapeshifters",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Construct 2",
+      "release_date": "2019-06-01T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Killershapeshifters",
+          "synopsis": "Assassinate the other player without him finding you and killing you first... Playing on the same screen and the same keyboard! You must find yourself and at the same time find your enemy Player 1 walk using \"W A S D\" and kills using \"F\" Player 2 walks on the Arrow Keys and kills with \"Number Zero\""
+        }
+      ],
+      "card_image": {
+        "id": "32d1d0c9-a139-41dc-a5db-7a283c18a81d"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "32d1d0c9-a139-41dc-a5db-7a283c18a81d"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "enigma-core",
+      "status": "published",
+      "project_type": "tool",
+      "engine": ".NET",
+      "release_date": "2018-12-25T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "NCDK - Unity Tools & Extensions",
+          "synopsis": "Useful tools to speed up the development of core mechanics in Unity. The code is shared between all my projects and it is actively updated!"
+        }
+      ],
+      "card_image": {
+        "id": "63298647-e4b4-4da5-90df-6512b3fdd208"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "63298647-e4b4-4da5-90df-6512b3fdd208"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "beetools-vr",
+      "status": "published",
+      "project_type": "app",
+      "engine": "Unity 2019",
+      "release_date": "2018-11-05T05:29:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Beetools VR & Mobile Apps",
+          "synopsis": "6 years of driving technical excellence through scalable VR architecture, high-impact automation, and performance optimization. - I created immersive 3D VR applications used to teach English to adults and children. - Designed foundational architecture for 5+ VR applications, adopted by 50+ schools and businesses. - Experience in long-term support of old ongoing production applications. - Optimized app performance for 20k+ Android/iOS devices, boosting compatibility by 30%. - Publishing automation for Apple Store and Google Play from internal testing to production publishing, reducing release time from hours to minutes and completely removing human error. - Managed pull requests from Junior developers, ensuring secure deployment for the production branch. - Led server microservices optimization, cutting service usage costs by 75%. - Created a Discord Bot that automated moderation and authentication of students in the school community, ensuring minimal manual and human intervention."
+        }
+      ],
+      "card_image": {
+        "id": "1226d794-8540-49e2-9148-01976c6b941f"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "1226d794-8540-49e2-9148-01976c6b941f"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "a-casa-desconhecida",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Unreal Engine 4",
+      "release_date": "2017-07-04T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "A Casa Desconhecida",
+          "synopsis": "Na noite de 4 de julho de 1753, Edward acordou em uma casa desconhecida... Sobre o jogo O jogo não tem fim, mas você vai saber quando ele acabar... Eu fiz esse jogo em 2017 em 72 horas como um trabalho da faculdade de jogos que fiz! A proposta é o terror sem \"jumpscares\". Infelizmente o jogo não tem menu, tela de título ou pause, pois eu literalmente não sabia fazer na época e não tive tempo. Então realmente tem que fechar o jogo pressionando ALT+F4 mesmo. Sobre problemas e bugs Eu não vou atualizar o jogo mais, estou focado em outros projetos. Apenas não tente pular a janela que eu esqueci de colocar colisão e o resto vai dar tudo certo. Agradecimento especial Grandessíssimo Ian Quint Leisner por me apoiar e ajudar a elaborar o jogo no curto tempo e DUBLAR os personagens do jogo. Siga ele no SoundCloudhttps://soundcloud.com/ian-quint-leisner"
+        }
+      ],
+      "card_image": {
+        "id": "612c1e37-13e1-428e-ad5b-ba130c154ce1"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "612c1e37-13e1-428e-ad5b-ba130c154ce1"
+          }
+        },
+        {
+          "directus_files_id": {
+            "id": "eb9c37be-5562-44de-8be6-a25000090699"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "face-3d",
+      "status": "published",
+      "project_type": "app",
+      "engine": "Unity 5",
+      "release_date": "2016-12-01T05:44:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Face 3D Mobile Apps",
+          "synopsis": "Shipped 3 new cross-platform games in less than one year using Unity. - Remastered a legacy game that required heavy optimizations and balancing, boosting FPS on devices, reduced loading times and boosting compatibility by 75%. - Maintenance of existing Android/iOS applications and publishing and updating on Playstore and App Store."
+        }
+      ],
+      "card_image": {
+        "id": "4e0a9d1e-9630-462e-867f-2939ca626ffd"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "4e0a9d1e-9630-462e-867f-2939ca626ffd"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "for-you-a-special-game",
+      "status": "published",
+      "project_type": "game",
+      "engine": "Construct 2",
+      "release_date": "2016-11-11T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "For You - A Special Game",
+          "synopsis": "A gift for the soul. A journey of 3 minutes, or of hours. This short, minimalist adventure was created as a deeply personal gift for a special person facing depression, built to share a positive message after the journey."
+        }
+      ],
+      "card_image": {
+        "id": "901bd838-2ac5-4e3d-8a52-10e2adc9d563"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "901bd838-2ac5-4e3d-8a52-10e2adc9d563"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    },
+    {
+      "id": "night-at-closed-frameworks",
+      "status": "published",
+      "project_type": "game",
+      "engine": "C++",
+      "release_date": "2016-10-16T12:00:00",
+      "steam_id": null,
+      "translations": [
+        {
+          "language": "en",
+          "title": "Night At Closed Frameworks",
+          "synopsis": "You are a security guard tasked with watching over the office until dawn, ensuring that absolutely nothing enters or leaves the premises. > Inspired by games in the style of Five Nights at Freddy's. --- Key Objectives Survive until 6:00 AM. Monitor the camera feeds constantly for any movement. Manage your power consumption—don't let the lights go out. Secure the perimeter. If something tries to get in, turn on the lights."
+        }
+      ],
+      "card_image": {
+        "id": "347dbb5b-5eb2-42f4-88dd-486e338bdfbd"
+      },
+      "screenshots": [
+        {
+          "directus_files_id": {
+            "id": "347dbb5b-5eb2-42f4-88dd-486e338bdfbd"
+          }
+        }
+      ],
+      "steam_screenshots": [],
+      "tags": [],
+      "genres": [],
+      "related_posts": []
+    }
+  ],
+  "posts": [
+    {
+      "id": "showcasing-automated-testing-in-unity",
+      "status": "published",
+      "title": "Showcasing Automated Testing Mastery in Unity",
+      "date_published": "2024-10-10T12:00:00",
+      "content": "<p>For an in-depth walkthrough complete with live demos, watch the full video at the end!</p><p>---</p><h2>A Multi-Layer Test Architecture</h2><p>I architected a three-layer approach that catches bugs at every level and keeps development moving at full speed:</p><ul><li><strong>Unit Tests</strong>  </li>\n</ul>  Verify individual classes and methods in isolation, such as player movement logic or obstacle spawning.\n<ul><li><strong>Integration Tests</strong>  </li>\n</ul>  Validate interactions between systems, for example, ensuring collecting a power-up correctly updates both score and UI.\n<ul><li><strong>Visual Validation</strong>  </li>\n</ul>  Automate screenshot comparisons to detect unexpected changes in sprites, UI layouts, or camera framing.\n<img src=\"https://cms.nullcomma.com/assets/a25e4934-67af-451d-a0ca-fc6f69640c2c\" alt=\"Video Screenshot: Test Architecture in Action\" style=\"max-width:100%;border-radius:8px;margin:.5rem 0\"><em>Screenshot from the video illustrating the test architecture at runtime.</em><p>---</p><h2>Key Achievements</h2><p>This framework transformed our development workflow and delivered measurable benefits:</p><ul><li>Achieved over 80% automated code coverage</li>\n<li>Caught critical regressions before they reached playtests</li>\n<li>Integrated into CI/CD so every commit triggers a full test suite</li>\n<li>Enabled confident refactors and feature rollouts, even under tight deadlines.</li>\n</ul><img src=\"https://cms.nullcomma.com/assets/f67cdd7e-84ab-40d4-a72a-b2501e211b60\" alt=\"Test Results Dashboard\" style=\"max-width:100%;border-radius:8px;margin:.5rem 0\"><em>Sample CI dashboard showing green lights for unit, integration, and visual tests.</em><p>---</p><h2>Real-World Impact in “Resultarias” on Steam</h2><p>The exact same testing framework powers my Steam release <strong>Resultarias</strong>, a surrealist adventure game narrated through dream exploration. Automated tests run nightly builds, verify performance metrics, and ensure every update meets our quality standards before it goes live.</p><iframe src=\"https://store.steampowered.com/widget/2230030\" frameborder=\"0\" width=\"100%\" height=\"190\"><a href=\"https://store.steampowered.com/app/2230030\">resultarias on Steam</a></iframe><p>---</p><h2>Explore the Full Video Walkthrough</h2><p>For detailed code snippets, live test executions, and an end-to-end demo of this system in action, check out the complete showcase video:</p><div class=\"video-container\">\n  <iframe loading=\"lazy\" src=\"https://www.youtube.com/embed/Bcl44QiA1H8?playlist=Bcl44QiA1H8&amp;loop=1&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;cc_load_policy=1\" title=\"YouTube video player\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\">\n  </iframe>\n</div>",
+      "cover_image": {
+        "id": "8ac87551-01e5-4aa9-9146-b277c9b16217"
+      },
+      "tags": [],
+      "related_projects": []
+    },
+    {
+      "id": "localization-how-my-game-is-translated",
+      "status": "published",
+      "title": "Localization - How my game is translated to 14+ languages with almost no cost",
+      "date_published": "2023-03-04T12:00:00",
+      "content": "<h2>Intro</h2>\nI love to make my games accessible to the most people possible, but accessibility features take time to implement so I am pretty sure that’s the reason most companies simply don’t do them, time equals money so...\n<p>With that in mind, I had to find a quick and easy solution to make all possible texts support translation in my game, and an even simpler way to translate all of them when new text was added or changed.</p><h2>How and wow</h2>\nProgramming one from scratch is a possibility but since this is a common issue, I had to look for free or open source solutions first. After looking through some git repositories and paid Unity Assets, I ended up finding what I think was the best option: Unity Localization Package. This package is developed and supported by Unity, that’s awesome because I always prefer to use Unity official assets while looking for third party solutions, because I am sure that they will keep it updated and supporting the latest versions of the engine.\n<img src=\"https://cms.nullcomma.com/assets/ce8400c8-2269-418c-bddf-019c7768aa46\" alt=\"Unity Localization Package Docs\" style=\"max-width:100%;border-radius:8px;margin:.5rem 0\"><p>The neat part of this package is that it can export all the game text in one or more Google Sheets, meaning that I can use Google Translate inside it to translate all texts automatically!</p><p>I know Google Translate can lead to some wrong translations but remember that I am a solo-developer working in the game in my free time. This solution is quick and pretty reliable, and I have the support of the community to fix some things that could be better, in the game Discord Server I already have been reached by a Turkish person that helped fix a lot of things!</p><img src=\"https://cms.nullcomma.com/assets/96329b53-b01b-4533-bcf3-bfe675d1b01d\" alt=\"Sheet with translation that the community can comment\" style=\"max-width:100%;border-radius:8px;margin:.5rem 0\">)\n<h2>Conclusion</h2><p>Making the game available in multiple languages made it appear on foreign websites with that information highlighting it. I believe this is a very good thing, I always get excited when I play a game in my main language (Brazilian Portuguese), and I remember seeing a person with a positive reaction when they saw the game opened automatically already with their language selected!</p><img src=\"https://cms.nullcomma.com/assets/e5f93a65-8ca0-40cb-a1c7-04aedeaf7817\" alt=\"The game with translated prompts\" style=\"max-width:100%;border-radius:8px;margin:.5rem 0\"><h2>About the game</h2><p>Resultarias is a surrealist adventure narrated through dream exploration, even though it does not have dialogs or collectable with pages of texts to read, this makes possible the largest amount of people able to read all the interface texts, which is a good thing! And I pretty sure this could be used to translate games with longer texts and a small budget too.</p><p>The game is in Early Access and it is available on Steam, a Free version is available to test:</p><iframe src=\"https://store.steampowered.com/widget/2230030\" frameborder=\"0\" width=\"100%\" height=\"190\"><a href=\"https://store.steampowered.com/app/2230030\">resultarias on Steam</a></iframe>",
+      "cover_image": {
+        "id": "c5bb5ee2-8cf2-4421-a9f1-fa7cba986ce8"
+      },
+      "tags": [],
+      "related_projects": []
+    }
+  ]
+}

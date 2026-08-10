@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { baseURL } from '../utils';
 import { getCmsProjects, setCmsProjects } from '../utils/cmsCache';
+import { getStaticProjects } from '../utils/staticData';
 
 const SHOW_MS = 6000;
 const FADE_MS = 1500;
@@ -78,19 +79,19 @@ function BackgroundSlideshow() {
     const timer = setTimeout(() => {
       if (!alive.current) return;
 
-      const useProjects = (projects) => {
+      const useProjects = (projects, externalOnly = false) => {
         if (!alive.current || !projects) return;
         const gameGroups = [];
         projects.forEach(p => {
           const group = [];
-          if (p.card_image?.id) group.push(directusAssetUrl(p.card_image.id));
+          if (!externalOnly && p.card_image?.id) group.push(directusAssetUrl(p.card_image.id));
           if (p.steam_screenshots?.length > 0) {
             p.steam_screenshots.forEach(ss => {
               const url = typeof ss === 'string' ? ss : (ss.path || ss.url);
               if (url) group.push(url);
             });
           }
-          if (p.screenshots?.length > 0) {
+          if (!externalOnly && p.screenshots?.length > 0) {
             p.screenshots.forEach(ss => {
               const id = ss.directus_files_id?.id;
               if (id) group.push(directusAssetUrl(id));
@@ -123,6 +124,11 @@ function BackgroundSlideshow() {
         const games = Array.isArray(cached) ? cached.filter(p => p.project_type === 'game') : [];
         useProjects(games);
         return;
+      }
+
+      const snapshotGames = (getStaticProjects() || []).filter(p => p.project_type === 'game');
+      if (snapshotGames.length > 0) {
+        useProjects(snapshotGames, true);
       }
 
       fetch(`${baseURL}/items/projects?fields=card_image.id,steam_screenshots,screenshots.directus_files_id.id&filter[project_type][_eq]=game&filter[status][_eq]=published`)
