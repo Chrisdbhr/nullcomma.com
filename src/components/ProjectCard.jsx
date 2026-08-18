@@ -63,7 +63,7 @@ function ProjectCard({ project, onFilterClick, activeFilter }) {
         )}
 
         <div className="game-card-tags">
-          {project.tags.slice(0, 3).map((tag) => (
+          {(project.tags || []).slice(0, 3).map((tag) => (
             <span
               key={tag.tags_id}
               className={`game-tag${isActiveTag('tag', tag.tags_id) ? ' game-tag-active' : ''}`}
