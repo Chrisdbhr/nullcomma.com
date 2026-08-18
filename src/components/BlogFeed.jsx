@@ -25,8 +25,8 @@ function BlogFeed() {
             title: item.title || "No Title",
             link: `/blog/${item.id}`,
             pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('en-US'),
-            coverImageId: null,
-            coverImageType: '',
+            coverImageId: item.cover_image?.id || null,
+            coverImageType: item.cover_image?.type || '',
           };
         }));
         setLoading(false);
