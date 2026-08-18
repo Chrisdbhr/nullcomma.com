@@ -7,13 +7,14 @@
  */
 export const getPreferredTranslation = (translations, lang) => {
   if (!translations || translations.length === 0) return {};
+  const hasLang = t => typeof t?.language === 'string' && t.language.length > 0;
   if (lang) {
-    const target = translations.find(t => t.language.startsWith(lang));
+    const target = translations.find(t => hasLang(t) && t.language.startsWith(lang));
     if (target) return target;
   }
-  const en = translations.find(t => t.language.startsWith('en'));
+  const en = translations.find(t => hasLang(t) && t.language.startsWith('en'));
   if (en) return en;
-  const pt = translations.find(t => t.language.startsWith('pt'));
+  const pt = translations.find(t => hasLang(t) && t.language.startsWith('pt'));
   if (pt) return pt;
   return translations[0] || {};
 };
