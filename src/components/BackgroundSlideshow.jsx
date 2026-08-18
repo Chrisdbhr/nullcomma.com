@@ -19,7 +19,7 @@ function shuffle(arr) {
 }
 
 function directusAssetUrl(id) {
-  return `${baseURL}/assets/${id}?width=1440&quality=60`;
+  return `${baseURL}/assets/${id}?width=1440&quality=85`;
 }
 
 function BackgroundSlideshow() {

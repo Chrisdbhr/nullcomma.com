@@ -194,7 +194,7 @@ function BlogPostPage() {
             <SafeImage
               id={post.cover_image.id}
               width={1000}
-              quality={75}
+              quality={88}
               mimeType={post.cover_image.type}
               alt={`Cover image of ${post.title}`}
               fetchpriority="high"

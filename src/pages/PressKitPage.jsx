@@ -255,7 +255,7 @@ function PressKitPage() {
     });
   }
 
-  const ogImageUrl = cardImageId ? `${baseURL}/assets/${cardImageId}?width=1200&quality=80` : null;
+  const ogImageUrl = cardImageId ? `${baseURL}/assets/${cardImageId}?width=1200&quality=88` : null;
 
   return (
     <div className="page-content fade-in presskit-page">
@@ -296,7 +296,7 @@ function PressKitPage() {
           <SafeImage
             id={cardImageId}
             width={1200}
-            quality={80}
+            quality={88}
             mimeType={cardImageType}
             alt={title}
             className="presskit-hero-image"
@@ -354,7 +354,7 @@ function PressKitPage() {
                       key={i}
                       id={ss.id}
                       width={600}
-                      quality={75}
+                      quality={88}
                       alt={`${title} screenshot ${i + 1}`}
                       className="presskit-screenshot"
                     />
